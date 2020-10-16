@@ -1,0 +1,30 @@
+name: PR Lint
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - master
+jobs:
+  include-JIRA-ticket:
+    runs-on: ubuntu-latest
+    steps:
+# Although the line below works perfectly in a personal repo, it doesn't in any of the FunFair ones!
+    - if: ${{ !startsWith(github.head_ref, 'release/') && !startsWith(github.head_ref, 'hotfix/') }}
+      uses: vijaykramesh/pr-lint-action@v1.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  include-changelog-entry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.3
+        with:
+          fetch-depth: 0
+# Although the line below works perfectly in a personal repo, it doesn't in any of the FunFair ones!
+      - if: ${{ github.actor != 'dependabot-preview[bot]' }}
+        uses: Zomzog/changelog-checker@v1.0.0
+        with:
+          fileName: CHANGELOG.md
+          noChangelogLabel: Changelog Not Required
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

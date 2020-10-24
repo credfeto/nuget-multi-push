@@ -70,22 +70,17 @@ namespace Credfeto.Package.Push
                 PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>();
                 Console.WriteLine($"Pushing Packages to: {packageUpdateResource.SourceUri}");
 
-                SymbolPackageUpdateResourceV3 symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>();
-
-                if (symbolPackageUpdateResource.SourceUri != null)
-                {
-                    Console.WriteLine($"Pushing Symbol Packages to: {symbolPackageUpdateResource.SourceUri}");
-                }
+                SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await GetSymbolPackageUpdateSourceAsync(sourceRepository);
 
                 IReadOnlyList<string> symbolPackages = ExtractSymbolPackages(packages);
                 IReadOnlyList<string> nonSymbolPackages = ExtractProductionPackages(packages);
 
-                IReadOnlyList<string> uploadOrder = symbolPackageUpdateResource.SourceUri != null
+                IReadOnlyList<string> uploadOrder = symbolPackageUpdateResource != null
                     ? nonSymbolPackages
                     : nonSymbolPackages.Concat(symbolPackages)
                                        .ToArray();
 
-                IReadOnlyList<string> symbolSearch = symbolPackageUpdateResource.SourceUri != null ? symbolPackages : Array.Empty<string>();
+                IReadOnlyList<string> symbolSearch = symbolPackageUpdateResource != null ? symbolPackages : Array.Empty<string>();
 
                 (string package, bool success)[] results = await Task.WhenAll(uploadOrder.Select(package => PushOnePackageAsync(package: package,
                                                                                                                                 symbolPackages: symbolSearch,
@@ -101,6 +96,20 @@ namespace Credfeto.Package.Push
 
                 return ERROR;
             }
+        }
+
+        private static async Task<SymbolPackageUpdateResourceV3?> GetSymbolPackageUpdateSourceAsync(SourceRepository sourceRepository)
+        {
+            SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>();
+
+            if (symbolPackageUpdateResource?.SourceUri == null)
+            {
+                return null;
+            }
+
+            Console.WriteLine($"Pushing Symbol Packages to: {symbolPackageUpdateResource.SourceUri}");
+
+            return symbolPackageUpdateResource;
         }
 
         private static string[] ExtractProductionPackages(IReadOnlyList<string> packages)
@@ -180,7 +189,7 @@ namespace Credfeto.Package.Push
                                                                                       IReadOnlyList<string> symbolPackages,
                                                                                       PackageUpdateResource packageUpdateResource,
                                                                                       string apiKey,
-                                                                                      SymbolPackageUpdateResourceV3 symbolPackageUpdateResource)
+                                                                                      SymbolPackageUpdateResourceV3? symbolPackageUpdateResource)
         {
             try
             {
@@ -219,14 +228,7 @@ namespace Credfeto.Package.Push
 
             string? symbolSource = symbolPackages.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x: x, y: expectedSymbol));
 
-            if (symbolSource != null)
-            {
-                Console.WriteLine($"Package package - found symbols {symbolSource}");
-            }
-            else
-            {
-                Console.WriteLine($"Package package - no symbols found {expectedSymbol}");
-            }
+            Console.WriteLine(symbolSource != null ? $"Package package - found symbols {symbolSource}" : $"Package package - no symbols found {expectedSymbol}");
 
             return symbolSource;
         }

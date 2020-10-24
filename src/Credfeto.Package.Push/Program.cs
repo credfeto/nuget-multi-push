@@ -15,6 +15,10 @@ namespace Credfeto.Package.Push
         private const int SUCCESS = 0;
         private const int ERROR = 1;
 
+        private const string PACKAGE_EXTENSION = ".nupkg";
+        private const string SYMBOLS_PACKAGE_EXTENSION = ".symbols" + PACKAGE_EXTENSION;
+        private const string SEARCH_PATTERN = "*" + PACKAGE_EXTENSION;
+
         private static readonly ILogger NugetLogger = new ConsoleLogger();
 
         private static async Task<int> Main(string[] args)
@@ -34,7 +38,7 @@ namespace Credfeto.Package.Push
                     return ERROR;
                 }
 
-                IReadOnlyList<string> packages = Directory.GetFiles(path: folder, searchPattern: "*.nupkg");
+                IReadOnlyList<string> packages = Directory.GetFiles(path: folder, searchPattern: SEARCH_PATTERN);
 
                 if (!packages.Any())
                 {
@@ -96,7 +100,7 @@ namespace Credfeto.Package.Push
 
         private static bool IsSymbolPackage(string p)
         {
-            return p.EndsWith(value: ".symbols.nupkg", comparisonType: StringComparison.OrdinalIgnoreCase);
+            return p.EndsWith(value: SYMBOLS_PACKAGE_EXTENSION, comparisonType: StringComparison.OrdinalIgnoreCase);
         }
 
         private static async Task<(string package, bool success)> PushOnePackageAsync(string package,
@@ -107,7 +111,7 @@ namespace Credfeto.Package.Push
         {
             try
             {
-                string expectedSymbol = package.Insert(package.Length - 5, value: ".symbols");
+                string expectedSymbol = package.Insert(package.Length - (PACKAGE_EXTENSION.Length + 1), value: ".symbols");
                 Console.WriteLine($"Looking for Symbols Package: {expectedSymbol}");
 
                 string? symbolSource = packages.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x: x, y: expectedSymbol));

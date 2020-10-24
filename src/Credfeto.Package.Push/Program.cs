@@ -64,16 +64,23 @@ namespace Credfeto.Package.Push
                 IReadOnlyList<string> nonSymbolPackages = packages.Where(p => !p.EndsWith(value: ".symbols.nupkg", comparisonType: StringComparison.OrdinalIgnoreCase))
                                                                   .ToArray();
 
-                foreach (var package in nonSymbolPackages)
+                (string package, bool success)[] results = await Task.WhenAll(nonSymbolPackages.Select(package => PushOnePackageAsync(package: package,
+                                                                                                           packages: packages,
+                                                                                                           packageUpdateResource: packageUpdateResource,
+                                                                                                           apiKey: apiKey,
+                                                                                                           symbolPackageUpdateResource: symbolPackageUpdateResource)));
+
+                Console.WriteLine("Upload Summary:");
+                bool errors = false;
+
+                foreach ((string package, bool success) in results)
                 {
-                    await PushOnePackageAsync(package: package,
-                                              packages: packages,
-                                              packageUpdateResource: packageUpdateResource,
-                                              apiKey: apiKey,
-                                              symbolPackageUpdateResource: symbolPackageUpdateResource);
+                    string status = success ? "Uploaded" : "FAILED";
+                    Console.WriteLine($"* {package} : {status}");
+                    errors |= !success;
                 }
 
-                return SUCCESS;
+                return errors ? ERROR : SUCCESS;
             }
             catch (Exception exception)
             {
@@ -97,7 +104,7 @@ namespace Credfeto.Package.Push
 
                 await packageUpdateResource.Push(packagePath: package,
                                                  symbolSource: symbolSource,
-                                                 timeoutInSecond: 100,
+                                                 timeoutInSecond: 800,
                                                  disableBuffering: false,
                                                  getApiKey: x => apiKey,
                                                  getSymbolApiKey: x => apiKey,

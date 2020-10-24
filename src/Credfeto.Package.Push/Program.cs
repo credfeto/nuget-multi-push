@@ -61,13 +61,13 @@ namespace Credfeto.Package.Push
                 PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>();
                 SymbolPackageUpdateResourceV3 symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>();
 
-                IReadOnlyList<string> SymbolPackages = packages.Where(p => IsSymbolPackage(p))
+                IReadOnlyList<string> symbolPackages = packages.Where(p => IsSymbolPackage(p))
                                                                .ToArray();
                 IReadOnlyList<string> nonSymbolPackages = packages.Where(p => !IsSymbolPackage(p))
                                                                   .ToArray();
 
                 (string package, bool success)[] results = await Task.WhenAll(nonSymbolPackages.Select(package => PushOnePackageAsync(package: package,
-                                                                                                           packages: packages,
+                                                                                                           packages: symbolPackages,
                                                                                                            packageUpdateResource: packageUpdateResource,
                                                                                                            apiKey: apiKey,
                                                                                                            symbolPackageUpdateResource: symbolPackageUpdateResource)));

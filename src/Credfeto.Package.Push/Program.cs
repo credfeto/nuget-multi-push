@@ -27,6 +27,8 @@ namespace Credfeto.Package.Push
             {
                 IConfigurationRoot configuration = LoadConfiguration(args);
 
+                string source = configuration.GetValue<string>(key: @"source");
+
                 string folder = configuration.GetValue<string>(key: @"Folder");
 
                 if (string.IsNullOrEmpty(folder))
@@ -45,6 +47,13 @@ namespace Credfeto.Package.Push
                     return ERROR;
                 }
 
+                if (string.IsNullOrEmpty(source))
+                {
+                    Console.WriteLine("ERROR: source not specified");
+
+                    return ERROR;
+                }
+
                 string apiKey = configuration.GetValue<string>(key: @"api-key");
 
                 if (string.IsNullOrEmpty(apiKey))
@@ -54,21 +63,30 @@ namespace Credfeto.Package.Push
                     return ERROR;
                 }
 
-                string source = configuration.GetValue<string>(key: @"source");
-
                 SourceRepository sourceRepository = ConfigureSourceRepository(source);
 
                 PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>();
+                Console.WriteLine($"Pushing Packages to: {packageUpdateResource.SourceUri}");
+
                 SymbolPackageUpdateResourceV3 symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>();
+
+                Console.WriteLine($"Pushing Symbol Packages to: {symbolPackageUpdateResource.SourceUri}");
 
                 IReadOnlyList<string> symbolPackages = ExtractSymbolPackages(packages);
                 IReadOnlyList<string> nonSymbolPackages = ExtractProductionPackages(packages);
 
-                (string package, bool success)[] results = await Task.WhenAll(nonSymbolPackages.Select(package => PushOnePackageAsync(package: package,
-                                                                                                           packages: symbolPackages,
-                                                                                                           packageUpdateResource: packageUpdateResource,
-                                                                                                           apiKey: apiKey,
-                                                                                                           symbolPackageUpdateResource: symbolPackageUpdateResource)));
+                IReadOnlyList<string> uploadOrder = symbolPackageUpdateResource.SourceUri != null
+                    ? nonSymbolPackages
+                    : nonSymbolPackages.Concat(symbolPackages)
+                                       .ToArray();
+
+                IReadOnlyList<string> symbolSearch = symbolPackageUpdateResource.SourceUri != null ? symbolPackages : Array.Empty<string>();
+
+                (string package, bool success)[] results = await Task.WhenAll(uploadOrder.Select(package => PushOnePackageAsync(package: package,
+                                                                                                                                symbolPackages: symbolSearch,
+                                                                                                                                packageUpdateResource: packageUpdateResource,
+                                                                                                                                apiKey: apiKey,
+                                                                                                                                symbolPackageUpdateResource: symbolPackageUpdateResource)));
 
                 return OutputUploadSummary(results);
             }
@@ -83,22 +101,46 @@ namespace Credfeto.Package.Push
         private static string[] ExtractProductionPackages(IReadOnlyList<string> packages)
         {
             return packages.Where(p => !IsSymbolPackage(p))
+                           .OrderBy(MetaPackageLast)
+                           .ThenBy(x => x.ToLowerInvariant())
                            .ToArray();
         }
 
         private static string[] ExtractSymbolPackages(IReadOnlyList<string> packages)
         {
             return packages.Where(IsSymbolPackage)
+                           .OrderBy(MetaPackageLast)
+                           .ThenBy(x => x.ToLowerInvariant())
                            .ToArray();
+        }
+
+        private static bool MetaPackageLast(string packageId)
+        {
+            string[] parts = packageId.Split(".");
+
+            for (int part = 0; part < parts.Length; ++part)
+            {
+                if (int.TryParse(parts[part], out int _))
+                {
+                    int previousPart = part - 1;
+
+                    if (previousPart < 0)
+                    {
+                        break;
+                    }
+
+                    return StringComparer.InvariantCultureIgnoreCase.Equals(parts[previousPart], y: "All");
+                }
+            }
+
+            return false;
         }
 
         private static SourceRepository ConfigureSourceRepository(string source)
         {
             PackageSource packageSource = new PackageSource(name: "Custom", source: source, isEnabled: true, isPersistable: true, isOfficial: true);
 
-            SourceRepository sourceRepository = new SourceRepository(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
-
-            return sourceRepository;
+            return new SourceRepository(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
         }
 
         private static int OutputUploadSummary((string package, bool success)[] results)
@@ -130,26 +172,14 @@ namespace Credfeto.Package.Push
         }
 
         private static async Task<(string package, bool success)> PushOnePackageAsync(string package,
-                                                                                      IReadOnlyList<string> packages,
+                                                                                      IReadOnlyList<string> symbolPackages,
                                                                                       PackageUpdateResource packageUpdateResource,
                                                                                       string apiKey,
                                                                                       SymbolPackageUpdateResourceV3 symbolPackageUpdateResource)
         {
             try
             {
-                string expectedSymbol = package.Insert(package.Length - PACKAGE_EXTENSION.Length, value: ".symbols");
-                Console.WriteLine($"Looking for Symbols Package: {expectedSymbol}");
-
-                string? symbolSource = packages.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x: x, y: expectedSymbol));
-
-                if (symbolSource != null)
-                {
-                    Console.WriteLine($"Package package - found symbols {symbolSource}");
-                }
-                else
-                {
-                    Console.WriteLine($"Package package - no symbols found {expectedSymbol}");
-                }
+                string? symbolSource = FindMatchingSymbolPackage(package: package, symbolPackages: symbolPackages);
 
                 await packageUpdateResource.Push(packagePath: package,
                                                  symbolSource: symbolSource,
@@ -170,6 +200,30 @@ namespace Credfeto.Package.Push
 
                 return (package, success: false);
             }
+        }
+
+        private static string? FindMatchingSymbolPackage(string package, IReadOnlyList<string> symbolPackages)
+        {
+            if (symbolPackages.Count == 0)
+            {
+                return null;
+            }
+
+            string expectedSymbol = package.Insert(package.Length - PACKAGE_EXTENSION.Length, value: ".symbols");
+            Console.WriteLine($"Looking for Symbols Package: {expectedSymbol}");
+
+            string? symbolSource = symbolPackages.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x: x, y: expectedSymbol));
+
+            if (symbolSource != null)
+            {
+                Console.WriteLine($"Package package - found symbols {symbolSource}");
+            }
+            else
+            {
+                Console.WriteLine($"Package package - no symbols found {expectedSymbol}");
+            }
+
+            return symbolSource;
         }
     }
 }

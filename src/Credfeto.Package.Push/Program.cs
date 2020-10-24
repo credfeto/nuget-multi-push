@@ -23,6 +23,8 @@ namespace Credfeto.Package.Push
 
         private static async Task<int> Main(string[] args)
         {
+            Console.WriteLine($"{typeof(Program).Namespace} {ExecutableVersionInformation.ProgramVersion()}");
+
             try
             {
                 IConfigurationRoot configuration = LoadConfiguration(args);

@@ -15,7 +15,7 @@ namespace Credfeto.Package.Push
         private const int SUCCESS = 0;
         private const int ERROR = 1;
 
-        private static readonly ILogger NugetLogger = new NullLogger();
+        private static readonly ILogger NugetLogger = new ConsoleLogger();
 
         private static async Task<int> Main(string[] args)
         {

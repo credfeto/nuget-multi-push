@@ -61,7 +61,9 @@ namespace Credfeto.Package.Push
                 PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>();
                 SymbolPackageUpdateResourceV3 symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>();
 
-                IReadOnlyList<string> nonSymbolPackages = packages.Where(p => !p.EndsWith(value: ".symbols.nupkg", comparisonType: StringComparison.OrdinalIgnoreCase))
+                IReadOnlyList<string> SymbolPackages = packages.Where(p => IsSymbolPackage(p))
+                                                               .ToArray();
+                IReadOnlyList<string> nonSymbolPackages = packages.Where(p => !IsSymbolPackage(p))
                                                                   .ToArray();
 
                 (string package, bool success)[] results = await Task.WhenAll(nonSymbolPackages.Select(package => PushOnePackageAsync(package: package,
@@ -92,6 +94,11 @@ namespace Credfeto.Package.Push
             }
         }
 
+        private static bool IsSymbolPackage(string p)
+        {
+            return p.EndsWith(value: ".symbols.nupkg", comparisonType: StringComparison.OrdinalIgnoreCase);
+        }
+
         private static async Task<(string package, bool success)> PushOnePackageAsync(string package,
                                                                                       IReadOnlyList<string> packages,
                                                                                       PackageUpdateResource packageUpdateResource,
@@ -101,6 +108,7 @@ namespace Credfeto.Package.Push
             try
             {
                 string expectedSymbol = package.Insert(package.Length - 5, value: ".symbols");
+                Console.WriteLine($"Looking for Symbols Package: {expectedSymbol}");
 
                 string? symbolSource = packages.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x: x, y: expectedSymbol));
 

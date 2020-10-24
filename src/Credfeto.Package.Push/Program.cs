@@ -70,7 +70,10 @@ namespace Credfeto.Package.Push
 
                 SymbolPackageUpdateResourceV3 symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>();
 
-                Console.WriteLine($"Pushing Symbol Packages to: {symbolPackageUpdateResource.SourceUri}");
+                if (symbolPackageUpdateResource.SourceUri != null)
+                {
+                    Console.WriteLine($"Pushing Symbol Packages to: {symbolPackageUpdateResource.SourceUri}");
+                }
 
                 IReadOnlyList<string> symbolPackages = ExtractSymbolPackages(packages);
                 IReadOnlyList<string> nonSymbolPackages = ExtractProductionPackages(packages);

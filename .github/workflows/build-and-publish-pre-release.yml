@@ -52,5 +52,6 @@ jobs:
         dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-restore --output ../dist
     - name: Publish
       run: |
+        dotnet tool install --local Credfeto.Package.Push --version ${{ env.BUILD_VERSION }} --add-source dist
         cd dist
-        dotnet run src/Credfeto.Package.Push/bin/Release/netcoreapp3.1/Credfeto.Package.Push.dll -folder . --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}
+        dotnet pushpackages -folder . --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}

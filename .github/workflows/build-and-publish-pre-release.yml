@@ -53,4 +53,4 @@ jobs:
     - name: Publish
       run: |
         cd dist
-        dotnet src/Credfeto.Package.Push/bin/Release/netcoreapp3.1/Credfeto.Package.Push.dll -folder . --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}
+        dotnet run src/Credfeto.Package.Push/bin/Release/netcoreapp3.1/Credfeto.Package.Push.dll -folder . --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}

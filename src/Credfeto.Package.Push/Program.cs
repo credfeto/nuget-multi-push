@@ -15,11 +15,6 @@ namespace Credfeto.Package.Push
         private const int SUCCESS = 0;
         private const int ERROR = 1;
 
-        private const bool INCLUDE_UNLISTED_PACKAGES = false;
-
-        private static readonly SearchFilter SearchFilter =
-            new SearchFilter(includePrerelease: false, filter: SearchFilterType.IsLatestVersion) {IncludeDelisted = INCLUDE_UNLISTED_PACKAGES, OrderBy = SearchOrderBy.Id};
-
         private static readonly ILogger NugetLogger = new NullLogger();
 
         private static async Task<int> Main(string[] args)

@@ -11,7 +11,7 @@
     <PackAsTool>true</PackAsTool>
     <IsPackable>true</IsPackable>
     <Nullable>enable</Nullable>
-    <ToolCommandName>updatepackages</ToolCommandName>
+    <ToolCommandName>pushpackages</ToolCommandName>
   </PropertyGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
@@ -19,8 +19,8 @@
   <PropertyGroup>
     <Company>Mark Ridgwell</Company>
     <Copyright>Mark Ridgwell</Copyright>
-    <Product>Package Update Tool</Product>
-    <PackageLicense>https://raw.githubusercontent.com/credfeto/UpdatePackages/master/LICENSE</PackageLicense>
+    <Product>Package Push Tool</Product>
+    <PackageLicense>https://raw.githubusercontent.com/credfeto/NugetPush/master/LICENSE</PackageLicense>
     <NeutralLanguage>en-GB</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>

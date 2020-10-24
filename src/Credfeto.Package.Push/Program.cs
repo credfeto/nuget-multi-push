@@ -25,9 +25,7 @@ namespace Credfeto.Package.Push
         {
             try
             {
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                                                   .AddCommandLine(args: args, new Dictionary<string, string> {{@"-folder", @"folder"}, {@"-source", @"source"}, {@"-api-key", @"api-key"}})
-                                                   .Build();
+                IConfigurationRoot configuration = LoadConfiguration(args);
 
                 string folder = configuration.GetValue<string>(key: @"Folder");
 
@@ -96,6 +94,12 @@ namespace Credfeto.Package.Push
 
                 return ERROR;
             }
+        }
+
+        private static IConfigurationRoot LoadConfiguration(string[] args)
+        {
+            return new ConfigurationBuilder().AddCommandLine(args: args, new Dictionary<string, string> {{@"-folder", @"folder"}, {@"-source", @"source"}, {@"-api-key", @"api-key"}})
+                                             .Build();
         }
 
         private static bool IsSymbolPackage(string p)

@@ -75,8 +75,10 @@ namespace Credfeto.Package.Push
 
                 foreach ((string package, bool success) in results)
                 {
+                    string packageName = Path.GetFileName(package);
+
                     string status = success ? "Uploaded" : "FAILED";
-                    Console.WriteLine($"* {package} : {status}");
+                    Console.WriteLine($"* {packageName} : {status}");
                     errors |= !success;
                 }
 

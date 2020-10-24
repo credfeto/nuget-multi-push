@@ -56,17 +56,13 @@ namespace Credfeto.Package.Push
 
                 string source = configuration.GetValue<string>(key: @"source");
 
-                PackageSource packageSource = new PackageSource(name: "Custom", source: source, isEnabled: true, isPersistable: true, isOfficial: true);
-
-                SourceRepository sourceRepository = new SourceRepository(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
+                SourceRepository sourceRepository = ConfigureSourceRepository(source);
 
                 PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>();
                 SymbolPackageUpdateResourceV3 symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>();
 
-                IReadOnlyList<string> symbolPackages = packages.Where(p => IsSymbolPackage(p))
-                                                               .ToArray();
-                IReadOnlyList<string> nonSymbolPackages = packages.Where(p => !IsSymbolPackage(p))
-                                                                  .ToArray();
+                IReadOnlyList<string> symbolPackages = ExtractSymbolPackages(packages);
+                IReadOnlyList<string> nonSymbolPackages = ExtractProductionPackages(packages);
 
                 (string package, bool success)[] results = await Task.WhenAll(nonSymbolPackages.Select(package => PushOnePackageAsync(package: package,
                                                                                                            packages: symbolPackages,
@@ -74,19 +70,7 @@ namespace Credfeto.Package.Push
                                                                                                            apiKey: apiKey,
                                                                                                            symbolPackageUpdateResource: symbolPackageUpdateResource)));
 
-                Console.WriteLine("Upload Summary:");
-                bool errors = false;
-
-                foreach ((string package, bool success) in results)
-                {
-                    string packageName = Path.GetFileName(package);
-
-                    string status = success ? "Uploaded" : "FAILED";
-                    Console.WriteLine($"* {packageName} : {status}");
-                    errors |= !success;
-                }
-
-                return errors ? ERROR : SUCCESS;
+                return OutputUploadSummary(results);
             }
             catch (Exception exception)
             {
@@ -94,6 +78,44 @@ namespace Credfeto.Package.Push
 
                 return ERROR;
             }
+        }
+
+        private static string[] ExtractProductionPackages(IReadOnlyList<string> packages)
+        {
+            return packages.Where(p => !IsSymbolPackage(p))
+                           .ToArray();
+        }
+
+        private static string[] ExtractSymbolPackages(IReadOnlyList<string> packages)
+        {
+            return packages.Where(IsSymbolPackage)
+                           .ToArray();
+        }
+
+        private static SourceRepository ConfigureSourceRepository(string source)
+        {
+            PackageSource packageSource = new PackageSource(name: "Custom", source: source, isEnabled: true, isPersistable: true, isOfficial: true);
+
+            SourceRepository sourceRepository = new SourceRepository(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
+
+            return sourceRepository;
+        }
+
+        private static int OutputUploadSummary((string package, bool success)[] results)
+        {
+            Console.WriteLine("Upload Summary:");
+            bool errors = false;
+
+            foreach ((string package, bool success) in results)
+            {
+                string packageName = Path.GetFileName(package);
+
+                string status = success ? "Uploaded" : "FAILED";
+                Console.WriteLine($"* {packageName} : {status}");
+                errors |= !success;
+            }
+
+            return errors ? ERROR : SUCCESS;
         }
 
         private static IConfigurationRoot LoadConfiguration(string[] args)

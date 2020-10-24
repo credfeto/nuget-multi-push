@@ -54,4 +54,4 @@ jobs:
     - name: Publish
       run: |
         cd dist
-        dotnet nuget push Credfeto.Package.Update.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}
+        dotnet Credfeto.Package.Push -folder . --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}

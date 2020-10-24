@@ -20,7 +20,7 @@ jobs:
           echo SHA: $GITHUB_SHA
           echo ::set-env name=GIT_BRANCH::$GITHUB_REF
     - name: Determine .net core version
-      uses: credfeto/action-dotnet-version-detect@v1.0
+      uses: credfeto/action-dotnet-version-detect@v1.1
     - name: Generate build number
       id: buildnumber
       uses: einaregilsson/build-number@v2

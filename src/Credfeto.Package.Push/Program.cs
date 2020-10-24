@@ -137,10 +137,19 @@ namespace Credfeto.Package.Push
         {
             try
             {
-                string expectedSymbol = package.Insert(package.Length - (PACKAGE_EXTENSION.Length + 1), value: ".symbols");
+                string expectedSymbol = package.Insert(package.Length - PACKAGE_EXTENSION.Length, value: ".symbols");
                 Console.WriteLine($"Looking for Symbols Package: {expectedSymbol}");
 
                 string? symbolSource = packages.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x: x, y: expectedSymbol));
+
+                if (symbolSource != null)
+                {
+                    Console.WriteLine($"Package package - found symbols {symbolSource}");
+                }
+                else
+                {
+                    Console.WriteLine($"Package package - no symbols found {expectedSymbol}");
+                }
 
                 await packageUpdateResource.Push(packagePath: package,
                                                  symbolSource: symbolSource,

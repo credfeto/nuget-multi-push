@@ -27,10 +27,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+      run: dotnet new tool-manifest
     - name: Install Build Version Tool
-      run: |
-        dotnet new tool-manifest
-        dotnet tool install --local FunFair.BuildVersion --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
+      run: dotnet tool install --local FunFair.BuildVersion --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
+    - name: Install ChangeLog Tool
+      run: dotnet tool install --local FunFair.BuildVersion --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
     - name: Set Define Build Version
       run: dotnet buildversion $GITHUB_RUN_NUMBER
     - name: Build with dotnet
@@ -46,3 +47,17 @@ jobs:
         dotnet tool install --local Credfeto.Package.Push --version ${{ env.BUILD_VERSION }} --add-source dist
         cd dist
         dotnet pushpackages -folder . --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}
+    - name: Create Release Notes
+      run: |
+        dotnet changelog -changelog CHANGELOG.md -extract RELEASE_NOTES.md -version ${{ env.BUILD_VERSION }}
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ env.BUILD_VERSION }}
+        release_name: Release ${{ env.BUILD_VERSION }}
+        body_path: RELEASE_NOTES.md
+        draft: false
+        prerelease: false

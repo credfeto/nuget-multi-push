@@ -20,7 +20,6 @@ jobs:
     - name: Fetch tags and master
       run: |
           git fetch --tags
-          echo ENV: $GITHUB_ENV
           echo REF: $GITHUB_REF
           echo SHA: $GITHUB_SHA
           echo name=GIT_BRANCH::$GITHUB_REF >> $GITHUB_ENV

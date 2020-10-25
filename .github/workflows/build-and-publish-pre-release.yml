@@ -24,7 +24,7 @@ jobs:
           echo SHA: $GITHUB_SHA
           echo GIT_BRANCH=$GITHUB_REF >> $GITHUB_ENV
     - name: Determine .net core version
-      uses: credfeto/action-dotnet-version-detect@v1.1
+      uses: credfeto/action-dotnet-version-detect@master
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       env:

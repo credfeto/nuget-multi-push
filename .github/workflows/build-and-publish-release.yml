@@ -27,6 +27,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Enable dotnet tools
       run: dotnet new tool-manifest
     - name: Install Build Version Tool
       run: dotnet tool install --local FunFair.BuildVersion --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}

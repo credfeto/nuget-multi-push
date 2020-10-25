@@ -25,11 +25,11 @@ jobs:
           echo GIT_BRANCH=$GITHUB_REF >> $GITHUB_ENV
     - name: Determine .net core version
       uses: credfeto/action-dotnet-version-detect@v1.1
-    - name: Generate build number
-      id: buildnumber
-      uses: einaregilsson/build-number@v2
-      with:
-        token: ${{secrets.github_token}}
+#    - name: Generate build number
+#      id: buildnumber
+#      uses: einaregilsson/build-number@v2
+#      with:
+#        token: ${{secrets.github_token}}
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       env:
@@ -41,7 +41,7 @@ jobs:
         dotnet new tool-manifest
         dotnet tool install --local FunFair.BuildVersion --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
     - name: Set Define Build Version
-      run: dotnet buildversion  ${{ steps.buildnumber.outputs.build_number }} 
+      run: dotnet buildversion $GITHUB_RUN_NUMBER 
     - name: Build with dotnet
       run: |
         cd src

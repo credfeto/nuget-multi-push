@@ -18,7 +18,7 @@ jobs:
           git fetch --tags
           echo REF: $GITHUB_REF
           echo SHA: $GITHUB_SHA
-          echo name=GIT_BRANCH::$GITHUB_REF >> $GITHUB_ENV
+          echo GIT_BRANCH=$GITHUB_REF >> $GITHUB_ENV
     - name: Determine .net core version
       uses: credfeto/action-dotnet-version-detect@v1.1
     - name: Generate build number

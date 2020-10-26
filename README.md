@@ -8,5 +8,5 @@ DotNet core tool for pushing a directory full of packages to a nuget server rath
 
 ## Usage
 
-``dotnet pushpackages -folder c:\packages --api-key API-KEY --source https://feed-push-url/``
+``dotnet pushpackages --folder c:\packages --api-key API-KEY --source https://feed-push-url/``
 

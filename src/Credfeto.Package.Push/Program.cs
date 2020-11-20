@@ -152,7 +152,7 @@ namespace Credfeto.Package.Push
 
         private static SourceRepository ConfigureSourceRepository(string source)
         {
-            PackageSource packageSource = new PackageSource(name: "Custom", source: source, isEnabled: true, isPersistable: true, isOfficial: true);
+            PackageSource packageSource = new(name: "Custom", source: source, isEnabled: true, isPersistable: true, isOfficial: true);
 
             return new SourceRepository(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
         }
@@ -199,8 +199,8 @@ namespace Credfeto.Package.Push
                                                  symbolSource: symbolSource,
                                                  timeoutInSecond: 800,
                                                  disableBuffering: false,
-                                                 getApiKey: x => apiKey,
-                                                 getSymbolApiKey: x => apiKey,
+                                                 getApiKey: _ => apiKey,
+                                                 getSymbolApiKey: _ => apiKey,
                                                  noServiceEndpoint: false,
                                                  skipDuplicate: true,
                                                  symbolPackageUpdateResource: symbolPackageUpdateResource,

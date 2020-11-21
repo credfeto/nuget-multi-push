@@ -32,7 +32,7 @@ jobs:
     - name: Install Build Version Tool
       run: dotnet tool install --local FunFair.BuildVersion --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
     - name: Install ChangeLog Tool
-      run: dotnet tool install --local FunFair.BuildVersion --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
+      run: dotnet tool install --local Credfeto.ChangeLog.Cmd --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
     - name: Set Define Build Version
       run: dotnet buildversion $GITHUB_RUN_NUMBER
     - name: Build with dotnet

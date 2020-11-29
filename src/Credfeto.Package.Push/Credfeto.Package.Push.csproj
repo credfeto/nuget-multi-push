@@ -14,6 +14,11 @@
     <ToolCommandName>pushpackages</ToolCommandName>
   </PropertyGroup>
   <PropertyGroup>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
@@ -29,7 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.3.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.8.55" PrivateAssets="All" />
     <PackageReference Include="NuGet.Commands" Version="5.7.0" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="8.14.0.22654" PrivateAssets="All" />

@@ -25,7 +25,11 @@
     <Company>Mark Ridgwell</Company>
     <Copyright>Mark Ridgwell</Copyright>
     <Product>Package Push Tool</Product>
-    <PackageLicense>https://raw.githubusercontent.com/credfeto/NugetPush/master/LICENSE</PackageLicense>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Multi-push tool for pushing multiple packages to nuget server at the same time.</Description>
+    <PackageTags>Nuget;push</PackageTags>
+    <RepositoryUrl>https://github.com/credfeto/nuget-multi-push</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en-GB</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>

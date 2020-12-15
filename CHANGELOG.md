@@ -9,28 +9,11 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.15.0.24505
+- Updated dependent components
 ### Removed
 ### Deployment Changes
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
-
-## [1.1.0] 2020-11-20
-### Changed
-- FF-1429 - Updated Microsoft.Extensions to 5.0.0
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.8.55
-- FF-1429 - Updated Microsoft.CodeAnalysis.FxCopAnalyzers to 3.3.1
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.8.51
-- Updated to .NET 5.0
-
-## [1.0.1] 2020-10-26
-### Changed
-- Build process
-
-## [1.0.0] 2020-10-24
-### Changed
-- Initial version
-
 ## [0.0.0] - Project created

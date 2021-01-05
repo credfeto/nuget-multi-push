@@ -16,8 +16,11 @@ namespace Credfeto.Package.Push
         private const int ERROR = 1;
 
         private const string PACKAGE_EXTENSION = ".nupkg";
-        private const string SYMBOLS_PACKAGE_EXTENSION = ".symbols" + PACKAGE_EXTENSION;
+        private const string SOURCE_PACKAGE_EXTENSION = ".snupkg";
+        private const string SYMBOLS_OLD_PACKAGE_EXTENSION = ".symbols" + PACKAGE_EXTENSION;
+        private const string SYMBOLS_NEW_PACKAGE_EXTENSION = ".snupkg";
         private const string SEARCH_PATTERN = "*" + PACKAGE_EXTENSION;
+        private const string SOURCE_SEARCH_PATTERN = "*" + SOURCE_PACKAGE_EXTENSION;
 
         private static readonly ILogger NugetLogger = new ConsoleLogger();
 
@@ -40,7 +43,9 @@ namespace Credfeto.Package.Push
                     return ERROR;
                 }
 
-                IReadOnlyList<string> packages = Directory.GetFiles(path: folder, searchPattern: SEARCH_PATTERN);
+                IReadOnlyList<string> packages = Directory.GetFiles(path: folder, searchPattern: SEARCH_PATTERN)
+                                                          .Concat(Directory.GetFiles(path: folder, searchPattern: SOURCE_SEARCH_PATTERN))
+                                                          .ToArray();
 
                 if (!packages.Any())
                 {
@@ -182,7 +187,8 @@ namespace Credfeto.Package.Push
 
         private static bool IsSymbolPackage(string p)
         {
-            return p.EndsWith(value: SYMBOLS_PACKAGE_EXTENSION, comparisonType: StringComparison.OrdinalIgnoreCase);
+            return p.EndsWith(value: SYMBOLS_NEW_PACKAGE_EXTENSION, comparisonType: StringComparison.OrdinalIgnoreCase) ||
+                   p.EndsWith(value: SYMBOLS_OLD_PACKAGE_EXTENSION, comparisonType: StringComparison.OrdinalIgnoreCase);
         }
 
         private static async Task<(string package, bool success)> PushOnePackageAsync(string package,
@@ -223,7 +229,17 @@ namespace Credfeto.Package.Push
                 return null;
             }
 
-            string expectedSymbol = package.Insert(package.Length - PACKAGE_EXTENSION.Length, value: ".symbols");
+            int packageExtensionPosition = package.Length - PACKAGE_EXTENSION.Length;
+
+            string expectedSymbolOld = package.Insert(startIndex: packageExtensionPosition, value: ".symbols");
+            string expectedSymbolNew = package.Insert(packageExtensionPosition + 1, value: "s");
+
+            return FindMatchingSymbolByFullName(symbolPackages: symbolPackages, expectedSymbol: expectedSymbolNew) ??
+                   FindMatchingSymbolByFullName(symbolPackages: symbolPackages, expectedSymbol: expectedSymbolOld);
+        }
+
+        private static string? FindMatchingSymbolByFullName(IReadOnlyList<string> symbolPackages, string expectedSymbol)
+        {
             Console.WriteLine($"Looking for Symbols Package: {expectedSymbol}");
 
             string? symbolSource = symbolPackages.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x: x, y: expectedSymbol));

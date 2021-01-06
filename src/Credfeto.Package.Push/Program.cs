@@ -231,8 +231,10 @@ namespace Credfeto.Package.Push
 
             int packageExtensionPosition = package.Length - PACKAGE_EXTENSION.Length;
 
-            string expectedSymbolOld = package.Insert(startIndex: packageExtensionPosition, value: ".symbols");
-            string expectedSymbolNew = package.Insert(packageExtensionPosition + 1, value: "s");
+            string baseName = package.Substring(startIndex: 0, length: packageExtensionPosition);
+
+            string expectedSymbolOld = baseName + SYMBOLS_OLD_PACKAGE_EXTENSION;
+            string expectedSymbolNew = baseName + SYMBOLS_NEW_PACKAGE_EXTENSION;
 
             return FindMatchingSymbolByFullName(symbolPackages: symbolPackages, expectedSymbol: expectedSymbolNew) ??
                    FindMatchingSymbolByFullName(symbolPackages: symbolPackages, expectedSymbol: expectedSymbolOld);

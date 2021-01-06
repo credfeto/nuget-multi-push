@@ -50,7 +50,7 @@ jobs:
         dotnet pushpackages -folder . --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}
     - name: Create Release Notes
       run: |
-        dotnet changelog -changelog CHANGELOG.md -extract RELEASE_NOTES.md -version ${{ env.BUILD_VERSION }}
+        dotnet changelog --changelog CHANGELOG.md --extract RELEASE_NOTES.md --version ${{ env.BUILD_VERSION }}
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1

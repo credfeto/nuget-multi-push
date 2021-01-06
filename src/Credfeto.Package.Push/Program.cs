@@ -224,10 +224,10 @@ namespace Credfeto.Package.Push
 
         private static string? FindMatchingSymbolPackage(string package, IReadOnlyList<string> symbolPackages)
         {
-            if (symbolPackages.Count == 0)
-            {
-                return null;
-            }
+            // if (symbolPackages.Count == 0)
+            // {
+            //     return null;
+            // }
 
             int packageExtensionPosition = package.Length - PACKAGE_EXTENSION.Length;
 

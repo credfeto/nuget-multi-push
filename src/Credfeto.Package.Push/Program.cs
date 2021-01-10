@@ -33,6 +33,7 @@ namespace Credfeto.Package.Push
                 IConfigurationRoot configuration = LoadConfiguration(args);
 
                 string source = configuration.GetValue<string>(key: @"source");
+                string symbolSource = configuration.GetValue<string>(key: @"symbol-source");
 
                 string folder = configuration.GetValue<string>(key: @"Folder");
 
@@ -77,21 +78,52 @@ namespace Credfeto.Package.Push
 
                 SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await GetSymbolPackageUpdateSourceAsync(sourceRepository);
 
+                PackageUpdateResource? symbolPackageUpdateResourceAsPackage = null;
+
+                SourceRepository? symbolSourceRepository = null;
+
+                if (!string.IsNullOrWhiteSpace(symbolSource) && symbolPackageUpdateResource == null)
+                {
+                    symbolSourceRepository = ConfigureSourceRepository(symbolSource);
+
+                    symbolPackageUpdateResource = await GetSymbolPackageUpdateSourceAsync(symbolSourceRepository);
+
+                    symbolPackageUpdateResourceAsPackage = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>();
+
+                    if (symbolPackageUpdateResourceAsPackage != null)
+                    {
+                        Console.WriteLine($"Pushing Symbol Packages to: {symbolPackageUpdateResourceAsPackage.SourceUri}");
+                    }
+                }
+
                 IReadOnlyList<string> symbolPackages = ExtractSymbolPackages(packages);
                 IReadOnlyList<string> nonSymbolPackages = ExtractProductionPackages(packages);
 
-                IReadOnlyList<string> uploadOrder = symbolPackageUpdateResource != null
+                bool uploadSymbolsAtSameTime = symbolPackageUpdateResource != null || symbolPackageUpdateResourceAsPackage == null;
+
+                IReadOnlyList<string> uploadOrder = uploadSymbolsAtSameTime
                     ? nonSymbolPackages
                     : nonSymbolPackages.Concat(symbolPackages)
                                        .ToArray();
 
                 IReadOnlyList<string> symbolSearch = symbolPackageUpdateResource != null ? symbolPackages : Array.Empty<string>();
 
-                (string package, bool success)[] results = await Task.WhenAll(uploadOrder.Select(package => PushOnePackageAsync(package: package,
-                                                                                                                                symbolPackages: symbolSearch,
-                                                                                                                                packageUpdateResource: packageUpdateResource,
-                                                                                                                                apiKey: apiKey,
-                                                                                                                                symbolPackageUpdateResource: symbolPackageUpdateResource)));
+                IEnumerable<Task<(string package, bool success)>> symbolTasks = symbolPackages.Any() && symbolPackageUpdateResourceAsPackage != null
+                    ? symbolPackages.Select(package => PushOnePackageAsync(package: package,
+                                                                           Array.Empty<string>(),
+                                                                           packageUpdateResource: symbolPackageUpdateResourceAsPackage,
+                                                                           apiKey: apiKey,
+                                                                           symbolPackageUpdateResource: null))
+                    : Array.Empty<Task<(string package, bool success)>>();
+
+                IEnumerable<Task<(string package, bool success)>> tasks = uploadOrder.Select(package => PushOnePackageAsync(package: package,
+                                                                                                                            symbolPackages: symbolSearch,
+                                                                                                                            packageUpdateResource: packageUpdateResource,
+                                                                                                                            apiKey: apiKey,
+                                                                                                                            symbolPackageUpdateResource: symbolPackageUpdateResource))
+                                                                                     .Concat(symbolTasks);
+
+                (string package, bool success)[] results = await Task.WhenAll(tasks);
 
                 return OutputUploadSummary(results);
             }
@@ -181,7 +213,11 @@ namespace Credfeto.Package.Push
 
         private static IConfigurationRoot LoadConfiguration(string[] args)
         {
-            return new ConfigurationBuilder().AddCommandLine(args: args, new Dictionary<string, string> {{@"-folder", @"folder"}, {@"-source", @"source"}, {@"-api-key", @"api-key"}})
+            return new ConfigurationBuilder().AddCommandLine(args: args,
+                                                             new Dictionary<string, string>
+                                                             {
+                                                                 {@"-folder", @"folder"}, {@"-source", @"source"}, {@"-symbol-source", @"symbol-source"}, {@"-api-key", @"api-key"}
+                                                             })
                                              .Build();
         }
 

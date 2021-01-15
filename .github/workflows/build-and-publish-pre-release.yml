@@ -44,7 +44,7 @@ jobs:
     - name: Pack tool
       run: |
         cd src
-        dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-restore --output ../dist
+        dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-build --no-restore --output ../dist --include-source --include-symbols -p:SymbolPackageFormat=snupkg
     - name: Publish
       run: |
         dotnet tool install --local Credfeto.Package.Push --version ${{ env.BUILD_VERSION }} --add-source dist

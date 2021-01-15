@@ -86,42 +86,25 @@ namespace Credfeto.Package.Push
                 {
                     symbolSourceRepository = ConfigureSourceRepository(symbolSource);
 
-                    symbolPackageUpdateResource = await GetSymbolPackageUpdateSourceAsync(symbolSourceRepository);
+                    PackageUpdateResource? resource = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>();
 
-                    symbolPackageUpdateResourceAsPackage = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>();
-
-                    if (symbolPackageUpdateResourceAsPackage != null)
+                    if (resource?.SourceUri != null)
                     {
-                        Console.WriteLine($"Pushing Symbol Packages to: {symbolPackageUpdateResourceAsPackage.SourceUri}");
+                        Console.WriteLine($"Pushing Symbol Packages to: {resource.SourceUri}");
+                        symbolPackageUpdateResourceAsPackage = resource;
                     }
                 }
 
                 IReadOnlyList<string> symbolPackages = ExtractSymbolPackages(packages);
                 IReadOnlyList<string> nonSymbolPackages = ExtractProductionPackages(packages);
 
-                bool uploadSymbolsAtSameTime = symbolPackageUpdateResource != null || symbolPackageUpdateResourceAsPackage == null;
-
-                IReadOnlyList<string> uploadOrder = uploadSymbolsAtSameTime
-                    ? nonSymbolPackages
-                    : nonSymbolPackages.Concat(symbolPackages)
-                                       .ToArray();
-
-                IReadOnlyList<string> symbolSearch = symbolPackageUpdateResource != null ? symbolPackages : Array.Empty<string>();
-
-                IEnumerable<Task<(string package, bool success)>> symbolTasks = symbolPackages.Any() && symbolPackageUpdateResourceAsPackage != null
-                    ? symbolPackages.Select(package => PushOnePackageAsync(package: package,
-                                                                           Array.Empty<string>(),
-                                                                           packageUpdateResource: symbolPackageUpdateResourceAsPackage,
-                                                                           apiKey: apiKey,
-                                                                           symbolPackageUpdateResource: null))
-                    : Array.Empty<Task<(string package, bool success)>>();
-
-                IEnumerable<Task<(string package, bool success)>> tasks = uploadOrder.Select(package => PushOnePackageAsync(package: package,
-                                                                                                                            symbolPackages: symbolSearch,
-                                                                                                                            packageUpdateResource: packageUpdateResource,
-                                                                                                                            apiKey: apiKey,
-                                                                                                                            symbolPackageUpdateResource: symbolPackageUpdateResource))
-                                                                                     .Concat(symbolTasks);
+                IEnumerable<Task<(string package, bool success)>> tasks = BuildUploadTasks(symbolSourceRepository: symbolSourceRepository,
+                                                                                           symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                                                                           symbolPackageUpdateResourceAsPackage: symbolPackageUpdateResourceAsPackage,
+                                                                                           nonSymbolPackages: nonSymbolPackages,
+                                                                                           symbolPackages: symbolPackages,
+                                                                                           apiKey: apiKey,
+                                                                                           packageUpdateResource: packageUpdateResource);
 
                 (string package, bool success)[] results = await Task.WhenAll(tasks);
 
@@ -133,6 +116,76 @@ namespace Credfeto.Package.Push
 
                 return ERROR;
             }
+        }
+
+        private static IEnumerable<Task<(string package, bool success)>> BuildUploadTasks(SourceRepository? symbolSourceRepository,
+                                                                                          SymbolPackageUpdateResourceV3? symbolPackageUpdateResource,
+                                                                                          PackageUpdateResource? symbolPackageUpdateResourceAsPackage,
+                                                                                          IReadOnlyList<string> nonSymbolPackages,
+                                                                                          IReadOnlyList<string> symbolPackages,
+                                                                                          string apiKey,
+                                                                                          PackageUpdateResource packageUpdateResource)
+        {
+            if (symbolPackages.Count == 0)
+            {
+                Console.WriteLine("No symbols to upload");
+
+                return UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource);
+            }
+
+            if (symbolSourceRepository != null)
+            {
+                if (symbolPackageUpdateResourceAsPackage != null)
+                {
+                    Console.WriteLine("Separate Symbol Repo; uses package api to upload");
+
+                    return UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
+                        .Concat(UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: symbolPackageUpdateResourceAsPackage));
+                }
+
+                Console.WriteLine("Separate Symbol Repo; no suitable upload method - upload all as packages to primary");
+
+                return UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
+                    .Concat(UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
+            }
+
+            if (symbolPackageUpdateResource != null)
+            {
+                Console.WriteLine("Same Symbol Repo; uses symbol api to upload at same time");
+
+                return UploadPackagesWithMatchingSymbols(symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                                         nonSymbolPackages: nonSymbolPackages,
+                                                         symbolPackages: symbolPackages,
+                                                         apiKey: apiKey,
+                                                         packageUpdateResource: packageUpdateResource);
+            }
+
+            Console.WriteLine("Same Symbol Repo; no suitable upload method - upload all as packages to primary");
+
+            return UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
+                .Concat(UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
+        }
+
+        private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithMatchingSymbols(SymbolPackageUpdateResourceV3 symbolPackageUpdateResource,
+                                                                                                           IReadOnlyList<string> nonSymbolPackages,
+                                                                                                           IReadOnlyList<string> symbolPackages,
+                                                                                                           string apiKey,
+                                                                                                           PackageUpdateResource packageUpdateResource)
+        {
+            return nonSymbolPackages.Select(package => PushOnePackageAsync(package: package,
+                                                                           symbolPackages: symbolPackages,
+                                                                           packageUpdateResource: packageUpdateResource,
+                                                                           apiKey: apiKey,
+                                                                           symbolPackageUpdateResource: symbolPackageUpdateResource));
+        }
+
+        private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
+        {
+            return packages.Select(package => PushOnePackageAsync(package: package,
+                                                                  packageUpdateResource: packageUpdateResource,
+                                                                  apiKey: apiKey,
+                                                                  symbolPackageUpdateResource: null,
+                                                                  symbolPackages: Array.Empty<string>()));
         }
 
         private static async Task<SymbolPackageUpdateResourceV3?> GetSymbolPackageUpdateSourceAsync(SourceRepository sourceRepository)

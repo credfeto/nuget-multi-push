@@ -151,13 +151,38 @@ namespace Credfeto.Package.Push
 
             if (symbolPackageUpdateResource != null)
             {
-                Console.WriteLine("Same Symbol Repo; uses symbol api to upload at same time");
+                IReadOnlyList<string> oldSymbols = symbolPackages.Where(IsOldSymbolPackage)
+                                                                 .ToArray();
+                IReadOnlyList<string> newSymbols = symbolPackages.Where(IsNewSymbolPackage)
+                                                                 .ToArray();
+
+                if (oldSymbols.Count != 0 && newSymbols.Count == 0)
+                {
+                    Console.WriteLine("Same Symbol Repo; old format symbols only - uses symbol api to upload at same time");
+
+                    return UploadPackagesWithMatchingSymbols(symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                                             nonSymbolPackages: nonSymbolPackages,
+                                                             symbolPackages: oldSymbols,
+                                                             apiKey: apiKey,
+                                                             packageUpdateResource: packageUpdateResource);
+                }
+
+                if (oldSymbols.Count == 0 && newSymbols.Count != 0)
+                {
+                    Console.WriteLine("Same Symbol Repo; new format (snupkg) symbols - upload all as packages to primary");
+
+                    return UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
+                        .Concat(UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
+                }
+
+                Console.WriteLine("Same Symbol Repo; mixture - old format using symbol api, new format to primary");
 
                 return UploadPackagesWithMatchingSymbols(symbolPackageUpdateResource: symbolPackageUpdateResource,
                                                          nonSymbolPackages: nonSymbolPackages,
-                                                         symbolPackages: symbolPackages,
+                                                         symbolPackages: oldSymbols,
                                                          apiKey: apiKey,
-                                                         packageUpdateResource: packageUpdateResource);
+                                                         packageUpdateResource: packageUpdateResource)
+                    .Concat(UploadPackagesWithoutSymbolLookup(packages: newSymbols, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
             }
 
             Console.WriteLine("Same Symbol Repo; no suitable upload method - upload all as packages to primary");
@@ -276,8 +301,17 @@ namespace Credfeto.Package.Push
 
         private static bool IsSymbolPackage(string p)
         {
-            return p.EndsWith(value: SYMBOLS_NEW_PACKAGE_EXTENSION, comparisonType: StringComparison.OrdinalIgnoreCase) ||
-                   p.EndsWith(value: SYMBOLS_OLD_PACKAGE_EXTENSION, comparisonType: StringComparison.OrdinalIgnoreCase);
+            return IsNewSymbolPackage(p) || IsOldSymbolPackage(p);
+        }
+
+        private static bool IsNewSymbolPackage(string p)
+        {
+            return p.EndsWith(value: SYMBOLS_NEW_PACKAGE_EXTENSION, comparisonType: StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsOldSymbolPackage(string p)
+        {
+            return p.EndsWith(value: SYMBOLS_OLD_PACKAGE_EXTENSION, comparisonType: StringComparison.OrdinalIgnoreCase);
         }
 
         private static async Task<(string package, bool success)> PushOnePackageAsync(string package,

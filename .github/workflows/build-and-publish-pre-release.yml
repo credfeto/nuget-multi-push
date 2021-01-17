@@ -35,9 +35,15 @@ jobs:
       run: dotnet new tool-manifest
     - name: Install Build Version Tool
       run: dotnet tool install --local FunFair.BuildVersion --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
+    - name: Install ChangeLog Tool
+      run: dotnet tool install --local Credfeto.ChangeLog.Cmd --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
+    - name: Create Release Notes
     - name: Set Define Build Version
       run: dotnet buildversion $GITHUB_RUN_NUMBER
-    - name: Build with dotnet
+    - name: Create Release Notes
+      run: |
+        dotnet changelog --changelog CHANGELOG.md --extract RELEASE_NOTES.md --version ${{ env.BUILD_VERSION }}
+        - name: Build with dotnet
       run: |
         cd src
         dotnet build --configuration Release /p:Version=${{ env.BUILD_VERSION }}
@@ -45,6 +51,8 @@ jobs:
       run: |
         cd src
         dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-build --no-restore --output ../dist --include-source --include-symbols -p:SymbolPackageFormat=snupkg
+      env:
+        ReleaseNotes: ${{ steps.release-notes.outputs.content }}
     - name: Publish
       run: |
         dotnet tool install --local Credfeto.Package.Push --version ${{ env.BUILD_VERSION }} --add-source dist

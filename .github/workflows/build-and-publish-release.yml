@@ -49,15 +49,14 @@ jobs:
     - name: Pack tool
       run: |
         cd src
-        dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-build --no-restore --output ../dist --include-source --include-symbols -p:SymbolPackageFormat=snupkg /p:ReleaseNotes="${{ steps.release-notes.outputs.content }}"
+        dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-build --no-restore --output ../dist --include-source --include-symbols -p:SymbolPackageFormat=snupkg
+      env:
+        ReleaseNotes: ${{ steps.release-notes.outputs.content }}
     - name: Publish
       run: |
         dotnet tool install --local Credfeto.Package.Push --version ${{ env.BUILD_VERSION }} --add-source dist
         cd dist
         dotnet pushpackages -folder . --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}
-    - name: Create Release Notes
-      run: |
-        dotnet changelog --changelog CHANGELOG.md --extract RELEASE_NOTES.md --version ${{ env.BUILD_VERSION }}
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1

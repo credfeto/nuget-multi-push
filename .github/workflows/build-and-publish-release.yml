@@ -35,6 +35,13 @@ jobs:
       run: dotnet tool install --local Credfeto.ChangeLog.Cmd --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
     - name: Set Define Build Version
       run: dotnet buildversion $GITHUB_RUN_NUMBER
+    - name: Create Release Notes
+      run: |
+        dotnet changelog -changelog CHANGELOG.md -extract RELEASE_NOTES.md -version ${{ env.BUILD_VERSION }}
+    - id: release-notes
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: RELEASE_NOTES.md
     - name: Build with dotnet
       run: |
         cd src
@@ -42,7 +49,7 @@ jobs:
     - name: Pack tool
       run: |
         cd src
-        dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-build --no-restore --output ../dist --include-source --include-symbols -p:SymbolPackageFormat=snupkg
+        dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-build --no-restore --output ../dist --include-source --include-symbols -p:SymbolPackageFormat=snupkg /p:ReleaseNotes="${{ steps.release-notes.outputs.content }}"
     - name: Publish
       run: |
         dotnet tool install --local Credfeto.Package.Push --version ${{ env.BUILD_VERSION }} --add-source dist

@@ -3,58 +3,61 @@ name: .NET Core [Pre-Release]
 on:
   push:
     branches-ignore:
-     - 'release/*'
-     - 'hotfix/*'
+      - 'release/*'
+      - 'hotfix/*'
     pull_request:
-     - opened
-     - edited
-     - synchronize
+      - opened
+      - edited
+      - synchronize
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v2.3.4
-    - name: Fetch tags and master
-      run: |
+      - uses: actions/checkout@v2.3.4
+      - name: Fetch tags and master
+        run: |
           git fetch --tags
           echo REF: $GITHUB_REF
           echo SHA: $GITHUB_SHA
           echo GIT_BRANCH=$GITHUB_REF >> $GITHUB_ENV
-    - name: Determine .net core version
-      uses: credfeto/action-dotnet-version-detect@v1.1.1
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: Enable dotnet tools
-      run: dotnet new tool-manifest
-    - name: Install Build Version Tool
-      run: dotnet tool install --local FunFair.BuildVersion --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
-    - name: Install ChangeLog Tool
-      run: dotnet tool install --local Credfeto.ChangeLog.Cmd --add-source ${{ secrets.FUNFAIR_NUGET_FEED }}
-    - name: Create Release Notes
-    - name: Set Define Build Version
-      run: dotnet buildversion $GITHUB_RUN_NUMBER
-    - name: Create Release Notes
-      run: |
-        dotnet changelog --changelog CHANGELOG.md --extract RELEASE_NOTES.md --version ${{ env.BUILD_VERSION }}
-        - name: Build with dotnet
-      run: |
-        cd src
-        dotnet build --configuration Release /p:Version=${{ env.BUILD_VERSION }}
-    - name: Pack tool
-      run: |
-        cd src
-        dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-build --no-restore --output ../dist --include-source --include-symbols -p:SymbolPackageFormat=snupkg
-      env:
-        ReleaseNotes: ${{ steps.release-notes.outputs.content }}
-    - name: Publish
-      run: |
-        dotnet tool install --local Credfeto.Package.Push --version ${{ env.BUILD_VERSION }} --add-source dist
-        cd dist
-        dotnet pushpackages -folder . --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}
+      - name: Determine .net core version
+        uses: credfeto/action-dotnet-version-detect@v1.1.1
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Enable dotnet tools
+        run: dotnet new tool-manifest
+      - name: Install Build Version Tool
+        run: dotnet tool install --local FunFair.BuildVersion
+      - name: Install Multi-Push Tool
+        run: dotnet tool install --local Credfeto.Package.Push
+      - name: Install ChangeLog Tool
+        run: dotnet tool install --local Credfeto.ChangeLog.Cmd
+      - name: Set Define Build Version
+        run: dotnet buildversion $GITHUB_RUN_NUMBER
+      - name: Create Release Notes
+        run: |
+          dotnet changelog --changelog CHANGELOG.md --extract RELEASE_NOTES.md --version ${{ env.BUILD_VERSION }}
+      - id: release-notes
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: RELEASE_NOTES.md
+      - name: Build with dotnet
+        run: |
+          cd src
+          dotnet build --configuration Release /p:Version=${{ env.BUILD_VERSION }}
+      - name: Pack tool
+        run: |
+          cd src
+          dotnet pack --configuration Release /p:Version=${{ env.BUILD_VERSION }} --no-build --no-restore --output ../dist --include-source --include-symbols -p:SymbolPackageFormat=snupkg
+        env:
+          ReleaseNotes: ${{ steps.release-notes.outputs.content }}
+      - name: Publish
+        run: |
+          dotnet pushpackages -folder dist --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_FEED }}

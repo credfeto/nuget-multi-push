@@ -15,6 +15,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 - FF-1429 - Updated Roslynator.Analyzers to 3.1.0
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.18.0.27296
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.19.0.28253
+- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.9.54
 ### Removed
 ### Deployment Changes
 

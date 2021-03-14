@@ -324,7 +324,9 @@ namespace Credfeto.Package.Push
             {
                 string? symbolSource = FindMatchingSymbolPackage(package: package, symbolPackages: symbolPackages);
 
-                await packageUpdateResource.Push(packagePath: package,
+                List<string> packagePaths = new() {package};
+
+                await packageUpdateResource.Push(packagePaths: packagePaths,
                                                  symbolSource: symbolSource,
                                                  timeoutInSecond: 800,
                                                  disableBuffering: false,

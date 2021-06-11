@@ -44,6 +44,8 @@ namespace Credfeto.Package.Push
                     return ERROR;
                 }
 
+                folder = PathHelpers.ConvertToNative(folder);
+
                 IReadOnlyList<string> packages = Directory.GetFiles(path: folder, searchPattern: SEARCH_PATTERN)
                                                           .Concat(Directory.GetFiles(path: folder, searchPattern: SOURCE_SEARCH_PATTERN))
                                                           .ToArray();
@@ -108,6 +110,8 @@ namespace Credfeto.Package.Push
 
                 (string package, bool success)[] results = await Task.WhenAll(tasks);
 
+                OutputPackagesAsAssets(packages);
+
                 return OutputUploadSummary(results);
             }
             catch (Exception exception)
@@ -115,6 +119,21 @@ namespace Credfeto.Package.Push
                 Console.WriteLine($"ERROR: {exception.Message}");
 
                 return ERROR;
+            }
+        }
+
+        private static void OutputPackagesAsAssets(IReadOnlyList<string> packages)
+        {
+            string? env = Environment.GetEnvironmentVariable("TEAMCITY_VERSION");
+
+            if (string.IsNullOrWhiteSpace(env))
+            {
+                return;
+            }
+
+            foreach (string package in packages)
+            {
+                Console.WriteLine($"##teamcity[publishArtifacts '{package}']");
             }
         }
 

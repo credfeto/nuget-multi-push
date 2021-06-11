@@ -2,27 +2,20 @@
 All notable changes to this project will be documented in this file.
 
 <!--
-Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
+Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 
 ## [Unreleased]
 ### Added
+
+- Output packages as assets when building under teamcity.
+- Ability to specify relative path in windows or unix format and change to the native for the platform
 ### Fixed
 ### Changed
-- FF-1429 - Updated AsyncFixer to 1.4.0
 - FF-1429 - Updated AsyncFixer to 1.5.1
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.17.0.26580
 - FF-1429 - Updated Roslynator.Analyzers to 3.1.0
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.18.0.27296
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.19.0.28253
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.9.54
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.9.60
-- FF-1429 - Updated NuGet to 5.9.0
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.20.0.28934
 - FF-1429 - Updated NuGet to 5.9.1
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.21.0.30542
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.22.0.31243
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.23.0.32424
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.10.56
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.24.0.32949
 ### Removed

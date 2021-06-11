@@ -6,6 +6,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{30AF6B
 ProjectSection(SolutionItems) = preProject
 	global.json = global.json
 	CodeAnalysis.ruleset = CodeAnalysis.ruleset
+	..\CHANGELOG.md = ..\CHANGELOG.md
+	..\README.md = ..\README.md
 EndProjectSection
 EndProject
 Global

@@ -7,10 +7,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 
 ## [Unreleased]
 ### Added
+### Fixed
+### Changed
+### Removed
+### Deployment Changes
 
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.3.0] - 2021-06-11
+### Added
 - Output packages as assets when building under teamcity.
 - Ability to specify relative path in windows or unix format and change to the native for the platform
-### Fixed
 ### Changed
 - FF-1429 - Updated AsyncFixer to 1.5.1
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.17.0.26580
@@ -18,12 +26,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated NuGet to 5.9.1
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.10.56
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.24.0.32949
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.2.1] - 2021-01-15
 ### Fixed
 - Unhandled exception on uploading snupkg to nuget.org

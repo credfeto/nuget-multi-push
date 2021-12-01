@@ -51,7 +51,7 @@ namespace Credfeto.Package.Push
                                                           .Concat(Directory.GetFiles(path: folder, searchPattern: SOURCE_SEARCH_PATTERN))
                                                           .ToArray();
 
-                if (!packages.Any())
+                if (packages.Count == 0)
                 {
                     Console.WriteLine("ERROR: folder does not contain any packages");
 
@@ -312,7 +312,7 @@ namespace Credfeto.Package.Push
         private static IConfigurationRoot LoadConfiguration(string[] args)
         {
             return new ConfigurationBuilder().AddCommandLine(args: args,
-                                                             new Dictionary<string, string>
+                                                             new Dictionary<string, string>(StringComparer.Ordinal)
                                                              {
                                                                  { @"-folder", @"folder" }, { @"-source", @"source" }, { @"-symbol-source", @"symbol-source" }, { @"-api-key", @"api-key" }
                                                              })

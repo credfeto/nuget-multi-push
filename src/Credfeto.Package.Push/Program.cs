@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -268,7 +269,7 @@ namespace Credfeto.Package.Push
 
             for (int part = 0; part < parts.Length; ++part)
             {
-                if (int.TryParse(parts[part], out int _))
+                if (int.TryParse(parts[part], style: NumberStyles.Integer, provider: CultureInfo.InvariantCulture, out int _))
                 {
                     int previousPart = part - 1;
 
@@ -313,7 +314,7 @@ namespace Credfeto.Package.Push
             return new ConfigurationBuilder().AddCommandLine(args: args,
                                                              new Dictionary<string, string>
                                                              {
-                                                                 {@"-folder", @"folder"}, {@"-source", @"source"}, {@"-symbol-source", @"symbol-source"}, {@"-api-key", @"api-key"}
+                                                                 { @"-folder", @"folder" }, { @"-source", @"source" }, { @"-symbol-source", @"symbol-source" }, { @"-api-key", @"api-key" }
                                                              })
                                              .Build();
         }
@@ -343,7 +344,7 @@ namespace Credfeto.Package.Push
             {
                 string? symbolSource = FindMatchingSymbolPackage(package: package, symbolPackages: symbolPackages);
 
-                List<string> packagePaths = new() {package};
+                List<string> packagePaths = new() { package };
 
                 await packageUpdateResource.Push(packagePaths: packagePaths,
                                                  symbolSource: symbolSource,

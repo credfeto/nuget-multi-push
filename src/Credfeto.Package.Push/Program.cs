@@ -74,46 +74,7 @@ namespace Credfeto.Package.Push
                     return ERROR;
                 }
 
-                SourceRepository sourceRepository = ConfigureSourceRepository(source);
-
-                PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>();
-                Console.WriteLine($"Pushing Packages to: {packageUpdateResource.SourceUri}");
-
-                SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await GetSymbolPackageUpdateSourceAsync(sourceRepository);
-
-                PackageUpdateResource? symbolPackageUpdateResourceAsPackage = null;
-
-                SourceRepository? symbolSourceRepository = null;
-
-                if (!string.IsNullOrWhiteSpace(symbolSource) && symbolPackageUpdateResource == null)
-                {
-                    symbolSourceRepository = ConfigureSourceRepository(symbolSource);
-
-                    PackageUpdateResource? resource = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>();
-
-                    if (resource?.SourceUri != null)
-                    {
-                        Console.WriteLine($"Pushing Symbol Packages to: {resource.SourceUri}");
-                        symbolPackageUpdateResourceAsPackage = resource;
-                    }
-                }
-
-                IReadOnlyList<string> symbolPackages = ExtractSymbolPackages(packages);
-                IReadOnlyList<string> nonSymbolPackages = ExtractProductionPackages(packages);
-
-                IEnumerable<Task<(string package, bool success)>> tasks = BuildUploadTasks(symbolSourceRepository: symbolSourceRepository,
-                                                                                           symbolPackageUpdateResource: symbolPackageUpdateResource,
-                                                                                           symbolPackageUpdateResourceAsPackage: symbolPackageUpdateResourceAsPackage,
-                                                                                           nonSymbolPackages: nonSymbolPackages,
-                                                                                           symbolPackages: symbolPackages,
-                                                                                           apiKey: apiKey,
-                                                                                           packageUpdateResource: packageUpdateResource);
-
-                (string package, bool success)[] results = await Task.WhenAll(tasks);
-
-                OutputPackagesAsAssets(packages);
-
-                return OutputUploadSummary(results);
+                return await PushAllAsync(source: source, symbolSource: symbolSource, packages: packages, apiKey: apiKey);
             }
             catch (Exception exception)
             {
@@ -121,6 +82,50 @@ namespace Credfeto.Package.Push
 
                 return ERROR;
             }
+        }
+
+        private static async Task<int> PushAllAsync(string source, string symbolSource, IReadOnlyList<string> packages, string apiKey)
+        {
+            SourceRepository sourceRepository = ConfigureSourceRepository(source);
+
+            PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>();
+            Console.WriteLine($"Pushing Packages to: {packageUpdateResource.SourceUri}");
+
+            SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await GetSymbolPackageUpdateSourceAsync(sourceRepository);
+
+            PackageUpdateResource? symbolPackageUpdateResourceAsPackage = null;
+
+            SourceRepository? symbolSourceRepository = null;
+
+            if (!string.IsNullOrWhiteSpace(symbolSource) && symbolPackageUpdateResource == null)
+            {
+                symbolSourceRepository = ConfigureSourceRepository(symbolSource);
+
+                PackageUpdateResource? resource = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>();
+
+                if (resource?.SourceUri != null)
+                {
+                    Console.WriteLine($"Pushing Symbol Packages to: {resource.SourceUri}");
+                    symbolPackageUpdateResourceAsPackage = resource;
+                }
+            }
+
+            IReadOnlyList<string> symbolPackages = ExtractSymbolPackages(packages);
+            IReadOnlyList<string> nonSymbolPackages = ExtractProductionPackages(packages);
+
+            IEnumerable<Task<(string package, bool success)>> tasks = BuildUploadTasks(symbolSourceRepository: symbolSourceRepository,
+                                                                                       symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                                                                       symbolPackageUpdateResourceAsPackage: symbolPackageUpdateResourceAsPackage,
+                                                                                       nonSymbolPackages: nonSymbolPackages,
+                                                                                       symbolPackages: symbolPackages,
+                                                                                       apiKey: apiKey,
+                                                                                       packageUpdateResource: packageUpdateResource);
+
+            (string package, bool success)[] results = await Task.WhenAll(tasks);
+
+            OutputPackagesAsAssets(packages);
+
+            return OutputUploadSummary(results);
         }
 
         private static void OutputPackagesAsAssets(IReadOnlyList<string> packages)

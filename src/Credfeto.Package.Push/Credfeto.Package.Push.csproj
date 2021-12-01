@@ -29,21 +29,28 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Description>Multi-push tool for pushing multiple packages to nuget server at the same time.</Description>
         <PackageTags>Nuget;push</PackageTags>
-        <RepositoryUrl>https://github.com/credfeto/nuget-multi-push</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <NeutralLanguage>en-GB</NeutralLanguage>
-        <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
+      <RepositoryUrl>https://github.com/credfeto/nuget-multi-push</RepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+      <NeutralLanguage>en-GB</NeutralLanguage>
+      <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
     </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.0" />
-        <PackageReference Include="NuGet.Commands" Version="6.0.0" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
-        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.0.64" PrivateAssets="All" />
-        <PackageReference Include="Roslynator.Analyzers" Version="3.2.2" PrivateAssets="All" />
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.32.0.39516" PrivateAssets="All" />
-        <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.0"/>
+    <PackageReference Include="NuGet.Commands" Version="5.10.0"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All"/>
+    <PackageReference Include="codecracker.CSharp" Version="1.1.0" PrivateAssets="All"/>
+    <PackageReference Include="Meziantou.Analyzer" Version="1.0.679" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.CodeAnalysis.VersionCheckAnalyzer" Version="3.3.2" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.0.64" PrivateAssets="All"/>
+    <PackageReference Include="Nullable.Extended.Analyzer" Version="1.10.4539" PrivateAssets="All"/>
+    <PackageReference Include="Philips.CodeAnalysis.DuplicateCodeAnalyzer" Version="1.1.4" PrivateAssets="All"/>
+    <PackageReference Include="Roslynator.Analyzers" Version="3.3.0" PrivateAssets="All"/>
+    <PackageReference Include="SecurityCodeScan.VS2019" Version="5.2.1" PrivateAssets="All"/>
+    <PackageReference Include="SmartAnalyzers.CSharpExtensions.Annotations" Version="4.1.0" PrivateAssets="All"/>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.32.0.39516" PrivateAssets="All"/>
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All"/>
+  </ItemGroup>
 </Project>

@@ -9,6 +9,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.4.1] - 2021-12-15
+### Changed
 - FF-1429 - Updated NuGet to 6.0.0
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.32.0.39516
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.7.3.1052
@@ -16,12 +24,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.33.0.40503
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.680
 - FF-1429 - Updated SecurityCodeScan.VS2019 to 5.6.0
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.4.0] - 2021-11-17
 ### Changed
 - FF-1429 - Updated Roslynator.Analyzers to 3.2.0

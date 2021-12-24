@@ -511,7 +511,7 @@
         <!-- PH2020	- Avoid Thread.Sleep -->
         <Rule Id="PH2020" Action="Error"/>
         <!-- PH2021	- Avoid inline new -->
-        <Rule Id="PH2021" Action="Error"/>
+        <Rule Id="PH2021" Action="None"/>
         <!-- PH2026	- Avoid SuppressMessage attribute -->
         <Rule Id="PH2026" Action="None"/>
         <!-- PH2027	- Avoid static methods -->

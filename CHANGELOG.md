@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.683
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.684
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.685
 ### Removed
 ### Deployment Changes
 

@@ -19,6 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Philips.CodeAnalysis.DuplicateCodeAnalyzer to 1.1.5
 - FF-1429 - Updated Philips.CodeAnalysis.DuplicateCodeAnalyzer to 1.1.6
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.34.0.42011
+- FF-1429 - Updated Roslynator.Analyzers to 4.0.0
 ### Removed
 ### Deployment Changes
 

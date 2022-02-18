@@ -9,16 +9,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.8.1.1203
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.695
-- FF-1429 - Updated NuGet to 6.1.0
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.1.46
 ### Removed
 ### Deployment Changes
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.4.9] - 2022-02-18
+### Changed
+- FF-1429 - Updated FunFair.CodeAnalysis to 5.8.1.1203
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.695
+- FF-1429 - Updated NuGet to 6.1.0
+- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.1.46
+
 ## [1.4.8] - 2022-02-09
 ### Changed
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.8.0.1196

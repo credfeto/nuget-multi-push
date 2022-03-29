@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.698
 - FF-1429 - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.2.28
+- FF-1429 - Updated Roslynator.Analyzers to 4.1.0
 ### Removed
 ### Deployment Changes
 

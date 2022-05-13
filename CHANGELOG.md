@@ -24,6 +24,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated NuGet to 6.2.0
 - FF-1429 - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.3
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.39.0.47922
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.702
 ### Removed
 ### Deployment Changes
 

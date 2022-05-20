@@ -19,7 +19,7 @@ internal static class ExecutableVersionInformation
         return fileVersionInfo.ProductVersion!;
     }
 
-    [SuppressMessage("FunFair.CodeAnalysis", "FFS0008:Don't disable warnings with #pragma", Justification = "Needed in this case")]
+    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0008:Don't disable warnings with #pragma", Justification = "Needed in this case")]
     private static string GetFileName(Assembly assembly)
     {
 #pragma warning disable IL3000

@@ -252,7 +252,9 @@ internal static class Program
                                                                        symbolPackageUpdateResource: symbolPackageUpdateResource));
     }
 
-    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
+    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages,
+                                                                                                       string apiKey,
+                                                                                                       PackageUpdateResource packageUpdateResource)
     {
         return packages.Select(package => PushOnePackageAsync(package: package,
                                                               packageUpdateResource: packageUpdateResource,
@@ -317,7 +319,7 @@ internal static class Program
     {
         PackageSource packageSource = new(name: "Custom", source: source, isEnabled: true, isPersistable: true, isOfficial: true);
 
-        return new SourceRepository(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
+        return new(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
     }
 
     private static int OutputUploadSummary((string package, bool success)[] results)
@@ -329,12 +331,16 @@ internal static class Program
         {
             string packageName = Path.GetFileName(package);
 
-            string status = success ? "Uploaded" : "FAILED";
+            string status = success
+                ? "Uploaded"
+                : "FAILED";
             Console.WriteLine($"* {packageName} : {status}");
             errors |= !success;
         }
 
-        return errors ? ERROR : SUCCESS;
+        return errors
+            ? ERROR
+            : SUCCESS;
     }
 
     private static IConfigurationRoot LoadConfiguration(string[] args)
@@ -342,7 +348,10 @@ internal static class Program
         return new ConfigurationBuilder().AddCommandLine(args: args,
                                                          new Dictionary<string, string>(StringComparer.Ordinal)
                                                          {
-                                                             { @"-folder", @"folder" }, { @"-source", @"source" }, { @"-symbol-source", @"symbol-source" }, { @"-api-key", @"api-key" }
+                                                             { @"-folder", @"folder" },
+                                                             { @"-source", @"source" },
+                                                             { @"-symbol-source", @"symbol-source" },
+                                                             { @"-api-key", @"api-key" }
                                                          })
                                          .Build();
     }
@@ -419,7 +428,9 @@ internal static class Program
 
         string? symbolSource = symbolPackages.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x: x, y: expectedSymbol));
 
-        Console.WriteLine(symbolSource != null ? $"Package package - found symbols {symbolSource}" : $"Package package - no symbols found {expectedSymbol}");
+        Console.WriteLine(symbolSource != null
+                              ? $"Package package - found symbols {symbolSource}"
+                              : $"Package package - no symbols found {expectedSymbol}");
 
         return symbolSource;
     }

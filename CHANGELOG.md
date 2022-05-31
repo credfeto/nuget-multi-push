@@ -29,6 +29,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.5
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.8.2.1317
 - FF-1429 - Updated Roslynator.Analyzers to 4.1.1
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.40.0.48530
 ### Removed
 ### Deployment Changes
 

@@ -9,6 +9,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.4.11] - 2022-06-16
+### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.698
 - FF-1429 - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.2.28
 - FF-1429 - Updated Roslynator.Analyzers to 4.1.0
@@ -33,12 +41,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated SecurityCodeScan.VS2019 to 5.6.3
 - FF-1429 - Updated NuGet to 6.2.1
 - FF-3881 - Updated DotNet SDK to 6.0.301
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.4.10] - 2022-03-10
 ### Changed
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.36.0.43782

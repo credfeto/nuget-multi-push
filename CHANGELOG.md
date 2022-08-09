@@ -17,6 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.6
 - FF-1429 - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.7
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.43.0.51858
+- FF-1429 - Updated NuGet to 6.3.0
 ### Removed
 ### Deployment Changes
 

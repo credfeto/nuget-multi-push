@@ -19,6 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.43.0.51858
 - FF-1429 - Updated NuGet to 6.3.0
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.3.44
+- FF-3881 - Updated DotNet SDK to 6.0.400
 ### Removed
 ### Deployment Changes
 

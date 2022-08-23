@@ -21,6 +21,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated SecurityCodeScan.VS2019 to 5.6.6
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.714
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.715
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.716
 ### Removed
 ### Deployment Changes
 

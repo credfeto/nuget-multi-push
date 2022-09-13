@@ -25,6 +25,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.9.0.1493
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.723
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.725
+- FF-3881 - Updated DotNet SDK to 6.0.401
 ### Removed
 ### Deployment Changes
 
@@ -43,7 +44,6 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.43.0.51858
 - FF-1429 - Updated NuGet to 6.3.0
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.3.44
-- FF-3881 - Updated DotNet SDK to 6.0.400
 
 ## [1.4.12] - 2022-07-13
 ### Changed

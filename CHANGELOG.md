@@ -9,6 +9,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.4.14] - 2022-09-13
+### Changed
 - FF-1429 - Updated SecurityCodeScan.VS2019 to 5.6.5
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.713
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.44.0.52574
@@ -26,12 +34,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.723
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.725
 - FF-3881 - Updated DotNet SDK to 6.0.401
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.4.13] - 2022-08-09
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.705

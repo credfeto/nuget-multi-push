@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.726
 ### Removed
 ### Deployment Changes
 
@@ -18,7 +19,6 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ## [1.4.14] - 2022-09-13
 ### Changed
 - FF-1429 - Updated SecurityCodeScan.VS2019 to 5.6.5
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.713
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.44.0.52574
 - FF-1429 - Updated SecurityCodeScan.VS2019 to 5.6.6
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.714

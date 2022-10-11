@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Philips.CodeAnalysis.DuplicateCodeAnalyzer to 1.1.7
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.733
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.46.0.54807
+- FF-1429 - Updated NuGet to 6.3.1
 ### Removed
 ### Deployment Changes
 

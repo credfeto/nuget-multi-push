@@ -13,6 +13,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.2.29
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.3.48
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.744
+- FF-1429 - Updated Roslynator.Analyzers to 4.1.2
 ### Removed
 ### Deployment Changes
 

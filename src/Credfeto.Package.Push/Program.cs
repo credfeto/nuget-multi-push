@@ -33,10 +33,10 @@ internal static class Program
         {
             IConfigurationRoot configuration = LoadConfiguration(args);
 
-            string source = configuration.GetValue<string>(key: @"source");
-            string symbolSource = configuration.GetValue<string>(key: @"symbol-source");
+            string source = configuration.GetValue<string>(key: @"source")!;
+            string symbolSource = configuration.GetValue<string>(key: @"symbol-source")!;
 
-            string folder = configuration.GetValue<string>(key: @"Folder");
+            string folder = configuration.GetValue<string>(key: @"Folder")!;
 
             if (string.IsNullOrEmpty(folder))
             {
@@ -65,7 +65,7 @@ internal static class Program
                 return ERROR;
             }
 
-            string apiKey = configuration.GetValue<string>(key: @"api-key");
+            string apiKey = configuration.GetValue<string>(key: @"api-key")!;
 
             if (string.IsNullOrEmpty(apiKey))
             {
@@ -252,9 +252,7 @@ internal static class Program
                                                                        symbolPackageUpdateResource: symbolPackageUpdateResource));
     }
 
-    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages,
-                                                                                                       string apiKey,
-                                                                                                       PackageUpdateResource packageUpdateResource)
+    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
     {
         return packages.Select(package => PushOnePackageAsync(package: package,
                                                               packageUpdateResource: packageUpdateResource,
@@ -348,10 +346,7 @@ internal static class Program
         return new ConfigurationBuilder().AddCommandLine(args: args,
                                                          new Dictionary<string, string>(StringComparer.Ordinal)
                                                          {
-                                                             { @"-folder", @"folder" },
-                                                             { @"-source", @"source" },
-                                                             { @"-symbol-source", @"symbol-source" },
-                                                             { @"-api-key", @"api-key" }
+                                                             { @"-folder", @"folder" }, { @"-source", @"source" }, { @"-symbol-source", @"symbol-source" }, { @"-api-key", @"api-key" }
                                                          })
                                          .Build();
     }

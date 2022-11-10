@@ -9,6 +9,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.4.16] - 2022-11-10
+### Changed
 - FF-1429 - Updated Roslynator.Analyzers to 4.1.2
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.48.0.56517
 - FF-3881 - Updated DotNet SDK to 7.0.100
@@ -18,12 +26,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.4.27
 - FF-1429 - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.2.30
 - FF-1429 - Updated NuGet to 6.4.0
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.4.15] - 2022-10-12
 ### Changed
 - FF-1429 - Updated Philips.CodeAnalysis.DuplicateCodeAnalyzer to 1.1.7

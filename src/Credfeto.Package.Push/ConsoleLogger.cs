@@ -43,24 +43,24 @@ internal sealed class ConsoleLogger : ILogger
 
     public void Log(LogLevel level, string data)
     {
-        Console.WriteLine($"{level.ToString().ToUpperInvariant()}: {data}");
+        Console.WriteLine($"{level.GetName().ToUpperInvariant()}: {data}");
     }
 
     public Task LogAsync(LogLevel level, string data)
     {
-        Console.WriteLine($"{level.ToString().ToUpperInvariant()}: {data}");
+        Console.WriteLine($"{level.GetName().ToUpperInvariant()}: {data}");
 
         return Task.CompletedTask;
     }
 
     public void Log(ILogMessage message)
     {
-        Console.WriteLine($"{message.Level.ToString().ToUpperInvariant()}: {message.Message}");
+        Console.WriteLine($"{message.Level.GetName().ToUpperInvariant()}: {message.Message}");
     }
 
     public Task LogAsync(ILogMessage message)
     {
-        Console.WriteLine($"{message.Level.ToString().ToUpperInvariant()}: {message.Message}");
+        Console.WriteLine($"{message.Level.GetName().ToUpperInvariant()}: {message.Message}");
 
         return Task.CompletedTask;
     }

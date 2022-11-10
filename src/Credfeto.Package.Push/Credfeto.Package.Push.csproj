@@ -52,6 +52,7 @@
     <RepositoryUrl>https://github.com/credfeto/nuget-multi-push</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Credfeto.Enumeration.Source.Generation.Attributes" Version="0.0.6.8"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.0" />
     <PackageReference Include="NuGet.Commands" Version="6.3.1" />

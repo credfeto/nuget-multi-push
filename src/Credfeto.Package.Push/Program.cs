@@ -252,7 +252,9 @@ internal static class Program
                                                                        symbolPackageUpdateResource: symbolPackageUpdateResource));
     }
 
-    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
+    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages,
+                                                                                                       string apiKey,
+                                                                                                       PackageUpdateResource packageUpdateResource)
     {
         return packages.Select(package => PushOnePackageAsync(package: package,
                                                               packageUpdateResource: packageUpdateResource,
@@ -346,7 +348,10 @@ internal static class Program
         return new ConfigurationBuilder().AddCommandLine(args: args,
                                                          new Dictionary<string, string>(StringComparer.Ordinal)
                                                          {
-                                                             { @"-folder", @"folder" }, { @"-source", @"source" }, { @"-symbol-source", @"symbol-source" }, { @"-api-key", @"api-key" }
+                                                             { @"-folder", @"folder" },
+                                                             { @"-source", @"source" },
+                                                             { @"-symbol-source", @"symbol-source" },
+                                                             { @"-api-key", @"api-key" }
                                                          })
                                          .Build();
     }

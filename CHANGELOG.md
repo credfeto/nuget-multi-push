@@ -9,8 +9,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.758
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.4.33
+- FF-1429 - Updated Meziantou.Analyzer to 2.0.1
 ### Removed
 ### Deployment Changes
 

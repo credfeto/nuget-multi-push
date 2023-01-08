@@ -252,9 +252,7 @@ internal static class Program
                                                                        symbolPackageUpdateResource: symbolPackageUpdateResource));
     }
 
-    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages,
-                                                                                                       string apiKey,
-                                                                                                       PackageUpdateResource packageUpdateResource)
+    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
     {
         return packages.Select(package => PushOnePackageAsync(package: package,
                                                               packageUpdateResource: packageUpdateResource,
@@ -277,19 +275,19 @@ internal static class Program
         return symbolPackageUpdateResource;
     }
 
-    private static string[] ExtractProductionPackages(IReadOnlyList<string> packages)
+    private static IReadOnlyList<string> ExtractProductionPackages(IReadOnlyList<string> packages)
     {
-        return packages.Where(p => !IsSymbolPackage(p))
+        return packages.Where(IsNotSymbolPackage)
                        .OrderBy(MetaPackageLast)
-                       .ThenBy(x => x.ToLowerInvariant())
+                       .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase)
                        .ToArray();
     }
 
-    private static string[] ExtractSymbolPackages(IReadOnlyList<string> packages)
+    private static IReadOnlyList<string> ExtractSymbolPackages(IReadOnlyList<string> packages)
     {
         return packages.Where(IsSymbolPackage)
                        .OrderBy(MetaPackageLast)
-                       .ThenBy(x => x.ToLowerInvariant())
+                       .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase)
                        .ToArray();
     }
 
@@ -348,10 +346,7 @@ internal static class Program
         return new ConfigurationBuilder().AddCommandLine(args: args,
                                                          new Dictionary<string, string>(StringComparer.Ordinal)
                                                          {
-                                                             { @"-folder", @"folder" },
-                                                             { @"-source", @"source" },
-                                                             { @"-symbol-source", @"symbol-source" },
-                                                             { @"-api-key", @"api-key" }
+                                                             { @"-folder", @"folder" }, { @"-source", @"source" }, { @"-symbol-source", @"symbol-source" }, { @"-api-key", @"api-key" }
                                                          })
                                          .Build();
     }
@@ -359,6 +354,11 @@ internal static class Program
     private static bool IsSymbolPackage(string p)
     {
         return IsNewSymbolPackage(p) || IsOldSymbolPackage(p);
+    }
+
+    private static bool IsNotSymbolPackage(string p)
+    {
+        return !IsSymbolPackage(p);
     }
 
     private static bool IsNewSymbolPackage(string p)

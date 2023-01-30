@@ -9,8 +9,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated Meziantou.Analyzer to 2.0.13
 - FF-1429 - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.8
+- FF-1429 - Updated Meziantou.Analyzer to 2.0.14
 ### Removed
 ### Deployment Changes
 

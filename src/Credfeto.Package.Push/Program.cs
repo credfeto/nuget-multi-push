@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using NuGet.Common;
@@ -74,7 +75,7 @@ internal static class Program
                 return ERROR;
             }
 
-            return await PushAllAsync(source: source, symbolSource: symbolSource, packages: packages, apiKey: apiKey);
+            return await PushAllAsync(source: source, symbolSource: symbolSource, packages: packages, apiKey: apiKey, cancellationToken: CancellationToken.None);
         }
         catch (Exception exception)
         {
@@ -84,14 +85,14 @@ internal static class Program
         }
     }
 
-    private static async Task<int> PushAllAsync(string source, string symbolSource, IReadOnlyList<string> packages, string apiKey)
+    private static async Task<int> PushAllAsync(string source, string symbolSource, IReadOnlyList<string> packages, string apiKey, CancellationToken cancellationToken)
     {
         SourceRepository sourceRepository = ConfigureSourceRepository(source);
 
-        PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>();
+        PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>(cancellationToken);
         Console.WriteLine($"Pushing Packages to: {packageUpdateResource.SourceUri}");
 
-        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await GetSymbolPackageUpdateSourceAsync(sourceRepository);
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await GetSymbolPackageUpdateSourceAsync(sourceRepository: sourceRepository, cancellationToken: cancellationToken);
 
         PackageUpdateResource? symbolPackageUpdateResourceAsPackage = null;
 
@@ -101,7 +102,7 @@ internal static class Program
         {
             symbolSourceRepository = ConfigureSourceRepository(symbolSource);
 
-            PackageUpdateResource? resource = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>();
+            PackageUpdateResource? resource = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>(cancellationToken);
 
             if (resource?.SourceUri != null)
             {
@@ -252,9 +253,7 @@ internal static class Program
                                                                        symbolPackageUpdateResource: symbolPackageUpdateResource));
     }
 
-    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages,
-                                                                                                       string apiKey,
-                                                                                                       PackageUpdateResource packageUpdateResource)
+    private static IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
     {
         return packages.Select(package => PushOnePackageAsync(package: package,
                                                               packageUpdateResource: packageUpdateResource,
@@ -263,9 +262,9 @@ internal static class Program
                                                               symbolPackages: Array.Empty<string>()));
     }
 
-    private static async Task<SymbolPackageUpdateResourceV3?> GetSymbolPackageUpdateSourceAsync(SourceRepository sourceRepository)
+    private static async Task<SymbolPackageUpdateResourceV3?> GetSymbolPackageUpdateSourceAsync(SourceRepository sourceRepository, CancellationToken cancellationToken)
     {
-        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>();
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>(cancellationToken);
 
         if (symbolPackageUpdateResource?.SourceUri == null)
         {
@@ -348,10 +347,7 @@ internal static class Program
         return new ConfigurationBuilder().AddCommandLine(args: args,
                                                          new Dictionary<string, string>(StringComparer.Ordinal)
                                                          {
-                                                             { @"-folder", @"folder" },
-                                                             { @"-source", @"source" },
-                                                             { @"-symbol-source", @"symbol-source" },
-                                                             { @"-api-key", @"api-key" }
+                                                             { @"-folder", @"folder" }, { @"-source", @"source" }, { @"-symbol-source", @"symbol-source" }, { @"-api-key", @"api-key" }
                                                          })
                                          .Build();
     }

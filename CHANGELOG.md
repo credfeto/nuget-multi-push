@@ -15,7 +15,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.5.22
 - FF-1429 - Updated Microsoft.Extensions to 7.0.3
 - FF-3881 - Updated DotNet SDK to 7.0.200
-- SDK - Updated DotNet SDK to 7.0.201
+- SDK - Updated DotNet SDK to 7.0.202
 ### Removed
 ### Deployment Changes
 

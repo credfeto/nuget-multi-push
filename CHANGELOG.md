@@ -16,6 +16,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Microsoft.Extensions to 7.0.3
 - FF-3881 - Updated DotNet SDK to 7.0.200
 - SDK - Updated DotNet SDK to 7.0.202
+- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.0.7.19
 ### Removed
 ### Deployment Changes
 

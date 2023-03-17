@@ -23,7 +23,19 @@ public sealed class PackageUploader : IPackageUploader
     public PackageUploader(ILogger<PackageUploader> logger)
     {
         this._logger = logger;
-        this._retryPolicy = this.DefineAsyncPolicy();
+        this._retryPolicy = Policy.Handle((Func<Exception, bool>)IsTransientException)
+                                  .WaitAndRetryAsync(retryCount: MAX_RETRIES,
+                                                     sleepDurationProvider: RetryDelayCalculator.Calculate,
+                                                     onRetry: (exception, delay, retryCount, context) =>
+                                                              {
+                                                                  this._logger.LogAndDispatchTransientException(typeName: exception.GetType()
+                                                                                                                                   .Name,
+                                                                                                                retryCount: retryCount,
+                                                                                                                maxRetries: MAX_RETRIES,
+                                                                                                                delay: delay,
+                                                                                                                $"{context.OperationKey}: {exception.Message}",
+                                                                                                                exception: exception);
+                                                              });
     }
 
     public async Task<(string package, bool success)> PushOnePackageAsync(string package,
@@ -57,33 +69,6 @@ public sealed class PackageUploader : IPackageUploader
 
             return (package, success: false);
         }
-    }
-
-    private AsyncRetryPolicy DefineAsyncPolicy()
-    {
-        return Policy.Handle((Func<Exception, bool>)IsTransientException)
-                     .WaitAndRetryAsync(retryCount: MAX_RETRIES,
-                                        sleepDurationProvider: RetryDelayCalculator.Calculate,
-                                        onRetry: (exception, delay, retryCount, context) =>
-                                                 {
-                                                     this.LogAndDispatchTransientExceptions(exception: exception, context: context, delay: delay, retryCount: retryCount, maxRetries: MAX_RETRIES);
-                                                 });
-    }
-
-    private void LogAndDispatchTransientExceptions(Exception exception, Context context, in TimeSpan delay, int retryCount, int maxRetries)
-    {
-        this._logger.LogAndDispatchTransientException(typeName: exception.GetType()
-                                                                         .Name,
-                                                      retryCount: retryCount,
-                                                      maxRetries: maxRetries,
-                                                      delay: delay,
-                                                      FormatException(exception: exception, context: context.OperationKey),
-                                                      exception: exception);
-    }
-
-    private static string FormatException(Exception exception, string context)
-    {
-        return $"{context}: {exception.Message}";
     }
 
     private static bool IsTransientException(Exception exception)

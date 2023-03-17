@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Credfeto.Package.Push.Constants;
 using Credfeto.Package.Push.Extensions;
+using Credfeto.Package.Push.LoggingExtensions;
 using Microsoft.Extensions.Logging;
 using NuGet.Configuration;
 using NuGet.Protocol.Core.Types;
@@ -29,7 +30,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
         SourceRepository sourceRepository = ConfigureSourceRepository(source);
 
         PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>(cancellationToken);
-        this._logger.LogInformation($"Pushing Packages to: {packageUpdateResource.SourceUri}");
+        this._logger.PushingPackagesToServer(packageUpdateResource.SourceUri);
 
         SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await this.GetSymbolPackageUpdateSourceAsync(sourceRepository: sourceRepository, cancellationToken: cancellationToken);
 
@@ -45,7 +46,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
             if (resource?.SourceUri != null)
             {
-                this._logger.LogInformation($"Pushing Symbol Packages to: {resource.SourceUri}");
+                this._logger.PushingSymbolPackagesToServer(resource.SourceUri);
                 symbolPackageUpdateResourceAsPackage = resource;
             }
         }
@@ -63,12 +64,12 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
         (string package, bool success)[] results = await Task.WhenAll(tasks);
 
-        this.OutputPackagesAsAssets(packages);
+        OutputPackagesAsAssets(packages);
 
         return this.OutputUploadSummary(results);
     }
 
-    private void OutputPackagesAsAssets(IReadOnlyList<string> packages)
+    private static void OutputPackagesAsAssets(IReadOnlyList<string> packages)
     {
         string? env = Environment.GetEnvironmentVariable("TEAMCITY_VERSION");
 
@@ -79,7 +80,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
         foreach (string package in packages)
         {
-            this._logger.LogInformation($"##teamcity[publishArtifacts '{package}']");
+            Console.WriteLine($"##teamcity[publishArtifacts '{package}']");
         }
     }
 
@@ -93,7 +94,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
     {
         if (symbolPackages.Count == 0)
         {
-            this._logger.LogWarning("No symbols to upload");
+            this._logger.NoSymbolsToUpload();
 
             return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource);
         }

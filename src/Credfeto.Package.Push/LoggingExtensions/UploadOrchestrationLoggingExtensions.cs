@@ -1,19 +1,17 @@
-using System.Diagnostics;
+using System;
+using Credfeto.Package.Push.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Credfeto.Package.Push.LoggingExtensions;
 
 internal static partial class UploadOrchestrationLoggingExtensions
 {
-    [LoggerMessage(EventId = 0, Level = LogLevel.Debug, Message = "Looking for Symbols Package: {expectedSymbol}")]
-    [Conditional("DEBUG")]
-    public static partial void LookingForSymbolsPackage(this ILogger logger, string expectedSymbol);
+    [LoggerMessage(EventId = 3, Level = LogLevel.Information, Message = "Pushing packages to: {uri}")]
+    public static partial void PushingPackagesToServer(this ILogger<UploadOrchestration> logger, Uri uri);
 
-    [LoggerMessage(EventId = 1, Level = LogLevel.Debug, Message = "Package - found symbols {symbolSource}")]
-    [Conditional("DEBUG")]
-    public static partial void SymbolPackageFound(this ILogger logger, string symbolSource);
+    [LoggerMessage(EventId = 4, Level = LogLevel.Information, Message = "Pushing symbol packages to: {uri}")]
+    public static partial void PushingSymbolPackagesToServer(this ILogger<UploadOrchestration> logger, Uri uri);
 
-    [LoggerMessage(EventId = 2, Level = LogLevel.Debug, Message = "Package - no symbols found {expectedSymbol}")]
-    [Conditional("DEBUG")]
-    public static partial void SymbolPackageNotFound(this ILogger logger, string expectedSymbol);
+    [LoggerMessage(EventId = 5, Level = LogLevel.Warning, Message = "No symbols to upload")]
+    public static partial void NoSymbolsToUpload(this ILogger<UploadOrchestration> logger);
 }

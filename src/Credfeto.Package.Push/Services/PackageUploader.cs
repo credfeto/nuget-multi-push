@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Credfeto.Package.Push.Extensions;
+using Credfeto.Package.Push.Extensions.LoggingExtennsions;
 using Credfeto.Package.Push.Helpers;
 using Credfeto.Package.Push.Services.LoggingExtensions;
 using Microsoft.Extensions.Logging;
@@ -28,13 +29,13 @@ public sealed class PackageUploader : IPackageUploader
                                                      sleepDurationProvider: RetryDelayCalculator.Calculate,
                                                      onRetry: (exception, delay, retryCount, context) =>
                                                               {
-                                                                  this._logger.LogAndDispatchTransientException(typeName: exception.GetType()
-                                                                                                                                   .Name,
-                                                                                                                retryCount: retryCount,
-                                                                                                                maxRetries: MAX_RETRIES,
-                                                                                                                delay: delay,
-                                                                                                                $"{context.OperationKey}: {exception.Message}",
-                                                                                                                exception: exception);
+                                                                  this._logger.TransientException(typeName: exception.GetType()
+                                                                                                                     .Name,
+                                                                                                  retryCount: retryCount,
+                                                                                                  maxRetries: MAX_RETRIES,
+                                                                                                  delay: delay,
+                                                                                                  $"{context.OperationKey}: {exception.Message}",
+                                                                                                  exception: exception);
                                                               });
     }
 
@@ -65,7 +66,7 @@ public sealed class PackageUploader : IPackageUploader
         }
         catch (Exception exception)
         {
-            this._logger.LogError($"ERROR: Failed to upload {package}: {exception.Message}");
+            this._logger.FailedToUploadPackage(package: package, message: exception.Message, exception: exception);
 
             return (package, success: false);
         }

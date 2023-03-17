@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Credfeto.Package.Push.Constants;
+using Credfeto.Package.Push.LoggingExtensions;
 using Microsoft.Extensions.Logging;
 
 namespace Credfeto.Package.Push.Extensions;
@@ -27,13 +28,18 @@ public static class PackageSearchExtensions
 
     private static string? FindMatchingSymbolByFullName(this IReadOnlyList<string> symbolPackages, string expectedSymbol, ILogger logger)
     {
-        logger.LogDebug($"Looking for Symbols Package: {expectedSymbol}");
+        logger.LookingForSymbolsPackage($"Looking for Symbols Package: {expectedSymbol}");
 
         string? symbolSource = symbolPackages.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x: x, y: expectedSymbol));
 
-        logger.LogDebug(symbolSource != null
-                            ? $"Package package - found symbols {symbolSource}"
-                            : $"Package package - no symbols found {expectedSymbol}");
+        if (symbolSource != null)
+        {
+            logger.SymbolPackageFound(symbolSource);
+        }
+        else
+        {
+            logger.SymbolPackageNotFound(expectedSymbol);
+        }
 
         return symbolSource;
     }

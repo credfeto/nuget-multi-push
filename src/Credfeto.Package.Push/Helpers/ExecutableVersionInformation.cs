@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Credfeto.Package.Push;
+namespace Credfeto.Package.Push.Helpers;
 
 internal static class ExecutableVersionInformation
 {

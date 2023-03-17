@@ -17,7 +17,7 @@ namespace Credfeto.Package.Push.Services;
 public sealed class PackageUploader : IPackageUploader
 {
     private const int MAX_RETRIES = 3;
-    private static readonly ILogger NugetLogger = new ConsoleLogger();
+    private static readonly ILogger NugetLogger = new NuGetConsoleLogger();
     private readonly ILogger<PackageUploader> _logger;
     private readonly AsyncRetryPolicy _retryPolicy;
 

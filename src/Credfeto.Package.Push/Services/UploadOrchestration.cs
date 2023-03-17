@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +24,11 @@ public sealed class UploadOrchestration : IUploadOrchestration
         this._logger = logger;
     }
 
-    public async Task<bool> PushAllAsync(string source, string symbolSource, IReadOnlyList<string> packages, string apiKey, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<(string package, bool success)>> PushAllAsync(string source,
+                                                                                  string symbolSource,
+                                                                                  IReadOnlyList<string> packages,
+                                                                                  string apiKey,
+                                                                                  CancellationToken cancellationToken)
     {
         SourceRepository sourceRepository = ConfigureSourceRepository(source);
 
@@ -62,26 +65,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
                                                                                         apiKey: apiKey,
                                                                                         packageUpdateResource: packageUpdateResource);
 
-        (string package, bool success)[] results = await Task.WhenAll(tasks);
-
-        OutputPackagesAsAssets(packages);
-
-        return this.OutputUploadSummary(results);
-    }
-
-    private static void OutputPackagesAsAssets(IReadOnlyList<string> packages)
-    {
-        string? env = Environment.GetEnvironmentVariable("TEAMCITY_VERSION");
-
-        if (string.IsNullOrWhiteSpace(env))
-        {
-            return;
-        }
-
-        foreach (string package in packages)
-        {
-            Console.WriteLine($"##teamcity[publishArtifacts '{package}']");
-        }
+        return await Task.WhenAll(tasks);
     }
 
     private IEnumerable<Task<(string package, bool success)>> BuildUploadTasks(SourceRepository? symbolSourceRepository,
@@ -103,13 +87,13 @@ public sealed class UploadOrchestration : IUploadOrchestration
         {
             if (symbolPackageUpdateResourceAsPackage != null)
             {
-                this._logger.LogInformation("Separate Symbol Repo; uses package api to upload");
+                this._logger.SeparateSymbolRepoUsingPackageApiToUpload();
 
                 return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
                            .Concat(this.UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: symbolPackageUpdateResourceAsPackage));
             }
 
-            this._logger.LogInformation("Separate Symbol Repo; no suitable upload method - upload all as packages to primary");
+            this._logger.SeparateSymbolRepoUploadingAllToPrimary();
 
             return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
                        .Concat(this.UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
@@ -124,7 +108,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
                                                      packageUpdateResource: packageUpdateResource);
         }
 
-        this._logger.LogInformation("Same Symbol Repo; no suitable upload method - upload all as packages to primary");
+        this._logger.SeparateSymbolRepoUploadingAllToPrimary();
 
         return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
                    .Concat(this.UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
@@ -141,7 +125,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
         if (oldSymbols.Count != 0 && newSymbols.Count == 0)
         {
-            this._logger.LogInformation("Same Symbol Repo; old format symbols only - uses symbol api to upload at same time");
+            this._logger.SameSymbolRepoOldFormatSymbolsUsingSymbolApiAtSameTime();
 
             return this.UploadPackagesWithMatchingSymbols(symbolPackageUpdateResource: symbolPackageUpdateResource,
                                                           nonSymbolPackages: nonSymbolPackages,
@@ -152,13 +136,13 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
         if (oldSymbols.Count == 0 && newSymbols.Count != 0)
         {
-            this._logger.LogInformation("Same Symbol Repo; new format (snupkg) symbols - upload all as packages to primary");
+            this._logger.SameSymbolRepoNewFormatSymbolsAllToPrimary();
 
             return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
                        .Concat(this.UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
         }
 
-        this._logger.LogInformation("Same Symbol Repo; mixture - old format using symbol api, new format to primary");
+        this._logger.SameSymbolRepoMexedFormatSymbolsOldSymolApiNewToPrimary();
 
         return this.UploadPackagesWithMatchingSymbols(symbolPackageUpdateResource: symbolPackageUpdateResource,
                                                       nonSymbolPackages: nonSymbolPackages,
@@ -199,7 +183,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
             return null;
         }
 
-        this._logger.LogInformation($"Pushing Symbol Packages to: {symbolPackageUpdateResource.SourceUri}");
+        this._logger.PushingSymbolPackagesToServer(symbolPackageUpdateResource.SourceUri);
 
         return symbolPackageUpdateResource;
     }
@@ -247,24 +231,5 @@ public sealed class UploadOrchestration : IUploadOrchestration
         PackageSource packageSource = new(name: "Custom", source: source, isEnabled: true, isPersistable: true, isOfficial: true);
 
         return new(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
-    }
-
-    private bool OutputUploadSummary(IReadOnlyList<(string package, bool success)> results)
-    {
-        this._logger.LogInformation("Upload Summary:");
-        bool errors = false;
-
-        foreach ((string package, bool success) in results)
-        {
-            string packageName = Path.GetFileName(package);
-
-            string status = success
-                ? "Uploaded"
-                : "FAILED";
-            this._logger.LogInformation($"* {packageName} : {status}");
-            errors |= !success;
-        }
-
-        return !errors;
     }
 }

@@ -9,6 +9,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- Added polly to add retrying of transient upload errors
+- Restructured to use smaller services rather than a single large class
+- Used source generated logging
 ### Removed
 ### Deployment Changes
 

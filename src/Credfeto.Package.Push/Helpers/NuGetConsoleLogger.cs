@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using NuGet.Common;
 
-namespace Credfeto.Package.Push;
+namespace Credfeto.Package.Push.Helpers;
 
-internal sealed class ConsoleLogger : ILogger
+internal sealed class NuGetConsoleLogger : ILogger
 {
     public void LogDebug(string data)
     {

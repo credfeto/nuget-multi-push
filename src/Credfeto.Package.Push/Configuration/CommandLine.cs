@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
-namespace Credfeto.Package.Push;
+namespace Credfeto.Package.Push.Configuration;
 
-public static class Config
+internal static class CommandLine
 {
-    public static IConfigurationRoot LoadConfiguration(string[] args)
+    public static IConfigurationRoot Options(string[] args)
     {
         return new ConfigurationBuilder().AddCommandLine(args: args,
                                                          new Dictionary<string, string>(StringComparer.Ordinal)

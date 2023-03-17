@@ -9,15 +9,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Added polly to add retrying of transient upload errors
-- Restructured to use smaller services rather than a single large class
-- Used source generated logging
 ### Removed
 ### Deployment Changes
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.5.0] - 2023-03-17
+### Changed
+- Added polly to add retrying of transient upload errors
+- Restructured to use smaller services rather than a single large class
+- Used source generated logging
+
 ## [1.4.25] - 2023-03-17
 ### Changed
 - FF-1429 - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.8

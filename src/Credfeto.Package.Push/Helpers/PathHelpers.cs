@@ -1,8 +1,8 @@
 using System.IO;
 
-namespace Credfeto.Package.Push;
+namespace Credfeto.Package.Push.Helpers;
 
-public static class PathHelpers
+internal static class PathHelpers
 {
     public static string ConvertToNative(string path)
     {

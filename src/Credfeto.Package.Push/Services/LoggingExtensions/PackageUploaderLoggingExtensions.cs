@@ -1,13 +1,12 @@
 using System;
-using Credfeto.Package.Push.Services;
 using Microsoft.Extensions.Logging;
 
-namespace Credfeto.Package.Push.LoggingExtensions;
+namespace Credfeto.Package.Push.Services.LoggingExtensions;
 
-internal static partial class PusherLoggingExtensions
+internal static partial class PackageUploaderLoggingExtensions
 {
-    [LoggerMessage(EventId = 0, Level = LogLevel.Warning, Message = "Retrying transient exception {typeName}, on attempt {retryCount} of {maxRetries}. Current delay is {delay}: {details}")]
-    public static partial void LogAndDispatchTransientException(this ILogger<UploadOrchestration> logger,
+    [LoggerMessage(EventId = 0, Level = LogLevel.Information, Message = "Retrying transient exception {typeName}, on attempt {retryCount} of {maxRetries}. Current delay is {delay}: {details}")]
+    public static partial void LogAndDispatchTransientException(this ILogger<PackageUploader> logger,
                                                                 string typeName,
                                                                 int retryCount,
                                                                 int maxRetries,

@@ -13,14 +13,14 @@ using NuGet.Protocol.Core.Types;
 
 namespace Credfeto.Package.Push.Services;
 
-public sealed class Pusher : IPusher
+public sealed class UploadOrchestration : IUploadOrchestration
 {
-    private readonly ILogger<Pusher> _logger;
-    private readonly IUploader _uploader;
+    private readonly ILogger<UploadOrchestration> _logger;
+    private readonly IPackageUploader _packageUploader;
 
-    public Pusher(IUploader uploader, ILogger<Pusher> logger)
+    public UploadOrchestration(IPackageUploader packageUploader, ILogger<UploadOrchestration> logger)
     {
-        this._uploader = uploader;
+        this._packageUploader = packageUploader;
         this._logger = logger;
     }
 
@@ -173,20 +173,20 @@ public sealed class Pusher : IPusher
                                                                                                 string apiKey,
                                                                                                 PackageUpdateResource packageUpdateResource)
     {
-        return nonSymbolPackages.Select(package => this._uploader.PushOnePackageAsync(package: package,
-                                                                                      symbolPackages: symbolPackages,
-                                                                                      packageUpdateResource: packageUpdateResource,
-                                                                                      apiKey: apiKey,
-                                                                                      symbolPackageUpdateResource: symbolPackageUpdateResource));
+        return nonSymbolPackages.Select(package => this._packageUploader.PushOnePackageAsync(package: package,
+                                                                                             symbolPackages: symbolPackages,
+                                                                                             packageUpdateResource: packageUpdateResource,
+                                                                                             apiKey: apiKey,
+                                                                                             symbolPackageUpdateResource: symbolPackageUpdateResource));
     }
 
     private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
     {
-        return packages.Select(package => this._uploader.PushOnePackageAsync(package: package,
-                                                                             packageUpdateResource: packageUpdateResource,
-                                                                             apiKey: apiKey,
-                                                                             symbolPackageUpdateResource: null,
-                                                                             symbolPackages: Array.Empty<string>()));
+        return packages.Select(package => this._packageUploader.PushOnePackageAsync(package: package,
+                                                                                    packageUpdateResource: packageUpdateResource,
+                                                                                    apiKey: apiKey,
+                                                                                    symbolPackageUpdateResource: null,
+                                                                                    symbolPackages: Array.Empty<string>()));
     }
 
     private async Task<SymbolPackageUpdateResourceV3?> GetSymbolPackageUpdateSourceAsync(SourceRepository sourceRepository, CancellationToken cancellationToken)

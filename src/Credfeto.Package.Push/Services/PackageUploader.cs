@@ -13,14 +13,14 @@ using ILogger = NuGet.Common.ILogger;
 
 namespace Credfeto.Package.Push.Services;
 
-public sealed class Uploader : IUploader
+public sealed class PackageUploader : IPackageUploader
 {
     private const int MAX_RETRIES = 3;
     private static readonly ILogger NugetLogger = new ConsoleLogger();
-    private readonly ILogger<Uploader> _logger;
+    private readonly ILogger<PackageUploader> _logger;
     private readonly AsyncRetryPolicy _retryPolicy;
 
-    public Uploader(ILogger<Uploader> logger)
+    public PackageUploader(ILogger<PackageUploader> logger)
     {
         this._logger = logger;
         this._retryPolicy = this.DefineAsyncPolicy();

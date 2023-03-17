@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Credfeto.Package.Push.Configuration;
 using Credfeto.Package.Push.Constants;
+using Credfeto.Package.Push.Exceptions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,19 +20,7 @@ internal static class Program
         {
             IConfigurationRoot configuration = Config.LoadConfiguration(args);
 
-            string source = configuration.GetValue<string>(key: @"source")!;
-            string symbolSource = configuration.GetValue<string>(key: @"symbol-source")!;
-
-            string folder = configuration.GetValue<string>(key: @"Folder")!;
-
-            if (string.IsNullOrEmpty(folder))
-            {
-                Console.WriteLine("ERROR: folder not specified");
-
-                return ExitCodes.ERROR;
-            }
-
-            folder = PathHelpers.ConvertToNative(folder);
+            (string source, string symbolSource, string folder, string apiKey) = LoadConfiguration(configuration);
 
             IReadOnlyList<string> packages = Searcher.FindMatchingPackages(folder);
 
@@ -39,40 +28,57 @@ internal static class Program
             {
                 Console.WriteLine("ERROR: folder does not contain any packages");
 
-                return ExitCodes.ERROR;
-            }
-
-            if (string.IsNullOrEmpty(source))
-            {
-                Console.WriteLine("ERROR: source not specified");
-
-                return ExitCodes.ERROR;
-            }
-
-            string apiKey = configuration.GetValue<string>(key: @"api-key")!;
-
-            if (string.IsNullOrEmpty(apiKey))
-            {
-                Console.WriteLine("ERROR: api-key not specified");
-
-                return ExitCodes.ERROR;
+                return ExitCodes.Error;
             }
 
             IServiceProvider serviceProvider = ServiceConfiguration.Configure();
 
-            IPusher pusher = serviceProvider.GetRequiredService<IPusher>();
+            IDiagnosticLogger diagnosticLogger = serviceProvider.GetRequiredService<IDiagnosticLogger>();
+            IUploadOrchestration uploadOrchestration = serviceProvider.GetRequiredService<IUploadOrchestration>();
 
-            bool result = await pusher.PushAllAsync(source: source, symbolSource: symbolSource, packages: packages, apiKey: apiKey, cancellationToken: CancellationToken.None);
+            bool result = await uploadOrchestration.PushAllAsync(source: source, symbolSource: symbolSource, packages: packages, apiKey: apiKey, cancellationToken: CancellationToken.None);
 
-            return result
-                ? ExitCodes.SUCCESS
-                : ExitCodes.ERROR;
+            return CheckError(result: result, diagnosticLogger: diagnosticLogger);
         }
         catch (Exception exception)
         {
             Console.WriteLine($"ERROR: {exception.Message}");
 
-            return ExitCodes.ERROR;
+            return ExitCodes.Error;
         }
+    }
+
+    private static (string source, string symbolSource, string folder, string apiKey) LoadConfiguration(IConfigurationRoot configuration)
+    {
+        string source = configuration.GetValue<string>(key: @"source")!;
+        string symbolSource = configuration.GetValue<string>(key: @"symbol-source")!;
+
+        string folder = configuration.GetValue<string>(key: @"Folder")!;
+
+        if (string.IsNullOrEmpty(source))
+        {
+            throw new ConfigurationErrorsException("Source not specified");
+        }
+
+        string apiKey = configuration.GetValue<string>(key: @"api-key")!;
+
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            throw new ConfigurationErrorsException("api-key not specified");
+        }
+
+        if (string.IsNullOrEmpty(folder))
+        {
+            throw new ConfigurationErrorsException("folder not specified");
+        }
+
+        return (source, symbolSource, folder, apiKey);
+    }
+
+    private static int CheckError(bool result, IDiagnosticLogger diagnosticLogger)
+    {
+        return !result || diagnosticLogger.IsErrored
+            ? ExitCodes.Error
+            : ExitCodes.Success;
     }
 }

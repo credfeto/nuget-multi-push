@@ -14,8 +14,8 @@ internal static class ServiceConfiguration
         return new ServiceCollection().AddSingleton<ILogger>(logger)
                                       .AddSingleton<IDiagnosticLogger>(logger)
                                       .AddSingleton(typeof(ILogger<>), typeof(LoggerProxy<>))
-                                      .AddSingleton<IPusher, Pusher>()
-                                      .AddSingleton<IUploader, Uploader>()
+                                      .AddSingleton<IUploadOrchestration, UploadOrchestration>()
+                                      .AddSingleton<IPackageUploader, PackageUploader>()
                                       .BuildServiceProvider();
     }
 }

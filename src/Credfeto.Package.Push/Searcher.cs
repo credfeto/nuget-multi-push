@@ -9,8 +9,10 @@ public static class Searcher
 {
     public static IReadOnlyList<string> FindMatchingPackages(string folder)
     {
-        return Directory.GetFiles(path: folder, searchPattern: PackageNaming.SearchPattern)
-                        .Concat(Directory.GetFiles(path: folder, searchPattern: PackageNaming.SourceSearchPattern))
+        string nativeFolder = PathHelpers.ConvertToNative(folder);
+
+        return Directory.GetFiles(path: nativeFolder, searchPattern: PackageNaming.SearchPattern)
+                        .Concat(Directory.GetFiles(path: nativeFolder, searchPattern: PackageNaming.SourceSearchPattern))
                         .ToArray();
     }
 }

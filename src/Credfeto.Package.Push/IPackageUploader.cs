@@ -4,7 +4,7 @@ using NuGet.Protocol.Core.Types;
 
 namespace Credfeto.Package.Push;
 
-public interface IUploader
+public interface IPackageUploader
 {
     Task<(string package, bool success)> PushOnePackageAsync(string package,
                                                              IReadOnlyList<string> symbolPackages,

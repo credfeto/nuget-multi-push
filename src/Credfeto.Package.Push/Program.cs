@@ -44,7 +44,7 @@ internal static class Program
             throw new UploadConfigurationErrorsException("folder does not contain any packages");
         }
 
-        IServiceProvider serviceProvider = ServiceConfiguration.Configure();
+        IServiceProvider serviceProvider = ServiceConfiguration.Configure(warningsAsErrors: false);
 
         IDiagnosticLogger diagnosticLogger = serviceProvider.GetRequiredService<IDiagnosticLogger>();
         IUploadOrchestration uploadOrchestration = serviceProvider.GetRequiredService<IUploadOrchestration>();
@@ -96,7 +96,7 @@ internal static class Program
     private static bool OutputUploadSummary(IReadOnlyList<(string package, bool success)> results)
     {
         Console.WriteLine("Upload Summary:");
-        bool errors = false;
+        int errors = 0;
 
         foreach ((string package, bool success) in results)
         {
@@ -106,10 +106,14 @@ internal static class Program
                 ? "Uploaded"
                 : "FAILED";
             Console.WriteLine($"* {packageName} : {status}");
-            errors |= !success;
+
+            if (!success)
+            {
+                ++errors;
+            }
         }
 
-        return !errors;
+        return errors == 0;
     }
 
     private static void OutputPackagesAsAssets(IReadOnlyList<(string package, bool success)> packages)

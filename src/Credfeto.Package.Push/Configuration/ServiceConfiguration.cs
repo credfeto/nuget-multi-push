@@ -7,9 +7,9 @@ namespace Credfeto.Package.Push.Configuration;
 
 internal static class ServiceConfiguration
 {
-    public static IServiceProvider Configure()
+    public static IServiceProvider Configure(bool warningsAsErrors)
     {
-        DiagnosticLogger logger = new(true);
+        DiagnosticLogger logger = new(warningsAsErrors);
 
         return new ServiceCollection().AddSingleton<ILogger>(logger)
                                       .AddSingleton<IDiagnosticLogger>(logger)

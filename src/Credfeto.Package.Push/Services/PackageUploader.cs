@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Credfeto.Package.Push.Extensions;
 using Credfeto.Package.Push.Helpers;
@@ -74,6 +75,6 @@ public sealed class PackageUploader : IPackageUploader
 
     private static bool IsTransientException(Exception exception)
     {
-        return exception is IOException or OperationCanceledException or TimeoutException or TaskCanceledException;
+        return exception is IOException or OperationCanceledException or TimeoutException or TaskCanceledException or HttpRequestException;
     }
 }

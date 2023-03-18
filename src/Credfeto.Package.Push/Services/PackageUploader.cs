@@ -67,7 +67,11 @@ public sealed class PackageUploader : IPackageUploader
         }
         catch (Exception exception)
         {
-            this._logger.FailedToUploadPackage(package: package, message: exception.Message, exception: exception);
+            this._logger.FailedToUploadPackage(package: package,
+                                               exception.GetType()
+                                                        .FullName ?? "??",
+                                               message: exception.Message,
+                                               exception: exception);
 
             return (package, success: false);
         }

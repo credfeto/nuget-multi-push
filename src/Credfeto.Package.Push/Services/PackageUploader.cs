@@ -35,7 +35,7 @@ public sealed class PackageUploader : IPackageUploader
                                                                                                   retryCount: retryCount,
                                                                                                   maxRetries: MAX_RETRIES,
                                                                                                   delay: delay,
-                                                                                                  $"{context.OperationKey}: {exception.Message}",
+                                                                                                  $"{context.OperationKey}: {exception.GetType().FullName ?? "??"}: {exception.Message}",
                                                                                                   exception: exception);
                                                               });
     }
@@ -52,16 +52,19 @@ public sealed class PackageUploader : IPackageUploader
 
             List<string> packagePaths = new() { package };
 
-            await this._retryPolicy.ExecuteAsync(() => packageUpdateResource.Push(packagePaths: packagePaths,
-                                                                                  symbolSource: symbolSource,
-                                                                                  timeoutInSecond: 800,
-                                                                                  disableBuffering: false,
-                                                                                  getApiKey: _ => apiKey,
-                                                                                  getSymbolApiKey: _ => apiKey,
-                                                                                  noServiceEndpoint: false,
-                                                                                  skipDuplicate: true,
-                                                                                  symbolPackageUpdateResource: symbolPackageUpdateResource,
-                                                                                  log: this._nugetLogger));
+            int attempt = 0;
+
+            await this._retryPolicy.ExecuteAsync(() =>
+                                                 {
+                                                     ++attempt;
+
+                                                     return this.UploadOneAsync(packageUpdateResource: packageUpdateResource,
+                                                                                apiKey: apiKey,
+                                                                                symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                                                                packagePaths: packagePaths,
+                                                                                attempt: attempt,
+                                                                                symbolSource: symbolSource);
+                                                 });
 
             return (package, success: true);
         }
@@ -75,6 +78,30 @@ public sealed class PackageUploader : IPackageUploader
 
             return (package, success: false);
         }
+    }
+
+    private Task UploadOneAsync(PackageUpdateResource packageUpdateResource,
+                                string apiKey,
+                                SymbolPackageUpdateResourceV3? symbolPackageUpdateResource,
+                                List<string> packagePaths,
+                                int attempt,
+                                string? symbolSource)
+    {
+        foreach (string filename in packagePaths)
+        {
+            this._logger.LogInformation($"Uploading {filename} (attempt attempt {attempt} of {MAX_RETRIES})");
+        }
+
+        return packageUpdateResource.Push(packagePaths: packagePaths,
+                                          symbolSource: symbolSource,
+                                          timeoutInSecond: 800,
+                                          disableBuffering: false,
+                                          getApiKey: _ => apiKey,
+                                          getSymbolApiKey: _ => apiKey,
+                                          noServiceEndpoint: false,
+                                          skipDuplicate: true,
+                                          symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                          log: this._nugetLogger);
     }
 
     private static bool IsTransientException(Exception exception)

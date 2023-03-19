@@ -96,24 +96,37 @@ internal static class Program
     private static bool OutputUploadSummary(IReadOnlyList<(string package, bool success)> results)
     {
         Console.WriteLine("Upload Summary:");
+        int succeeded = 0;
         int errors = 0;
 
         foreach ((string package, bool success) in results)
         {
             string packageName = Path.GetFileName(package);
 
-            string status = success
-                ? "Uploaded"
-                : "FAILED";
-            Console.WriteLine($"* {packageName} : {status}");
-
-            if (!success)
+            if (success)
             {
+                Console.WriteLine($"* {packageName} : Uploaded");
+                ++succeeded;
+            }
+            else
+            {
+                Console.WriteLine($"* {packageName} : FAILED");
                 ++errors;
             }
         }
 
+        Console.WriteLine($"Total Packages: {results.Count}");
+        Console.WriteLine($"Succeeded: {succeeded}");
+        Console.WriteLine($"Failures: {errors}");
+
         return errors == 0;
+    }
+
+    private static string GetUploadStatus(bool success)
+    {
+        return success
+            ? "Uploaded"
+            : "FAILED";
     }
 
     private static void OutputPackagesAsAssets(IReadOnlyList<(string package, bool success)> packages)

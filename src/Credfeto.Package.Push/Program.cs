@@ -122,13 +122,6 @@ internal static class Program
         return errors == 0;
     }
 
-    private static string GetUploadStatus(bool success)
-    {
-        return success
-            ? "Uploaded"
-            : "FAILED";
-    }
-
     private static void OutputPackagesAsAssets(IReadOnlyList<(string package, bool success)> packages)
     {
         string? env = Environment.GetEnvironmentVariable("TEAMCITY_VERSION");

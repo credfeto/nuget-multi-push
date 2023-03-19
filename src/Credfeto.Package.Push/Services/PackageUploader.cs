@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Credfeto.Package.Push.Extensions;
 using Credfeto.Package.Push.Helpers;
-using Credfeto.Package.Push.LoggingExtensions;
 using Credfeto.Package.Push.Services.LoggingExtensions;
 using Microsoft.Extensions.Logging;
 using NuGet.Protocol.Core.Types;
@@ -18,12 +17,13 @@ namespace Credfeto.Package.Push.Services;
 public sealed class PackageUploader : IPackageUploader
 {
     private const int MAX_RETRIES = 3;
-    private static readonly ILogger NugetLogger = new NuGetConsoleLogger();
     private readonly ILogger<PackageUploader> _logger;
+    private readonly ILogger _nugetLogger;
     private readonly AsyncRetryPolicy _retryPolicy;
 
-    public PackageUploader(ILogger<PackageUploader> logger)
+    public PackageUploader(ILogger nugetLogger, ILogger<PackageUploader> logger)
     {
+        this._nugetLogger = nugetLogger;
         this._logger = logger;
         this._retryPolicy = Policy.Handle((Func<Exception, bool>)IsTransientException)
                                   .WaitAndRetryAsync(retryCount: MAX_RETRIES,
@@ -61,7 +61,7 @@ public sealed class PackageUploader : IPackageUploader
                                                                                   noServiceEndpoint: false,
                                                                                   skipDuplicate: true,
                                                                                   symbolPackageUpdateResource: symbolPackageUpdateResource,
-                                                                                  log: NugetLogger));
+                                                                                  log: this._nugetLogger));
 
             return (package, success: true);
         }

@@ -9,15 +9,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.22
-- Dependencies - Updated SonarAnalyzer.CSharp to 8.55.0.65544
-- Retry count and min delay plus jitter
 ### Removed
 ### Deployment Changes
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.5.1] - 2023-03-23
+### Changed
+- Dependencies - Updated Meziantou.Analyzer to 2.0.22
+- Dependencies - Updated SonarAnalyzer.CSharp to 8.55.0.65544
+- Retry count and min delay plus jitter
+
 ## [1.5.0] - 2023-03-17
 ### Changed
 - Added polly to add retrying of transient upload errors

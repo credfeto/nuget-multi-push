@@ -1,8 +1,7 @@
 using System;
-using Credfeto.Package.Push.Services;
 using Microsoft.Extensions.Logging;
 
-namespace Credfeto.Package.Push.LoggingExtensions;
+namespace Credfeto.Package.Push.Services.LoggingExtensions;
 
 internal static partial class UploadOrchestrationLoggingExtensions
 {

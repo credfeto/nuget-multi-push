@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Credfeto.Package.Push.Constants;
 using Credfeto.Package.Push.Extensions;
-using Credfeto.Package.Push.LoggingExtensions;
+using Credfeto.Package.Push.Services.LoggingExtensions;
 using Microsoft.Extensions.Logging;
 using NuGet.Configuration;
 using NuGet.Protocol.Core.Types;

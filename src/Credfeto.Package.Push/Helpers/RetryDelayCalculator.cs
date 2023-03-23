@@ -5,20 +5,14 @@ namespace Credfeto.Package.Push.Helpers;
 
 internal static class RetryDelayCalculator
 {
-    public static TimeSpan Calculate(int attempts)
-    {
-        // do a fast first retry, then exponential backoff
-        return attempts <= 1
-            ? TimeSpan.Zero
-            : TimeSpan.FromSeconds(CalculateBackoff(attempts));
-    }
+    private static readonly TimeSpan MinDelay = TimeSpan.FromSeconds(5);
 
     public static TimeSpan CalculateWithJitter(int attempts, int maxJitterSeconds)
     {
         // do a fast first retry, then exponential backoff
         return attempts <= 1
-            ? TimeSpan.Zero
-            : TimeSpan.FromSeconds(WithJitter(CalculateBackoff(attempts), maxSeconds: maxJitterSeconds));
+            ? MinDelay
+            : MinDelay + TimeSpan.FromSeconds(WithJitter(CalculateBackoff(attempts), maxSeconds: maxJitterSeconds));
     }
 
     private static double CalculateBackoff(int attempts)

@@ -16,7 +16,7 @@ namespace Credfeto.Package.Push.Services;
 
 public sealed class PackageUploader : IPackageUploader
 {
-    private const int MAX_RETRIES = 3;
+    private const int MAX_RETRIES = 5;
     private readonly ILogger<PackageUploader> _logger;
     private readonly ILogger _nugetLogger;
     private readonly AsyncRetryPolicy _retryPolicy;
@@ -27,17 +27,14 @@ public sealed class PackageUploader : IPackageUploader
         this._logger = logger;
         this._retryPolicy = Policy.Handle((Func<Exception, bool>)IsTransientException)
                                   .WaitAndRetryAsync(retryCount: MAX_RETRIES,
-                                                     sleepDurationProvider: RetryDelayCalculator.Calculate,
-                                                     onRetry: (exception, delay, retryCount, context) =>
-                                                              {
-                                                                  this._logger.TransientException(typeName: exception.GetType()
-                                                                                                                     .Name,
-                                                                                                  retryCount: retryCount,
-                                                                                                  maxRetries: MAX_RETRIES,
-                                                                                                  delay: delay,
-                                                                                                  $"{context.OperationKey}: {exception.GetType().FullName ?? "??"}: {exception.Message}",
-                                                                                                  exception: exception);
-                                                              });
+                                                     sleepDurationProvider: CalculateRetry,
+                                                     onRetry: (exception, delay, retryCount, context) => this._logger.TransientException(typeName: exception.GetType()
+                                                                      .Name,
+                                                                  retryCount: retryCount,
+                                                                  maxRetries: MAX_RETRIES,
+                                                                  delay: delay,
+                                                                  $"{context.OperationKey}: {exception.GetType().FullName ?? "??"}: {exception.Message}",
+                                                                  exception: exception));
     }
 
     public async Task<(string package, bool success)> PushOnePackageAsync(string package,
@@ -78,6 +75,11 @@ public sealed class PackageUploader : IPackageUploader
 
             return (package, success: false);
         }
+    }
+
+    private static TimeSpan CalculateRetry(int retry)
+    {
+        return RetryDelayCalculator.CalculateWithJitter(attempts: retry, maxJitterSeconds: 10);
     }
 
     private Task UploadOneAsync(PackageUpdateResource packageUpdateResource,

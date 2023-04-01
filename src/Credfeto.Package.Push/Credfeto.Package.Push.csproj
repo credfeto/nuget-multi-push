@@ -9,6 +9,7 @@
     <IlcOptimizationPreference>Size</IlcOptimizationPreference>
     <ImplicitUsings>disable</ImplicitUsings>
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+    <IncludeSymbols>true</IncludeSymbols>
     <IsPackable>true</IsPackable>
     <IsPublishable>true</IsPublishable>
     <LangVersion>latest</LangVersion>
@@ -18,6 +19,7 @@
     <PackAsTool>true</PackAsTool>
     <RunAOTCompilation>false</RunAOTCompilation>
     <RuntimeIdentifiers>win-x64;win10-x64;win81-x64;osx.10.12-x64;linux-x64;debian.9-x64;linux-arm64</RuntimeIdentifiers>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <TieredCompilation>true</TieredCompilation>
     <TieredPGO>true</TieredPGO>
@@ -27,8 +29,6 @@
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
     <ValidateExecutableReferencesMatchSelfContained>true</ValidateExecutableReferencesMatchSelfContained>
     <WarningsAsErrors />
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <PropertyGroup>
     <AnalysisLevel>latest</AnalysisLevel>

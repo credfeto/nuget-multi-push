@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Credfeto.Package.Push.Helpers;
@@ -9,21 +12,56 @@ internal static class ExecutableVersionInformation
 {
     public static string ProgramVersion()
     {
-        return CommonVersion(typeof(ExecutableVersionInformation));
+        return CommonVersion(typeof(Program));
     }
 
     private static string CommonVersion(Type type)
     {
-        FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(GetFileName(type.Assembly));
+        Assembly assembly = type.Assembly;
+
+        return GetAssemblyFileVersionFile() ?? GetAssemblyFileVersion(assembly) ?? GetAssemblyVersion(assembly);
+    }
+
+    private static string? GetAssemblyFileVersionFile()
+    {
+        IReadOnlyList<string> args = Environment.GetCommandLineArgs();
+
+        if (args.Count == 0)
+        {
+            return null;
+        }
+
+        string location = args[0];
+
+        if (string.IsNullOrWhiteSpace(location) || !File.Exists(location))
+        {
+            return null;
+        }
+
+        FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(location);
 
         return fileVersionInfo.ProductVersion!;
     }
 
-    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0008:Don't disable warnings with #pragma", Justification = "Needed in this case")]
-    private static string GetFileName(Assembly assembly)
+    private static string? GetAssemblyFileVersion(Assembly assembly)
     {
-#pragma warning disable IL3000
-        return assembly.Location;
-#pragma warning restore IL3000
+        AssemblyFileVersionAttribute? fvi = assembly.GetCustomAttributes<AssemblyFileVersionAttribute>()
+                                                    .FirstOrDefault();
+
+        return fvi?.Version;
+    }
+
+    private static string GetAssemblyVersion(Assembly assembly)
+    {
+        Console.Write("Finding Assembly Version");
+        Version? assemblyVersion = assembly.GetName()
+                                           .Version;
+
+        if (assemblyVersion == null)
+        {
+            throw new VersionNotFoundException();
+        }
+
+        return assemblyVersion.ToString();
     }
 }

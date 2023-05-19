@@ -9,6 +9,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.5.4] - 2023-05-19
+### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.3.0
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.0.0.68202
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.0.18
@@ -17,12 +25,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 2.0.52
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.6.40
 - Dependencies - Updated NuGet to 6.6.0
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.5.3] - 2023-04-23
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 8.56.0.67649

@@ -35,20 +35,19 @@ public sealed class UploadOrchestration : IUploadOrchestration
         PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>(cancellationToken);
         this._logger.PushingPackagesToServer(packageUpdateResource.SourceUri);
 
-        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource =
-            await this.GetSymbolPackageUpdateSourceAsync(sourceRepository: sourceRepository, cancellationToken: cancellationToken);
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await this.GetSymbolPackageUpdateSourceAsync(sourceRepository: sourceRepository, cancellationToken: cancellationToken);
 
         PackageUpdateResource? symbolPackageUpdateResourceAsPackage = null;
 
         SourceRepository? symbolSourceRepository = null;
 
-        if (!string.IsNullOrWhiteSpace(symbolSource) && symbolPackageUpdateResource == null)
+        if (!string.IsNullOrWhiteSpace(symbolSource) && symbolPackageUpdateResource is null)
         {
             symbolSourceRepository = ConfigureSourceRepository(symbolSource);
 
             PackageUpdateResource? resource = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>(cancellationToken);
 
-            if (resource?.SourceUri != null)
+            if (resource?.SourceUri is not null)
             {
                 this._logger.PushingSymbolPackagesToServer(resource.SourceUri);
                 symbolPackageUpdateResourceAsPackage = resource;
@@ -84,9 +83,9 @@ public sealed class UploadOrchestration : IUploadOrchestration
             return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource);
         }
 
-        if (symbolSourceRepository != null)
+        if (symbolSourceRepository is not null)
         {
-            if (symbolPackageUpdateResourceAsPackage != null)
+            if (symbolPackageUpdateResourceAsPackage is not null)
             {
                 this._logger.SeparateSymbolRepoUsingPackageApiToUpload();
 
@@ -100,7 +99,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
                        .Concat(this.UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
         }
 
-        if (symbolPackageUpdateResource != null)
+        if (symbolPackageUpdateResource is not null)
         {
             return this.PushWithSeparateUpdateSource(symbolPackageUpdateResource: symbolPackageUpdateResource,
                                                      nonSymbolPackages: nonSymbolPackages,
@@ -166,9 +165,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
                                                                                              symbolPackageUpdateResource: symbolPackageUpdateResource));
     }
 
-    private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages,
-                                                                                                string apiKey,
-                                                                                                PackageUpdateResource packageUpdateResource)
+    private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
     {
         return packages.Select(package => this._packageUploader.PushOnePackageAsync(package: package,
                                                                                     packageUpdateResource: packageUpdateResource,
@@ -181,7 +178,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
     {
         SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>(cancellationToken);
 
-        if (symbolPackageUpdateResource?.SourceUri == null)
+        if (symbolPackageUpdateResource?.SourceUri is null)
         {
             return null;
         }

@@ -9,17 +9,20 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.1.87
-- SDK - Updated DotNet SDK to 8.0.100-preview.7.23376.3
-- Dependencies - Updated Meziantou.Analyzer to 2.0.81
-- Dependencies - Updated Roslynator.Analyzers to 4.4.0
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.7.0.75501
 ### Removed
 ### Deployment Changes
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.5.6] - 2023-08-09
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.1.87
+- SDK - Updated DotNet SDK to 8.0.100-preview.7.23376.3
+- Dependencies - Updated Meziantou.Analyzer to 2.0.81
+- Dependencies - Updated Roslynator.Analyzers to 4.4.0
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.7.0.75501
+
 ## [1.5.5] - 2023-06-15
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.3.0.71466

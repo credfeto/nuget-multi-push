@@ -9,16 +9,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.8.0.76515
-- Dependencies - Updated Roslynator.Analyzers to 4.5.0
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.2.121
-- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.0.16.111
 ### Removed
 ### Deployment Changes
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.5.8] - 2023-08-30
+### Changed
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.8.0.76515
+- Dependencies - Updated Roslynator.Analyzers to 4.5.0
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.2.121
+- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.0.16.111
+
 ## [1.5.7] - 2023-08-11
 ### Changed
 - Dependencies - Updated NuGet to 6.7.0

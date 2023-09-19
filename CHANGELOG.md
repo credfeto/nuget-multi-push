@@ -15,6 +15,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.3.138
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.10.0.77988
 - Used ThisAssembly.AssemblyInfo to generate static version information
+- Dependencies - Updated Meziantou.Analyzer to 2.0.85
 ### Removed
 ### Deployment Changes
 

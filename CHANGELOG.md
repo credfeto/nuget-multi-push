@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.11.0.78383
+- Dependencies - Updated Polly to 8.0.0
 ### Removed
 ### Deployment Changes
 

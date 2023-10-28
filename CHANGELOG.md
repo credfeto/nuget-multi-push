@@ -11,7 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.6.1
 - Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.3.1
-- Dependencies - Updated Meziantou.Analyzer to 2.0.100
+- Dependencies - Updated Meziantou.Analyzer to 2.0.103
 ### Removed
 ### Deployment Changes
 

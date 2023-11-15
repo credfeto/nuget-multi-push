@@ -10,12 +10,12 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.6.2
-- Dependencies - Updated Meziantou.Analyzer to 2.0.109
 - Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.4.0
 - Dependencies - Updated Microsoft.Extensions to 8.0.0
 - SDK - Updated DotNet SDK to 8.0.100
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.4.198
 - Dependencies - Updated Polly to 8.2.0
+- Dependencies - Updated Meziantou.Analyzer to 2.0.110
 ### Removed
 ### Deployment Changes
 

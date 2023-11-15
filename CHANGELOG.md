@@ -9,6 +9,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.5.13] - 2023-11-15
+### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.6.2
 - Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.4.0
 - Dependencies - Updated Microsoft.Extensions to 8.0.0
@@ -17,12 +25,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Polly to 8.2.0
 - Dependencies - Updated Meziantou.Analyzer to 2.0.110
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.8.14
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.5.12] - 2023-11-01
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.6.1

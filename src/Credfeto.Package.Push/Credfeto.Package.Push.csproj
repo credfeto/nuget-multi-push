@@ -61,7 +61,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="NuGet.Commands" Version="6.7.0" />
+    <PackageReference Include="NuGet.Commands" Version="6.8.0" />
     <PackageReference Include="Polly" Version="8.2.0" />
   </ItemGroup>
   <ItemGroup>

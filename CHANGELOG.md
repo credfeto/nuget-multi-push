@@ -11,7 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.6.4
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.14.0.81108
-- Dependencies - Updated Meziantou.Analyzer to 2.0.113
+- Dependencies - Updated Meziantou.Analyzer to 2.0.114
 ### Removed
 ### Deployment Changes
 

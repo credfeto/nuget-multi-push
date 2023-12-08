@@ -23,8 +23,8 @@ internal static class PackageSearchExtensions
         string expectedSymbolOld = baseName + PackageNaming.SymbolsOldPackageExtension;
         string expectedSymbolNew = baseName + PackageNaming.SymbolsNewPackageExtension;
 
-        return symbolPackages.FindMatchingSymbolByFullName(expectedSymbol: expectedSymbolNew, logger) ??
-               symbolPackages.FindMatchingSymbolByFullName(expectedSymbol: expectedSymbolOld, logger);
+        return symbolPackages.FindMatchingSymbolByFullName(expectedSymbol: expectedSymbolNew, logger: logger) ??
+               symbolPackages.FindMatchingSymbolByFullName(expectedSymbol: expectedSymbolOld, logger: logger);
     }
 
     private static string? FindMatchingSymbolByFullName(this IReadOnlyList<string> symbolPackages, string expectedSymbol, ILogger logger)

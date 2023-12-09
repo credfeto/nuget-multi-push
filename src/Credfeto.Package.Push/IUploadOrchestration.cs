@@ -6,5 +6,9 @@ namespace Credfeto.Package.Push;
 
 public interface IUploadOrchestration
 {
-    Task<IReadOnlyList<(string package, bool success)>> PushAllAsync(string source, string? symbolSource, IReadOnlyList<string> packages, string apiKey, CancellationToken cancellationToken);
+    Task<IReadOnlyList<(string package, bool success)>> PushAllAsync(string source,
+                                                                     string? symbolSource,
+                                                                     IReadOnlyList<string> packages,
+                                                                     string apiKey,
+                                                                     CancellationToken cancellationToken);
 }

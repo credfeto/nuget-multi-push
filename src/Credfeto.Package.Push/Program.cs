@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -35,7 +36,7 @@ internal static class Program
 
     private static async Task<int> UploadPackagesAsync(IConfigurationRoot configuration)
     {
-        (string source, string symbolSource, string folder, string apiKey) = LoadConfiguration(configuration);
+        (string source, string? symbolSource, string folder, string apiKey) = LoadConfiguration(configuration);
 
         IReadOnlyList<string> packages = Searcher.FindMatchingPackages(folder);
 
@@ -66,31 +67,50 @@ internal static class Program
             : ExitCodes.Success;
     }
 
-    private static (string source, string symbolSource, string folder, string apiKey) LoadConfiguration(IConfigurationRoot configuration)
+    private static (string source, string? symbolSource, string folder, string apiKey) LoadConfiguration(IConfigurationRoot configuration)
     {
-        string source = configuration.GetValue<string>(key: @"source")!;
-        string symbolSource = configuration.GetValue<string>(key: @"symbol-source")!;
-
-        string folder = configuration.GetValue<string>(key: @"Folder")!;
+        string? source = configuration.GetValue<string>(key: @"source");
 
         if (string.IsNullOrEmpty(source))
         {
-            throw new UploadConfigurationErrorsException("Source not specified");
+            return SourceNotSpecified();
         }
 
-        string apiKey = configuration.GetValue<string>(key: @"api-key")!;
+        string? apiKey = configuration.GetValue<string>(key: @"api-key");
 
         if (string.IsNullOrEmpty(apiKey))
         {
-            throw new UploadConfigurationErrorsException("api-key not specified");
+            return ApiKeyNotSpecified();
         }
+
+        string? folder = configuration.GetValue<string>(key: @"Folder");
 
         if (string.IsNullOrEmpty(folder))
         {
-            throw new UploadConfigurationErrorsException("folder not specified");
+            return FolderNotSpecified();
         }
 
+        string? symbolSource = configuration.GetValue<string>(key: @"symbol-source");
+
         return (source, symbolSource, folder, apiKey);
+    }
+
+    [DoesNotReturn]
+    private static (string source, string symbolSource, string folder, string apiKey) FolderNotSpecified()
+    {
+        throw new UploadConfigurationErrorsException("folder not specified");
+    }
+
+    [DoesNotReturn]
+    private static (string source, string symbolSource, string folder, string apiKey) ApiKeyNotSpecified()
+    {
+        throw new UploadConfigurationErrorsException("api-key not specified");
+    }
+
+    [DoesNotReturn]
+    private static (string source, string symbolSource, string folder, string apiKey) SourceNotSpecified()
+    {
+        throw new UploadConfigurationErrorsException("Source not specified");
     }
 
     private static bool OutputUploadSummary(IReadOnlyList<(string package, bool success)> results)

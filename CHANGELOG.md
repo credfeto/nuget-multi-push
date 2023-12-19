@@ -13,7 +13,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.15.0.81779
 - Dependencies - Updated Nullable.Extended.Analyzer to 1.14.6129
 - Dependencies - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.9
-- Dependencies - Updated Meziantou.Analyzer to 2.0.123
+- Dependencies - Updated Meziantou.Analyzer to 2.0.125
 ### Removed
 ### Deployment Changes
 

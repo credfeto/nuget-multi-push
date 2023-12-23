@@ -11,10 +11,7 @@ internal static class CommandLine
         return new ConfigurationBuilder().AddCommandLine(args: args,
                                                          new Dictionary<string, string>(StringComparer.Ordinal)
                                                          {
-                                                             { @"-folder", @"folder" },
-                                                             { @"-source", @"source" },
-                                                             { @"-symbol-source", @"symbol-source" },
-                                                             { @"-api-key", @"api-key" }
+                                                             { "-folder", "folder" }, { "-source", "source" }, { "-symbol-source", "symbol-source" }, { "-api-key", "api-key" }
                                                          })
                                          .Build();
     }

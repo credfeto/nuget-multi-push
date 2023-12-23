@@ -47,7 +47,7 @@ public sealed class PackageUploader : IPackageUploader
         {
             string? symbolSource = symbolPackages.FindMatchingSymbolPackage(package: package, logger: this._logger);
 
-            List<string> packagePaths = new() { package };
+            List<string> packagePaths = [package];
 
             int attempt = 0;
 

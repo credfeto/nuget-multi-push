@@ -69,28 +69,28 @@ internal static class Program
 
     private static (string source, string? symbolSource, string folder, string apiKey) LoadConfiguration(IConfigurationRoot configuration)
     {
-        string? source = configuration.GetValue<string>(key: @"source");
+        string? source = configuration.GetValue<string>(key: "source");
 
         if (string.IsNullOrEmpty(source))
         {
             return SourceNotSpecified();
         }
 
-        string? apiKey = configuration.GetValue<string>(key: @"api-key");
+        string? apiKey = configuration.GetValue<string>(key: "api-key");
 
         if (string.IsNullOrEmpty(apiKey))
         {
             return ApiKeyNotSpecified();
         }
 
-        string? folder = configuration.GetValue<string>(key: @"Folder");
+        string? folder = configuration.GetValue<string>(key: "Folder");
 
         if (string.IsNullOrEmpty(folder))
         {
             return FolderNotSpecified();
         }
 
-        string? symbolSource = configuration.GetValue<string>(key: @"symbol-source");
+        string? symbolSource = configuration.GetValue<string>(key: "symbol-source");
 
         return (source, symbolSource, folder, apiKey);
     }

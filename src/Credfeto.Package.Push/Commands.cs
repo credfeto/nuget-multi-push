@@ -22,6 +22,7 @@ internal sealed class Commands
 
     [Command(Description = "Uploads all packages in the folder")]
     [PrimaryCommand]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by Cocona")]
     public async Task UploadPackagesAsync([Option(name: "source", ['s'], Description = "NuGet Feed to upload packages to")] string source,
                                           [Option(name: "folder", ['f'], Description = "Folder containing packages to upload")] string folder,
                                           [Option(name: "api-key", ['a'], Description = "Api Key for uploading packages")] string apiKey,

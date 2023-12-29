@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -9,7 +10,8 @@ using Credfeto.Package.Push.Exceptions;
 
 namespace Credfeto.Package.Push;
 
-public sealed class Commands
+[SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Instantiated by Cocona")]
+internal sealed class Commands
 {
     private readonly IUploadOrchestration _uploadOrchestration;
 

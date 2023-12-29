@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Cocona;
+using Cocona.Builder;
 using Credfeto.Package.Push.Configuration;
 using Credfeto.Package.Push.Constants;
 using Credfeto.Package.Push.Exceptions;
 using Credfeto.Package.Push.Helpers;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Credfeto.Package.Push;
 
@@ -22,139 +18,25 @@ internal static class Program
 
         try
         {
-            IConfigurationRoot configuration = CommandLine.Options(args);
+            CoconaAppBuilder builder = CoconaApp.CreateBuilder(args);
+            builder.Services.AddServices();
 
-            return await UploadPackagesAsync(configuration);
+            CoconaApp app = builder.Build();
+            app.AddCommands<Commands>();
+
+            await app.RunAsync(CancellationToken.None);
+
+            return ExitCodes.Success;
+        }
+        catch (UploadFailedException)
+        {
+            return ExitCodes.Error;
         }
         catch (Exception exception)
         {
             Console.WriteLine($"ERROR: {exception.Message}");
 
             return ExitCodes.Error;
-        }
-    }
-
-    private static async Task<int> UploadPackagesAsync(IConfigurationRoot configuration)
-    {
-        (string source, string? symbolSource, string folder, string apiKey) = LoadConfiguration(configuration);
-
-        IReadOnlyList<string> packages = Searcher.FindMatchingPackages(folder);
-
-        if (packages.Count == 0)
-        {
-            throw new UploadConfigurationErrorsException("folder does not contain any packages");
-        }
-
-        IServiceProvider serviceProvider = ServiceConfiguration.Configure(warningsAsErrors: false);
-
-        IDiagnosticLogger diagnosticLogger = serviceProvider.GetRequiredService<IDiagnosticLogger>();
-        IUploadOrchestration uploadOrchestration = serviceProvider.GetRequiredService<IUploadOrchestration>();
-
-        IReadOnlyList<(string package, bool success)> results =
-            await uploadOrchestration.PushAllAsync(source: source, symbolSource: symbolSource, packages: packages, apiKey: apiKey, cancellationToken: CancellationToken.None);
-
-        return ProduceSummary(results: results, diagnosticLogger: diagnosticLogger);
-    }
-
-    private static int ProduceSummary(IReadOnlyList<(string package, bool success)> results, IDiagnosticLogger diagnosticLogger)
-    {
-        OutputPackagesAsAssets(results);
-
-        bool success = OutputUploadSummary(results);
-
-        return !success || diagnosticLogger.IsErrored
-            ? ExitCodes.Error
-            : ExitCodes.Success;
-    }
-
-    private static (string source, string? symbolSource, string folder, string apiKey) LoadConfiguration(IConfigurationRoot configuration)
-    {
-        string? source = configuration.GetValue<string>(key: "source");
-
-        if (string.IsNullOrEmpty(source))
-        {
-            return SourceNotSpecified();
-        }
-
-        string? apiKey = configuration.GetValue<string>(key: "api-key");
-
-        if (string.IsNullOrEmpty(apiKey))
-        {
-            return ApiKeyNotSpecified();
-        }
-
-        string? folder = configuration.GetValue<string>(key: "Folder");
-
-        if (string.IsNullOrEmpty(folder))
-        {
-            return FolderNotSpecified();
-        }
-
-        string? symbolSource = configuration.GetValue<string>(key: "symbol-source");
-
-        return (source, symbolSource, folder, apiKey);
-    }
-
-    [DoesNotReturn]
-    private static (string source, string symbolSource, string folder, string apiKey) FolderNotSpecified()
-    {
-        throw new UploadConfigurationErrorsException("folder not specified");
-    }
-
-    [DoesNotReturn]
-    private static (string source, string symbolSource, string folder, string apiKey) ApiKeyNotSpecified()
-    {
-        throw new UploadConfigurationErrorsException("api-key not specified");
-    }
-
-    [DoesNotReturn]
-    private static (string source, string symbolSource, string folder, string apiKey) SourceNotSpecified()
-    {
-        throw new UploadConfigurationErrorsException("Source not specified");
-    }
-
-    private static bool OutputUploadSummary(IReadOnlyList<(string package, bool success)> results)
-    {
-        Console.WriteLine("Upload Summary:");
-        int succeeded = 0;
-        int errors = 0;
-
-        foreach ((string package, bool success) in results)
-        {
-            string packageName = Path.GetFileName(package);
-
-            if (success)
-            {
-                Console.WriteLine($"* {packageName} : Uploaded");
-                ++succeeded;
-            }
-            else
-            {
-                Console.WriteLine($"* {packageName} : FAILED");
-                ++errors;
-            }
-        }
-
-        Console.WriteLine($"Total Packages: {results.Count}");
-        Console.WriteLine($"Succeeded: {succeeded}");
-        Console.WriteLine($"Failures: {errors}");
-
-        return errors == 0;
-    }
-
-    private static void OutputPackagesAsAssets(IReadOnlyList<(string package, bool success)> packages)
-    {
-        string? env = Environment.GetEnvironmentVariable("TEAMCITY_VERSION");
-
-        if (string.IsNullOrWhiteSpace(env))
-        {
-            return;
-        }
-
-        foreach (string package in packages.Where(x => x.success)
-                                           .Select(x => x.package))
-        {
-            Console.WriteLine($"##teamcity[publishArtifacts '{package}']");
         }
     }
 }

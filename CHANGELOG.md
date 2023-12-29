@@ -15,6 +15,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.16.0.82469
 - Dependencies - Updated Nullable.Extended.Analyzer to 1.15.6169
 - Dependencies - Updated Meziantou.Analyzer to 2.0.128
+- Used Cocona to parse command line
 ### Removed
 ### Deployment Changes
 

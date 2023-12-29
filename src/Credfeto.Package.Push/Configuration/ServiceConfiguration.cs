@@ -13,12 +13,14 @@ internal static class ServiceConfiguration
     {
         DiagnosticLogger logger = new(warningsAsErrors);
 
-        return new ServiceCollection().AddSingleton<Microsoft.Extensions.Logging.ILogger>(logger)
-                                      .AddSingleton<IDiagnosticLogger>(logger)
-                                      .AddSingleton<ILogger, NugetForwardingLogger>()
-                                      .AddSingleton(typeof(ILogger<>), typeof(LoggerProxy<>))
-                                      .AddSingleton<IUploadOrchestration, UploadOrchestration>()
-                                      .AddSingleton<IPackageUploader, PackageUploader>()
-                                      .BuildServiceProvider();
+        return new ServiceCollection().BuildServiceProvider();
+    }
+
+    public static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        return services.AddSingleton<ILogger, NugetForwardingLogger>()
+                       .AddSingleton(typeof(ILogger<>), typeof(LoggerProxy<>))
+                       .AddSingleton<IUploadOrchestration, UploadOrchestration>()
+                       .AddSingleton<IPackageUploader, PackageUploader>();
     }
 }

@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Cocona;
+using Cocona.Builder;
 using Credfeto.Package.Push.Configuration;
 using Credfeto.Package.Push.Constants;
 using Credfeto.Package.Push.Exceptions;
@@ -22,9 +24,15 @@ internal static class Program
 
         try
         {
-            IConfigurationRoot configuration = CommandLine.Options(args);
+            CoconaAppBuilder builder = CoconaApp.CreateBuilder();
+            builder.Services.AddServices();
 
-            return await UploadPackagesAsync(configuration);
+            CoconaApp app = builder.Build();
+            app.AddCommands<Commands>();
+
+            await app.RunAsync(CancellationToken.None);
+
+            return ExitCodes.Success;
         }
         catch (Exception exception)
         {
@@ -157,4 +165,8 @@ internal static class Program
             Console.WriteLine($"##teamcity[publishArtifacts '{package}']");
         }
     }
+}
+
+internal sealed class Commands
+{
 }

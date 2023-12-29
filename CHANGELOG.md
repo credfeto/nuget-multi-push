@@ -9,6 +9,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.6.0] - 2023-12-29
+### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.7.0
 - Dependencies - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.9
 - Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.5.0
@@ -16,12 +24,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Nullable.Extended.Analyzer to 1.15.6169
 - Dependencies - Updated Meziantou.Analyzer to 2.0.128
 - Used Cocona to parse command line
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.5.15] - 2023-11-18
 ### Changed
 - Dependencies - Updated NuGet to 6.8.0

@@ -57,7 +57,7 @@
     <RepositoryUrl>https://github.com/credfeto/nuget-multi-push</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Cocona" Version="2.2.0"/>
+    <PackageReference Include="Cocona" Version="2.2.0" />
     <PackageReference Include="Credfeto.Enumeration.Source.Generation.Attributes" Version="1.1.1.168" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="NuGet.Commands" Version="6.8.0" />

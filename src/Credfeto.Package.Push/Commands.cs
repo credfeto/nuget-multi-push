@@ -10,7 +10,7 @@ using Credfeto.Package.Push.Exceptions;
 
 namespace Credfeto.Package.Push;
 
-[SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Instantiated by Cocona")]
+[SuppressMessage(category: "Microsoft.Performance", checkId: "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Instantiated by Cocona")]
 internal sealed class Commands
 {
     private readonly IUploadOrchestration _uploadOrchestration;

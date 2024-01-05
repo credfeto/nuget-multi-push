@@ -9,9 +9,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.133
 - Dependencies - Updated Roslynator.Analyzers to 4.8.0
 - Dependencies - Updated Polly to 8.2.1
+- Dependencies - Updated Meziantou.Analyzer to 2.0.134
 ### Removed
 ### Deployment Changes
 

@@ -61,7 +61,7 @@
     <PackageReference Include="Credfeto.Enumeration.Source.Generation.Attributes" Version="1.1.1.168" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="NuGet.Commands" Version="6.8.0" />
-    <PackageReference Include="Polly" Version="8.2.0" />
+    <PackageReference Include="Polly" Version="8.2.1" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" ExcludeAssets="runtime" />

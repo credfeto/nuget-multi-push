@@ -11,8 +11,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated Polly to 8.2.1
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.6.239
-- Dependencies - Updated Meziantou.Analyzer to 2.0.135
 - Dependencies - Updated Roslynator.Analyzers to 4.9.0
+- Dependencies - Updated Meziantou.Analyzer to 2.0.136
 ### Removed
 ### Deployment Changes
 

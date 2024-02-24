@@ -9,7 +9,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Roslynator.Analyzers to 4.10.0
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.19.0.84025
 - Dependencies - Updated Polly to 8.3.0
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.9.28
@@ -17,6 +16,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.8.274
 - SDK - Updated DotNet SDK to 8.0.201
 - Dependencies - Updated Meziantou.Analyzer to 2.0.144
+- Dependencies - Updated Roslynator.Analyzers to 4.11.0
 ### Removed
 ### Deployment Changes
 

@@ -91,7 +91,7 @@ public sealed class PackageUploader : IPackageUploader
     {
         foreach (string filename in packagePaths)
         {
-            this._logger.LogInformation($"Uploading {filename} (attempt attempt {attempt} of {MAX_RETRIES})");
+            this._logger.UploadingPackage(filename: filename, attempt: attempt, maxRetries: MAX_RETRIES);
         }
 
         return packageUpdateResource.Push(packagePaths: packagePaths,

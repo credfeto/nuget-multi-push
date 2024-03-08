@@ -16,8 +16,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.20.0.85982
 - Dependencies - Updated NuGet to 6.9.1
 - Dependencies - Updated Meziantou.Analyzer to 2.0.145
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.9.296
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.3.296
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.10.303
 ### Removed
 ### Deployment Changes
 

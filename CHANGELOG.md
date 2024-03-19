@@ -17,7 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.4.303
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.21.0.86780
 - Dependencies - Updated Polly to 8.3.1
-- SDK - Updated DotNet SDK to 8.0.202
+- SDK - Updated DotNet SDK to 8.0.203
 ### Removed
 ### Deployment Changes
 

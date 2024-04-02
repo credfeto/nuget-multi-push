@@ -15,9 +15,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - SDK - Updated DotNet SDK to 8.0.203
 - Dependencies - Updated Meziantou.Analyzer to 2.0.146
 - Dependencies - Updated Roslynator.Analyzers to 4.12.0
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.23.0.88079
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.5.315
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.12.324
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.23.1.88495
 ### Removed
 ### Deployment Changes
 

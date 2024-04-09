@@ -35,8 +35,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
         PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>(cancellationToken);
         this._logger.PushingPackagesToServer(packageUpdateResource.SourceUri);
 
-        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource =
-            await this.GetSymbolPackageUpdateSourceAsync(sourceRepository: sourceRepository, cancellationToken: cancellationToken);
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await this.GetSymbolPackageUpdateSourceAsync(sourceRepository: sourceRepository, cancellationToken: cancellationToken);
 
         PackageUpdateResource? symbolPackageUpdateResourceAsPackage = null;
 
@@ -166,15 +165,13 @@ public sealed class UploadOrchestration : IUploadOrchestration
                                                                                              symbolPackageUpdateResource: symbolPackageUpdateResource));
     }
 
-    private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages,
-                                                                                                string apiKey,
-                                                                                                PackageUpdateResource packageUpdateResource)
+    private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
     {
         return packages.Select(package => this._packageUploader.PushOnePackageAsync(package: package,
+                                                                                    Array.Empty<string>(),
                                                                                     packageUpdateResource: packageUpdateResource,
                                                                                     apiKey: apiKey,
-                                                                                    symbolPackageUpdateResource: null,
-                                                                                    symbolPackages: Array.Empty<string>()));
+                                                                                    symbolPackageUpdateResource: null));
     }
 
     private async Task<SymbolPackageUpdateResourceV3?> GetSymbolPackageUpdateSourceAsync(SourceRepository sourceRepository, CancellationToken cancellationToken)
@@ -231,7 +228,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
     private static SourceRepository ConfigureSourceRepository(string source)
     {
-        PackageSource packageSource = new(name: "Custom", source: source, isEnabled: true, isPersistable: true, isOfficial: true);
+        PackageSource packageSource = new(source: source, name: "Custom", isEnabled: true, isOfficial: true, isPersistable: true);
 
         return new(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
     }

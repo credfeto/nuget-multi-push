@@ -12,8 +12,10 @@ public static class Searcher
     {
         string nativeFolder = PathHelpers.ConvertToNative(folder);
 
-        return Directory.GetFiles(path: nativeFolder, searchPattern: PackageNaming.SearchPattern)
-                        .Concat(Directory.GetFiles(path: nativeFolder, searchPattern: PackageNaming.SourceSearchPattern))
-                        .ToArray();
+        return
+        [
+            ..Directory.GetFiles(path: nativeFolder, searchPattern: PackageNaming.SearchPattern)
+                       .Concat(Directory.GetFiles(path: nativeFolder, searchPattern: PackageNaming.SourceSearchPattern))
+        ];
     }
 }

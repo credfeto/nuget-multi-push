@@ -168,7 +168,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
     private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
     {
         return packages.Select(package => this._packageUploader.PushOnePackageAsync(package: package,
-                                                                                    Array.Empty<string>(),
+                                                                                    [],
                                                                                     packageUpdateResource: packageUpdateResource,
                                                                                     apiKey: apiKey,
                                                                                     symbolPackageUpdateResource: null));
@@ -190,18 +190,22 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
     private static IReadOnlyList<string> ExtractProductionPackages(IReadOnlyList<string> packages)
     {
-        return packages.Where(PackageNaming.IsNotSymbolPackage)
-                       .OrderBy(MetaPackageLast)
-                       .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase)
-                       .ToArray();
+        return
+        [
+            ..packages.Where(PackageNaming.IsNotSymbolPackage)
+                      .OrderBy(MetaPackageLast)
+                      .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase)
+        ];
     }
 
     private static IReadOnlyList<string> ExtractSymbolPackages(IReadOnlyList<string> packages)
     {
-        return packages.Where(PackageNaming.IsSymbolPackage)
-                       .OrderBy(MetaPackageLast)
-                       .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase)
-                       .ToArray();
+        return
+        [
+            ..packages.Where(PackageNaming.IsSymbolPackage)
+                      .OrderBy(MetaPackageLast)
+                      .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase)
+        ];
     }
 
     private static bool MetaPackageLast(string packageId)

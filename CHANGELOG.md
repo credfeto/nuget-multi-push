@@ -9,7 +9,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.9.28
 - Dependencies - Updated NuGet to 6.9.1
 - Dependencies - Updated Polly to 8.3.1
 - Dependencies - Updated Roslynator.Analyzers to 4.12.0
@@ -19,6 +18,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Credfeto.Enumeration to 1.1.7.384
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.14.369
 - Dependencies - Updated Meziantou.Analyzer to 2.0.150
+- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.10.48
 ### Removed
 ### Deployment Changes
 

@@ -10,7 +10,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated NuGet to 6.9.1
-- Dependencies - Updated Polly to 8.3.1
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.5.315
 - SDK - Updated DotNet SDK to 8.0.300
 - Dependencies - Updated Credfeto.Enumeration to 1.1.7.384
@@ -20,6 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.11
 - Dependencies - Updated Meziantou.Analyzer to 2.0.151
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.25.0.90414
+- Dependencies - Updated Polly to 8.4.0
 ### Removed
 ### Deployment Changes
 

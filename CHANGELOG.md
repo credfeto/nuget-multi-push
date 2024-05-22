@@ -9,7 +9,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated NuGet to 6.9.1
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.5.315
 - SDK - Updated DotNet SDK to 8.0.300
 - Dependencies - Updated Credfeto.Enumeration to 1.1.7.384
@@ -20,6 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Polly to 8.4.0
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.15.397
 - Dependencies - Updated Meziantou.Analyzer to 2.0.152
+- Dependencies - Updated NuGet to 6.10.0
 ### Removed
 ### Deployment Changes
 

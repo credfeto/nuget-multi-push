@@ -16,10 +16,10 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Roslynator.Analyzers to 4.12.3
 - Dependencies - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.11
 - Dependencies - Updated Polly to 8.4.0
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.15.397
 - Dependencies - Updated NuGet to 6.10.0
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.25.1.91650
 - Dependencies - Updated Meziantou.Analyzer to 2.0.153
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.16.409
 ### Removed
 ### Deployment Changes
 

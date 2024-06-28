@@ -13,13 +13,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Credfeto.Enumeration to 1.1.7.384
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.10.48
 - Dependencies - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.11
-- Dependencies - Updated Polly to 8.4.0
 - Dependencies - Updated Roslynator.Analyzers to 4.12.4
 - SDK - Updated DotNet SDK to 8.0.302
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.18.436
 - Dependencies - Updated Meziantou.Analyzer to 2.0.159
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.28.0.94264
 - Dependencies - Updated NuGet to 6.10.1
+- Dependencies - Updated Polly to 8.4.1
 ### Removed
 ### Deployment Changes
 

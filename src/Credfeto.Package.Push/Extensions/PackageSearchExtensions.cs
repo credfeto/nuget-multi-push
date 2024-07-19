@@ -18,7 +18,7 @@ internal static class PackageSearchExtensions
 
         int packageExtensionPosition = package.Length - PackageNaming.PackageExtension.Length;
 
-        string baseName = package.Substring(startIndex: 0, length: packageExtensionPosition);
+        string baseName = package[..packageExtensionPosition];
 
         string expectedSymbolOld = baseName + PackageNaming.SymbolsOldPackageExtension;
         string expectedSymbolNew = baseName + PackageNaming.SymbolsNewPackageExtension;

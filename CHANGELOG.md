@@ -19,9 +19,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Polly to 8.4.1
 - Dependencies - Updated CSharpIsNullAnalyzer to 0.1.593
 - SDK - Updated DotNet SDK to 8.0.303
-- Dependencies - Updated Meziantou.Analyzer to 2.0.161
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.30.0.95878
 - Dependencies - Updated ThisAssembly.AssemblyInfo to 1.5.0
+- Dependencies - Updated Meziantou.Analyzer to 2.0.162
 ### Removed
 ### Deployment Changes
 

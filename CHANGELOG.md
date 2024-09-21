@@ -15,13 +15,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Polly to 8.4.1
 - Dependencies - Updated CSharpIsNullAnalyzer to 0.1.593
 - Dependencies - Updated ThisAssembly.AssemblyInfo to 1.5.0
-- Dependencies - Updated Meziantou.Analyzer to 2.0.163
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.11.20
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.32.0.97167
 - Dependencies - Updated NuGet to 6.11.0
 - SDK - Updated DotNet SDK to 8.0.401
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.23.533
 - Dependencies - Updated Roslynator.Analyzers to 4.12.5
+- Dependencies - Updated Meziantou.Analyzer to 2.0.164
 ### Removed
 ### Deployment Changes
 

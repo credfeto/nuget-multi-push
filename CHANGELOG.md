@@ -20,8 +20,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated NuGet to 6.11.0
 - SDK - Updated DotNet SDK to 8.0.401
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.23.533
-- Dependencies - Updated Roslynator.Analyzers to 4.12.5
 - Dependencies - Updated Meziantou.Analyzer to 2.0.168
+- Dependencies - Updated Roslynator.Analyzers to 4.12.6
 ### Removed
 ### Deployment Changes
 

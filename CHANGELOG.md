@@ -23,6 +23,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 2.0.170
 - Dependencies - Updated Roslynator.Analyzers to 4.12.8
 - Dependencies - Updated ThisAssembly.AssemblyInfo to 2.0.5
+- Dependencies - Updated Microsoft.Extensions to 8.0.1
 ### Removed
 ### Deployment Changes
 

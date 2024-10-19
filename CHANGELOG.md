@@ -10,7 +10,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.5.315
-- Dependencies - Updated Credfeto.Enumeration to 1.1.7.384
 - Dependencies - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.11
 - Dependencies - Updated CSharpIsNullAnalyzer to 0.1.593
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.11.20
@@ -24,6 +23,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated NuGet to 6.11.1
 - Dependencies - Updated Polly to 8.4.2
 - Dependencies - Updated Meziantou.Analyzer to 2.0.172
+- Dependencies - Updated Credfeto.Enumeration to 1.1.14.596
 ### Removed
 ### Deployment Changes
 

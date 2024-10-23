@@ -1,11 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <Authors>Mark Ridgwell</Authors>
+    <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+    <Company>Mark Ridgwell</Company>
+    <Copyright>Mark Ridgwell</Copyright>
     <DebuggerSupport>true</DebuggerSupport>
+    <Description>Multi-push tool for pushing multiple packages to nuget server at the same time.</Description>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>true</EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnablePackageValidation>true</EnablePackageValidation>
     <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
     <Features>strict;flow-analysis</Features>
     <GenerateNeutralResourcesLanguageAttribute>true</GenerateNeutralResourcesLanguageAttribute>
     <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
@@ -17,6 +28,7 @@
     <IsPublishable>true</IsPublishable>
     <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
     <LangVersion>latest</LangVersion>
+    <NeutralLanguage>en-GB</NeutralLanguage>
     <NoWarn />
     <NuGetAudit>true</NuGetAudit>
     <NuGetAuditLevel>low</NuGetAuditLevel>
@@ -25,6 +37,12 @@
     <OptimizationPreference>speed</OptimizationPreference>
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
+    <PackageTags>Nuget;push</PackageTags>
+    <Product>Package Push Tool</Product>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/credfeto/nuget-multi-push</RepositoryUrl>
     <RunAOTCompilation>false</RunAOTCompilation>
     <RuntimeIdentifiers>win-x64;win-arm64;osx-x64;osx-arm64;linux-x64;linux-arm64</RuntimeIdentifiers>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -37,28 +55,6 @@
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
     <ValidateExecutableReferencesMatchSelfContained>true</ValidateExecutableReferencesMatchSelfContained>
     <WarningsAsErrors />
-  </PropertyGroup>
-  <PropertyGroup>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Authors>Mark Ridgwell</Authors>
-    <Company>Mark Ridgwell</Company>
-    <Copyright>Mark Ridgwell</Copyright>
-    <Description>Multi-push tool for pushing multiple packages to nuget server at the same time.</Description>
-    <NeutralLanguage>en-GB</NeutralLanguage>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
-    <PackageTags>Nuget;push</PackageTags>
-    <Product>Package Push Tool</Product>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/credfeto/nuget-multi-push</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Cocona" Version="2.2.0" />

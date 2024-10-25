@@ -21,9 +21,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Microsoft.Extensions to 8.0.1
 - Dependencies - Updated NuGet to 6.11.1
 - Dependencies - Updated Polly to 8.4.2
-- Dependencies - Updated Credfeto.Enumeration to 1.1.14.596
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.24.635
 - Dependencies - Updated Meziantou.Analyzer to 2.0.176
+- Dependencies - Updated Credfeto.Enumeration to 1.1.15.626
 ### Removed
 ### Deployment Changes
 

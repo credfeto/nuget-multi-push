@@ -21,9 +21,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated NuGet to 6.11.1
 - Dependencies - Updated Polly to 8.4.2
 - Dependencies - Updated Roslynator.Analyzers to 4.12.9
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.28.680
 - Dependencies - Updated Meziantou.Analyzer to 2.0.177
 - Dependencies - Updated Credfeto.Enumeration to 1.1.19.652
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.29.685
 ### Removed
 ### Deployment Changes
 

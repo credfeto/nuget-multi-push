@@ -22,8 +22,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Polly to 8.4.2
 - Dependencies - Updated Roslynator.Analyzers to 4.12.9
 - Dependencies - Updated Meziantou.Analyzer to 2.0.177
-- Dependencies - Updated Credfeto.Enumeration to 1.1.19.652
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.29.685
+- Dependencies - Updated Credfeto.Enumeration to 1.1.20.657
 ### Removed
 ### Deployment Changes
 

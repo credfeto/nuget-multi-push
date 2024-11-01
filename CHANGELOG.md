@@ -16,7 +16,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.32.0.97167
 - SDK - Updated to Dotnet 9.0 RC1
 - SDK - Updated DotNet SDK to 9.0.100-rc.2.24474.11
-- Dependencies - Updated ThisAssembly.AssemblyInfo to 2.0.5
 - Dependencies - Updated Microsoft.Extensions to 8.0.1
 - Dependencies - Updated NuGet to 6.11.1
 - Dependencies - Updated Polly to 8.4.2
@@ -24,6 +23,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 2.0.177
 - Dependencies - Updated Credfeto.Enumeration to 1.1.20.657
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.30.688
+- Dependencies - Updated ThisAssembly.AssemblyInfo to 2.0.6
 ### Removed
 ### Deployment Changes
 

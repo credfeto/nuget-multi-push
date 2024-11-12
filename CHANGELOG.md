@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.32.711
+- Dependencies - Updated NuGet to 6.12.1
 ### Removed
 ### Deployment Changes
 

@@ -9,6 +9,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.6.3] - 2024-11-15
+### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.32.711
 - Dependencies - Updated Microsoft.Extensions to 9.0.0
 - SDK - Updated DotNet SDK to 9.0.100
@@ -17,12 +25,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.12.19
 - Dependencies - Updated NuGet to 6.12.1
 - Dependencies - Updated Polly to 8.5.0
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.6.2] - 2024-11-12
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.31.691

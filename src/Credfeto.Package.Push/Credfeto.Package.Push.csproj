@@ -79,7 +79,7 @@
     <PackageReference Include="SmartAnalyzers.CSharpExtensions.Annotations" Version="4.2.11" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="10.3.0.106239" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" ExcludeAssets="runtime" />
-    <PackageReference Include="Credfeto.Version.Information.Generator" Version="1.0.21.162" PrivateAssets="All" ExcludeAssets="runtime" />
+    <PackageReference Include="Credfeto.Version.Information.Generator" Version="1.0.22.164" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="ToStringWithoutOverrideAnalyzer" Version="0.6.0" PrivateAssets="All" ExcludeAssets="runtime" />
   </ItemGroup>
 </Project>

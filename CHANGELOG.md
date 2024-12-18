@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.12.10
 - Dependencies - Updated Credfeto.Version.Information.Generator to 1.0.32.207
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.4.0.108396
 ### Removed
 ### Deployment Changes
 

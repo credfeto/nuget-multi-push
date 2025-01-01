@@ -9,18 +9,21 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Roslynator.Analyzers to 4.12.10
-- Dependencies - Updated Credfeto.Version.Information.Generator to 1.0.32.207
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.4.0.108396
-- Dependencies - Updated Meziantou.Analyzer to 2.0.184
-- Dependencies - Updated Nullable.Extended.Analyzer to 1.15.6495
-- Dependencies - Updated Credfeto.Enumeration to 1.2.44.798
 ### Removed
 ### Deployment Changes
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.6.40] - 2025-01-01
+### Changed
+- Dependencies - Updated Roslynator.Analyzers to 4.12.10
+- Dependencies - Updated Credfeto.Version.Information.Generator to 1.0.32.207
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.4.0.108396
+- Dependencies - Updated Meziantou.Analyzer to 2.0.184
+- Dependencies - Updated Nullable.Extended.Analyzer to 1.15.6495
+- Dependencies - Updated Credfeto.Enumeration to 1.2.44.798
+
 ## [1.6.39] - 2024-12-17
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration to 1.2.43.772

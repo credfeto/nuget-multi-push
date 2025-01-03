@@ -69,7 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Cocona" Version="2.2.0" />
-    <PackageReference Include="Credfeto.Enumeration.Source.Generation.Attributes" Version="1.2.46.804" />
+    <PackageReference Include="Credfeto.Enumeration.Source.Generation.Attributes" Version="1.2.47.806" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
     <PackageReference Include="NuGet.Commands" Version="6.12.1" />
     <PackageReference Include="Polly" Version="8.5.0" />
@@ -77,7 +77,7 @@
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="codecracker.CSharp" Version="1.1.0" PrivateAssets="All" ExcludeAssets="runtime" />
-    <PackageReference Include="Credfeto.Enumeration.Source.Generation" Version="1.2.46.804" PrivateAssets="All" ExcludeAssets="runtime" />
+    <PackageReference Include="Credfeto.Enumeration.Source.Generation" Version="1.2.47.806" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="Credfeto.Version.Information.Generator" Version="1.0.35.231" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="CSharpIsNullAnalyzer" Version="0.1.593" PrivateAssets="all" ExcludeAssets="runtime" />
     <PackageReference Include="FunFair.CodeAnalysis" Version="7.0.52.823" PrivateAssets="All" ExcludeAssets="runtime" />

@@ -14,6 +14,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - SDK - Updated DotNet SDK to 9.0.102
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.55.846
 - Dependencies - Updated Microsoft.Extensions to 9.0.1
+- Dependencies - Updated Polly to 8.5.1
 ### Removed
 ### Deployment Changes
 

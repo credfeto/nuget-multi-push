@@ -12,7 +12,10 @@ internal static class RetryDelayCalculator
         // do a fast first retry, then exponential backoff
         return attempts <= 1
             ? MinDelay
-            : MinDelay + TimeSpan.FromSeconds(WithJitter(CalculateBackoff(attempts), maxSeconds: maxJitterSeconds));
+            : MinDelay
+                + TimeSpan.FromSeconds(
+                    WithJitter(CalculateBackoff(attempts), maxSeconds: maxJitterSeconds)
+                );
     }
 
     private static double CalculateBackoff(int attempts)

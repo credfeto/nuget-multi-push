@@ -9,8 +9,9 @@ internal static class ServiceConfiguration
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        return services.AddSingleton<ILogger, NugetForwardingLogger>()
-                       .AddSingleton<IUploadOrchestration, UploadOrchestration>()
-                       .AddSingleton<IPackageUploader, PackageUploader>();
+        return services
+            .AddSingleton<ILogger, NugetForwardingLogger>()
+            .AddSingleton<IUploadOrchestration, UploadOrchestration>()
+            .AddSingleton<IPackageUploader, PackageUploader>();
     }
 }

@@ -6,9 +6,11 @@ namespace Credfeto.Package.Push;
 
 public interface IPackageUploader
 {
-    Task<(string package, bool success)> PushOnePackageAsync(string package,
-                                                             IReadOnlyList<string> symbolPackages,
-                                                             PackageUpdateResource packageUpdateResource,
-                                                             string apiKey,
-                                                             SymbolPackageUpdateResourceV3? symbolPackageUpdateResource);
+    Task<(string package, bool success)> PushOnePackageAsync(
+        string package,
+        IReadOnlyList<string> symbolPackages,
+        PackageUpdateResource packageUpdateResource,
+        string apiKey,
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource
+    );
 }

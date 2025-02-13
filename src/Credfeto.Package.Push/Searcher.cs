@@ -14,8 +14,14 @@ public static class Searcher
 
         return
         [
-            ..Directory.GetFiles(path: nativeFolder, searchPattern: PackageNaming.SearchPattern)
-                       .Concat(Directory.GetFiles(path: nativeFolder, searchPattern: PackageNaming.SourceSearchPattern))
+            .. Directory
+                .GetFiles(path: nativeFolder, searchPattern: PackageNaming.SearchPattern)
+                .Concat(
+                    Directory.GetFiles(
+                        path: nativeFolder,
+                        searchPattern: PackageNaming.SourceSearchPattern
+                    )
+                ),
         ];
     }
 }

@@ -22,11 +22,17 @@ internal static class PackageNaming
 
     public static bool IsNewSymbolPackage(string p)
     {
-        return p.EndsWith(value: SymbolsNewPackageExtension, comparisonType: StringComparison.OrdinalIgnoreCase);
+        return p.EndsWith(
+            value: SymbolsNewPackageExtension,
+            comparisonType: StringComparison.OrdinalIgnoreCase
+        );
     }
 
     public static bool IsOldSymbolPackage(string p)
     {
-        return p.EndsWith(value: SymbolsOldPackageExtension, comparisonType: StringComparison.OrdinalIgnoreCase);
+        return p.EndsWith(
+            value: SymbolsOldPackageExtension,
+            comparisonType: StringComparison.OrdinalIgnoreCase
+        );
     }
 }

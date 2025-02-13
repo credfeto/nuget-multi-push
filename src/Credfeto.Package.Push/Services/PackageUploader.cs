@@ -25,53 +25,66 @@ public sealed class PackageUploader : IPackageUploader
     {
         this._nugetLogger = nugetLogger;
         this._logger = logger;
-        this._retryPolicy = Policy.Handle((Func<Exception, bool>)IsTransientException)
-                                  .WaitAndRetryAsync(retryCount: MAX_RETRIES,
-                                                     sleepDurationProvider: CalculateRetry,
-                                                     onRetry: (exception, delay, retryCount, context) => this._logger.TransientException(typeName: exception.GetType()
-                                                                      .Name,
-                                                                  retryCount: retryCount,
-                                                                  maxRetries: MAX_RETRIES,
-                                                                  delay: delay,
-                                                                  $"{context.OperationKey}: {exception.GetType().FullName ?? "??"}: {exception.Message}",
-                                                                  exception: exception));
+        this._retryPolicy = Policy
+            .Handle((Func<Exception, bool>)IsTransientException)
+            .WaitAndRetryAsync(
+                retryCount: MAX_RETRIES,
+                sleepDurationProvider: CalculateRetry,
+                onRetry: (exception, delay, retryCount, context) =>
+                    this._logger.TransientException(
+                        typeName: exception.GetType().Name,
+                        retryCount: retryCount,
+                        maxRetries: MAX_RETRIES,
+                        delay: delay,
+                        $"{context.OperationKey}: {exception.GetType().FullName ?? "??"}: {exception.Message}",
+                        exception: exception
+                    )
+            );
     }
 
-    public async Task<(string package, bool success)> PushOnePackageAsync(string package,
-                                                                          IReadOnlyList<string> symbolPackages,
-                                                                          PackageUpdateResource packageUpdateResource,
-                                                                          string apiKey,
-                                                                          SymbolPackageUpdateResourceV3? symbolPackageUpdateResource)
+    public async Task<(string package, bool success)> PushOnePackageAsync(
+        string package,
+        IReadOnlyList<string> symbolPackages,
+        PackageUpdateResource packageUpdateResource,
+        string apiKey,
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource
+    )
     {
         try
         {
-            string? symbolSource = symbolPackages.FindMatchingSymbolPackage(package: package, logger: this._logger);
+            string? symbolSource = symbolPackages.FindMatchingSymbolPackage(
+                package: package,
+                logger: this._logger
+            );
 
             List<string> packagePaths = [package];
 
             int attempt = 0;
 
             await this._retryPolicy.ExecuteAsync(() =>
-                                                 {
-                                                     ++attempt;
+            {
+                ++attempt;
 
-                                                     return this.UploadOneAsync(packageUpdateResource: packageUpdateResource,
-                                                                                apiKey: apiKey,
-                                                                                symbolPackageUpdateResource: symbolPackageUpdateResource,
-                                                                                packagePaths: packagePaths,
-                                                                                attempt: attempt,
-                                                                                symbolSource: symbolSource);
-                                                 });
+                return this.UploadOneAsync(
+                    packageUpdateResource: packageUpdateResource,
+                    apiKey: apiKey,
+                    symbolPackageUpdateResource: symbolPackageUpdateResource,
+                    packagePaths: packagePaths,
+                    attempt: attempt,
+                    symbolSource: symbolSource
+                );
+            });
 
             return (package, success: true);
         }
         catch (Exception exception)
         {
-            this._logger.FailedToUploadPackage(package: package,
-                                               exception.GetType()
-                                                        .FullName ?? "??",
-                                               message: exception.Message,
-                                               exception: exception);
+            this._logger.FailedToUploadPackage(
+                package: package,
+                exception.GetType().FullName ?? "??",
+                message: exception.Message,
+                exception: exception
+            );
 
             return (package, success: false);
         }
@@ -82,32 +95,45 @@ public sealed class PackageUploader : IPackageUploader
         return RetryDelayCalculator.CalculateWithJitter(attempts: retry, maxJitterSeconds: 10);
     }
 
-    private Task UploadOneAsync(PackageUpdateResource packageUpdateResource,
-                                string apiKey,
-                                SymbolPackageUpdateResourceV3? symbolPackageUpdateResource,
-                                List<string> packagePaths,
-                                int attempt,
-                                string? symbolSource)
+    private Task UploadOneAsync(
+        PackageUpdateResource packageUpdateResource,
+        string apiKey,
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource,
+        List<string> packagePaths,
+        int attempt,
+        string? symbolSource
+    )
     {
         foreach (string filename in packagePaths)
         {
-            this._logger.UploadingPackage(filename: filename, attempt: attempt, maxRetries: MAX_RETRIES);
+            this._logger.UploadingPackage(
+                filename: filename,
+                attempt: attempt,
+                maxRetries: MAX_RETRIES
+            );
         }
 
-        return packageUpdateResource.Push(packagePaths: packagePaths,
-                                          symbolSource: symbolSource,
-                                          timeoutInSecond: 800,
-                                          disableBuffering: false,
-                                          getApiKey: _ => apiKey,
-                                          getSymbolApiKey: _ => apiKey,
-                                          noServiceEndpoint: false,
-                                          skipDuplicate: true,
-                                          symbolPackageUpdateResource: symbolPackageUpdateResource,
-                                          log: this._nugetLogger);
+        return packageUpdateResource.Push(
+            packagePaths: packagePaths,
+            symbolSource: symbolSource,
+            timeoutInSecond: 800,
+            disableBuffering: false,
+            getApiKey: _ => apiKey,
+            getSymbolApiKey: _ => apiKey,
+            noServiceEndpoint: false,
+            skipDuplicate: true,
+            symbolPackageUpdateResource: symbolPackageUpdateResource,
+            log: this._nugetLogger
+        );
     }
 
     private static bool IsTransientException(Exception exception)
     {
-        return exception is IOException or OperationCanceledException or TimeoutException or TaskCanceledException or HttpRequestException;
+        return exception
+            is IOException
+                or OperationCanceledException
+                or TimeoutException
+                or TaskCanceledException
+                or HttpRequestException;
     }
 }

@@ -79,7 +79,12 @@ public sealed class NugetForwardingLogger : ILogger
                 this.LogError(data);
 
                 break;
-            default: throw new ArgumentOutOfRangeException(nameof(level), actualValue: level, message: "Unknown log level");
+            default:
+                throw new ArgumentOutOfRangeException(
+                    nameof(level),
+                    actualValue: level,
+                    message: "Unknown log level"
+                );
         }
     }
 

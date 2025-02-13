@@ -47,13 +47,18 @@ internal static class PackageSearchExtensions
 
     public static IReadOnlyList<string> GetNewSymbols(this IReadOnlyList<string> symbolPackages)
     {
-        return symbolPackages.Where(PackageNaming.IsNewSymbolPackage)
-                             .ToArray();
+        return symbolPackages.Filter(PackageNaming.IsNewSymbolPackage)
+                             ;
     }
 
     public static IReadOnlyList<string> GetOldSymbols(this IReadOnlyList<string> symbolPackages)
     {
-        return symbolPackages.Where(PackageNaming.IsOldSymbolPackage)
-                             .ToArray();
+        return symbolPackages.Filter(PackageNaming.IsOldSymbolPackage);
+    }
+
+    private static IReadOnlyList<string> Filter(this IReadOnlyList<string> symbolPackages, Func<string, bool> match)
+    {
+        return [..symbolPackages.Where(match)
+        ];
     }
 }

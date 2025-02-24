@@ -9,16 +9,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.68.928
-- Dependencies - Updated Meziantou.Analyzer to 2.0.188
-- Dependencies - Updated Roslynator.Analyzers to 4.13.1
-- Dependencies - Updated Credfeto.Version.Information.Generator to 1.0.55.367
 ### Removed
 ### Deployment Changes
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.6.77] - 2025-02-24
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.68.928
+- Dependencies - Updated Meziantou.Analyzer to 2.0.188
+- Dependencies - Updated Roslynator.Analyzers to 4.13.1
+- Dependencies - Updated Credfeto.Version.Information.Generator to 1.0.55.367
+
 ## [1.6.76] - 2025-02-13
 ### Changed
 - SDK - Updated DotNet SDK to 9.0.200

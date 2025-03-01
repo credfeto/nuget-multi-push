@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.7.0.110445
+- Dependencies - Updated NuGet to 6.13.2
 ### Removed
 ### Deployment Changes
 

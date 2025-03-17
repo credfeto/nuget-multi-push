@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.13.61
+- Dependencies - Updated Microsoft.Extensions to 9.0.3
 ### Removed
 ### Deployment Changes
 

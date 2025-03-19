@@ -9,14 +9,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.70.968
-- Dependencies - Updated Credfeto.Enumeration to 1.2.69.973
 ### Removed
 ### Deployment Changes
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.6.82] - 2025-03-19
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.70.968
+- Dependencies - Updated Credfeto.Enumeration to 1.2.69.973
+
 ## [1.6.81] - 2025-03-18
 ### Changed
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.13.61

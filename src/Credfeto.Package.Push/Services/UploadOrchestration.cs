@@ -19,10 +19,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
     private readonly ILogger<UploadOrchestration> _logger;
     private readonly IPackageUploader _packageUploader;
 
-    public UploadOrchestration(
-        IPackageUploader packageUploader,
-        ILogger<UploadOrchestration> logger
-    )
+    public UploadOrchestration(IPackageUploader packageUploader, ILogger<UploadOrchestration> logger)
     {
         this._packageUploader = packageUploader;
         this._logger = logger;
@@ -38,15 +35,15 @@ public sealed class UploadOrchestration : IUploadOrchestration
     {
         SourceRepository sourceRepository = ConfigureSourceRepository(source);
 
-        PackageUpdateResource packageUpdateResource =
-            await sourceRepository.GetResourceAsync<PackageUpdateResource>(cancellationToken);
+        PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>(
+            cancellationToken
+        );
         this._logger.PushingPackagesToServer(packageUpdateResource.SourceUri);
 
-        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource =
-            await this.GetSymbolPackageUpdateSourceAsync(
-                sourceRepository: sourceRepository,
-                cancellationToken: cancellationToken
-            );
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await this.GetSymbolPackageUpdateSourceAsync(
+            sourceRepository: sourceRepository,
+            cancellationToken: cancellationToken
+        );
 
         PackageUpdateResource? symbolPackageUpdateResourceAsPackage = null;
 
@@ -56,10 +53,9 @@ public sealed class UploadOrchestration : IUploadOrchestration
         {
             symbolSourceRepository = ConfigureSourceRepository(symbolSource);
 
-            PackageUpdateResource? resource =
-                await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>(
-                    cancellationToken
-                );
+            PackageUpdateResource? resource = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>(
+                cancellationToken
+            );
 
             if (resource?.SourceUri is not null)
             {
@@ -84,11 +80,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
         return await Task.WhenAll(tasks);
     }
 
-    [SuppressMessage(
-        "Meziantou.Analyzer",
-        "MA0051: Method is too long",
-        Justification = "Needs Review"
-    )]
+    [SuppressMessage("Meziantou.Analyzer", "MA0051: Method is too long", Justification = "Needs Review")]
     private IEnumerable<Task<(string package, bool success)>> BuildUploadTasks(
         SourceRepository? symbolSourceRepository,
         SymbolPackageUpdateResourceV3? symbolPackageUpdateResource,
@@ -275,9 +267,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
     )
     {
         SymbolPackageUpdateResourceV3? symbolPackageUpdateResource =
-            await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>(
-                cancellationToken
-            );
+            await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>(cancellationToken);
 
         if (symbolPackageUpdateResource?.SourceUri is null)
         {
@@ -333,10 +323,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
                     break;
                 }
 
-                return StringComparer.InvariantCultureIgnoreCase.Equals(
-                    parts[previousPart],
-                    y: "All"
-                );
+                return StringComparer.InvariantCultureIgnoreCase.Equals(parts[previousPart], y: "All");
             }
         }
 
@@ -353,9 +340,6 @@ public sealed class UploadOrchestration : IUploadOrchestration
             isPersistable: true
         );
 
-        return new(
-            source: packageSource,
-            new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3())
-        );
+        return new(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
     }
 }

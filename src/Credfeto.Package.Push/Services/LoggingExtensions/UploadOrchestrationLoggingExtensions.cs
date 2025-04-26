@@ -5,25 +5,11 @@ namespace Credfeto.Package.Push.Services.LoggingExtensions;
 
 internal static partial class UploadOrchestrationLoggingExtensions
 {
-    [LoggerMessage(
-        EventId = 0,
-        Level = LogLevel.Information,
-        Message = "Pushing packages to: {uri}"
-    )]
-    public static partial void PushingPackagesToServer(
-        this ILogger<UploadOrchestration> logger,
-        Uri uri
-    );
+    [LoggerMessage(EventId = 0, Level = LogLevel.Information, Message = "Pushing packages to: {uri}")]
+    public static partial void PushingPackagesToServer(this ILogger<UploadOrchestration> logger, Uri uri);
 
-    [LoggerMessage(
-        EventId = 1,
-        Level = LogLevel.Information,
-        Message = "Pushing symbol packages to: {uri}"
-    )]
-    public static partial void PushingSymbolPackagesToServer(
-        this ILogger<UploadOrchestration> logger,
-        Uri uri
-    );
+    [LoggerMessage(EventId = 1, Level = LogLevel.Information, Message = "Pushing symbol packages to: {uri}")]
+    public static partial void PushingSymbolPackagesToServer(this ILogger<UploadOrchestration> logger, Uri uri);
 
     [LoggerMessage(EventId = 2, Level = LogLevel.Warning, Message = "No symbols to upload")]
     public static partial void NoSymbolsToUpload(this ILogger<UploadOrchestration> logger);
@@ -33,18 +19,14 @@ internal static partial class UploadOrchestrationLoggingExtensions
         Level = LogLevel.Information,
         Message = "Separate Symbol Repo; uses package api to upload"
     )]
-    public static partial void SeparateSymbolRepoUsingPackageApiToUpload(
-        this ILogger<UploadOrchestration> logger
-    );
+    public static partial void SeparateSymbolRepoUsingPackageApiToUpload(this ILogger<UploadOrchestration> logger);
 
     [LoggerMessage(
         EventId = 4,
         Level = LogLevel.Information,
         Message = "Separate Symbol Repo; no suitable upload method - upload all as packages to primary"
     )]
-    public static partial void SeparateSymbolRepoUploadingAllToPrimary(
-        this ILogger<UploadOrchestration> logger
-    );
+    public static partial void SeparateSymbolRepoUploadingAllToPrimary(this ILogger<UploadOrchestration> logger);
 
     [LoggerMessage(
         EventId = 5,
@@ -60,9 +42,7 @@ internal static partial class UploadOrchestrationLoggingExtensions
         Level = LogLevel.Information,
         Message = "Same Symbol Repo; new format (snupkg) symbols - upload all as packages to primary"
     )]
-    public static partial void SameSymbolRepoNewFormatSymbolsAllToPrimary(
-        this ILogger<UploadOrchestration> logger
-    );
+    public static partial void SameSymbolRepoNewFormatSymbolsAllToPrimary(this ILogger<UploadOrchestration> logger);
 
     [LoggerMessage(
         EventId = 7,

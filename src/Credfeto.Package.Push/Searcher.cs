@@ -16,12 +16,7 @@ public static class Searcher
         [
             .. Directory
                 .GetFiles(path: nativeFolder, searchPattern: PackageNaming.SearchPattern)
-                .Concat(
-                    Directory.GetFiles(
-                        path: nativeFolder,
-                        searchPattern: PackageNaming.SourceSearchPattern
-                    )
-                ),
+                .Concat(Directory.GetFiles(path: nativeFolder, searchPattern: PackageNaming.SourceSearchPattern)),
         ];
     }
 }

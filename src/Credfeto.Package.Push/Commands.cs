@@ -31,20 +31,12 @@ internal sealed class Commands
 
     [Command(Description = "Uploads all packages in the folder")]
     [PrimaryCommand]
-    [SuppressMessage(
-        category: "ReSharper",
-        checkId: "UnusedMember.Global",
-        Justification = "Used by Cocona"
-    )]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by Cocona")]
     public async Task UploadPackagesAsync(
-        [Option(name: "source", ['s'], Description = "NuGet Feed to upload packages to")]
-            string source,
-        [Option(name: "folder", ['f'], Description = "Folder containing packages to upload")]
-            string folder,
-        [Option(name: "api-key", ['a'], Description = "Api Key for uploading packages")]
-            string apiKey,
-        [Option("symbol-source", Description = "NuGet Feed to upload symbol packages to")]
-            string? symbolSource
+        [Option(name: "source", ['s'], Description = "NuGet Feed to upload packages to")] string source,
+        [Option(name: "folder", ['f'], Description = "Folder containing packages to upload")] string folder,
+        [Option(name: "api-key", ['a'], Description = "Api Key for uploading packages")] string apiKey,
+        [Option("symbol-source", Description = "NuGet Feed to upload symbol packages to")] string? symbolSource
     )
     {
         IReadOnlyList<string> packages = Searcher.FindMatchingPackages(folder);
@@ -54,14 +46,13 @@ internal sealed class Commands
             throw new UploadConfigurationErrorsException("folder does not contain any packages");
         }
 
-        IReadOnlyList<(string package, bool success)> results =
-            await this._uploadOrchestration.PushAllAsync(
-                source: source,
-                symbolSource: symbolSource,
-                packages: packages,
-                apiKey: apiKey,
-                cancellationToken: CancellationToken.None
-            );
+        IReadOnlyList<(string package, bool success)> results = await this._uploadOrchestration.PushAllAsync(
+            source: source,
+            symbolSource: symbolSource,
+            packages: packages,
+            apiKey: apiKey,
+            cancellationToken: CancellationToken.None
+        );
 
         ProduceSummary(results: results);
     }
@@ -107,9 +98,7 @@ internal sealed class Commands
         return errors == 0;
     }
 
-    private static void OutputPackagesAsAssets(
-        IReadOnlyList<(string package, bool success)> packages
-    )
+    private static void OutputPackagesAsAssets(IReadOnlyList<(string package, bool success)> packages)
     {
         string? env = Environment.GetEnvironmentVariable("TEAMCITY_VERSION");
 

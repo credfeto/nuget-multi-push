@@ -52,10 +52,7 @@ public sealed class PackageUploader : IPackageUploader
     {
         try
         {
-            string? symbolSource = symbolPackages.FindMatchingSymbolPackage(
-                package: package,
-                logger: this._logger
-            );
+            string? symbolSource = symbolPackages.FindMatchingSymbolPackage(package: package, logger: this._logger);
 
             List<string> packagePaths = [package];
 
@@ -106,11 +103,7 @@ public sealed class PackageUploader : IPackageUploader
     {
         foreach (string filename in packagePaths)
         {
-            this._logger.UploadingPackage(
-                filename: filename,
-                attempt: attempt,
-                maxRetries: MAX_RETRIES
-            );
+            this._logger.UploadingPackage(filename: filename, attempt: attempt, maxRetries: MAX_RETRIES);
         }
 
         return packageUpdateResource.Push(

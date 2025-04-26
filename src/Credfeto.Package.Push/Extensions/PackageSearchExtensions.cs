@@ -27,14 +27,8 @@ internal static class PackageSearchExtensions
         string expectedSymbolOld = baseName + PackageNaming.SymbolsOldPackageExtension;
         string expectedSymbolNew = baseName + PackageNaming.SymbolsNewPackageExtension;
 
-        return symbolPackages.FindMatchingSymbolByFullName(
-                expectedSymbol: expectedSymbolNew,
-                logger: logger
-            )
-            ?? symbolPackages.FindMatchingSymbolByFullName(
-                expectedSymbol: expectedSymbolOld,
-                logger: logger
-            );
+        return symbolPackages.FindMatchingSymbolByFullName(expectedSymbol: expectedSymbolNew, logger: logger)
+            ?? symbolPackages.FindMatchingSymbolByFullName(expectedSymbol: expectedSymbolOld, logger: logger);
     }
 
     private static string? FindMatchingSymbolByFullName(
@@ -71,10 +65,7 @@ internal static class PackageSearchExtensions
         return symbolPackages.Filter(PackageNaming.IsOldSymbolPackage);
     }
 
-    private static IReadOnlyList<string> Filter(
-        this IReadOnlyList<string> symbolPackages,
-        Func<string, bool> match
-    )
+    private static IReadOnlyList<string> Filter(this IReadOnlyList<string> symbolPackages, Func<string, bool> match)
     {
         return [.. symbolPackages.Where(match)];
     }

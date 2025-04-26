@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NuGet.Common;
@@ -80,11 +80,7 @@ public sealed class NugetForwardingLogger : ILogger
 
                 break;
             default:
-                throw new ArgumentOutOfRangeException(
-                    nameof(level),
-                    actualValue: level,
-                    message: "Unknown log level"
-                );
+                throw new ArgumentOutOfRangeException(nameof(level), actualValue: level, message: "Unknown log level");
         }
     }
 

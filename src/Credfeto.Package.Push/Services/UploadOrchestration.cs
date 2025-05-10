@@ -25,25 +25,18 @@ public sealed class UploadOrchestration : IUploadOrchestration
         this._logger = logger;
     }
 
-    public async Task<IReadOnlyList<(string package, bool success)>> PushAllAsync(
-        string source,
-        string? symbolSource,
-        IReadOnlyList<string> packages,
-        string apiKey,
-        CancellationToken cancellationToken
-    )
+    public async Task<IReadOnlyList<(string package, bool success)>> PushAllAsync(string source,
+                                                                                  string? symbolSource,
+                                                                                  IReadOnlyList<string> packages,
+                                                                                  string apiKey,
+                                                                                  CancellationToken cancellationToken)
     {
         SourceRepository sourceRepository = ConfigureSourceRepository(source);
 
-        PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>(
-            cancellationToken
-        );
+        PackageUpdateResource packageUpdateResource = await sourceRepository.GetResourceAsync<PackageUpdateResource>(cancellationToken);
         this._logger.PushingPackagesToServer(packageUpdateResource.SourceUri);
 
-        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await this.GetSymbolPackageUpdateSourceAsync(
-            sourceRepository: sourceRepository,
-            cancellationToken: cancellationToken
-        );
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await this.GetSymbolPackageUpdateSourceAsync(sourceRepository: sourceRepository, cancellationToken: cancellationToken);
 
         PackageUpdateResource? symbolPackageUpdateResourceAsPackage = null;
 
@@ -53,9 +46,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
         {
             symbolSourceRepository = ConfigureSourceRepository(symbolSource);
 
-            PackageUpdateResource? resource = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>(
-                cancellationToken
-            );
+            PackageUpdateResource? resource = await symbolSourceRepository.GetResourceAsync<PackageUpdateResource>(cancellationToken);
 
             if (resource?.SourceUri is not null)
             {
@@ -67,39 +58,31 @@ public sealed class UploadOrchestration : IUploadOrchestration
         IReadOnlyList<string> symbolPackages = ExtractSymbolPackages(packages);
         IReadOnlyList<string> nonSymbolPackages = ExtractProductionPackages(packages);
 
-        IEnumerable<Task<(string package, bool success)>> tasks = this.BuildUploadTasks(
-            symbolSourceRepository: symbolSourceRepository,
-            symbolPackageUpdateResource: symbolPackageUpdateResource,
-            symbolPackageUpdateResourceAsPackage: symbolPackageUpdateResourceAsPackage,
-            nonSymbolPackages: nonSymbolPackages,
-            symbolPackages: symbolPackages,
-            apiKey: apiKey,
-            packageUpdateResource: packageUpdateResource
-        );
+        IEnumerable<Task<(string package, bool success)>> tasks = this.BuildUploadTasks(symbolSourceRepository: symbolSourceRepository,
+                                                                                        symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                                                                        symbolPackageUpdateResourceAsPackage: symbolPackageUpdateResourceAsPackage,
+                                                                                        nonSymbolPackages: nonSymbolPackages,
+                                                                                        symbolPackages: symbolPackages,
+                                                                                        apiKey: apiKey,
+                                                                                        packageUpdateResource: packageUpdateResource);
 
         return await Task.WhenAll(tasks);
     }
 
     [SuppressMessage("Meziantou.Analyzer", "MA0051: Method is too long", Justification = "Needs Review")]
-    private IEnumerable<Task<(string package, bool success)>> BuildUploadTasks(
-        SourceRepository? symbolSourceRepository,
-        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource,
-        PackageUpdateResource? symbolPackageUpdateResourceAsPackage,
-        IReadOnlyList<string> nonSymbolPackages,
-        IReadOnlyList<string> symbolPackages,
-        string apiKey,
-        PackageUpdateResource packageUpdateResource
-    )
+    private IEnumerable<Task<(string package, bool success)>> BuildUploadTasks(SourceRepository? symbolSourceRepository,
+                                                                               SymbolPackageUpdateResourceV3? symbolPackageUpdateResource,
+                                                                               PackageUpdateResource? symbolPackageUpdateResourceAsPackage,
+                                                                               IReadOnlyList<string> nonSymbolPackages,
+                                                                               IReadOnlyList<string> symbolPackages,
+                                                                               string apiKey,
+                                                                               PackageUpdateResource packageUpdateResource)
     {
         if (symbolPackages.Count == 0)
         {
             this._logger.NoSymbolsToUpload();
 
-            return this.UploadPackagesWithoutSymbolLookup(
-                packages: nonSymbolPackages,
-                apiKey: apiKey,
-                packageUpdateResource: packageUpdateResource
-            );
+            return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource);
         }
 
         if (symbolSourceRepository is not null)
@@ -108,70 +91,36 @@ public sealed class UploadOrchestration : IUploadOrchestration
             {
                 this._logger.SeparateSymbolRepoUsingPackageApiToUpload();
 
-                return this.UploadPackagesWithoutSymbolLookup(
-                        packages: nonSymbolPackages,
-                        apiKey: apiKey,
-                        packageUpdateResource: packageUpdateResource
-                    )
-                    .Concat(
-                        this.UploadPackagesWithoutSymbolLookup(
-                            packages: symbolPackages,
-                            apiKey: apiKey,
-                            packageUpdateResource: symbolPackageUpdateResourceAsPackage
-                        )
-                    );
+                return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
+                           .Concat(this.UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: symbolPackageUpdateResourceAsPackage));
             }
 
             this._logger.SeparateSymbolRepoUploadingAllToPrimary();
 
-            return this.UploadPackagesWithoutSymbolLookup(
-                    packages: nonSymbolPackages,
-                    apiKey: apiKey,
-                    packageUpdateResource: packageUpdateResource
-                )
-                .Concat(
-                    this.UploadPackagesWithoutSymbolLookup(
-                        packages: symbolPackages,
-                        apiKey: apiKey,
-                        packageUpdateResource: packageUpdateResource
-                    )
-                );
+            return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
+                       .Concat(this.UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
         }
 
         if (symbolPackageUpdateResource is not null)
         {
-            return this.PushWithSeparateUpdateSource(
-                symbolPackageUpdateResource: symbolPackageUpdateResource,
-                nonSymbolPackages: nonSymbolPackages,
-                symbolPackages: symbolPackages,
-                apiKey: apiKey,
-                packageUpdateResource: packageUpdateResource
-            );
+            return this.PushWithSeparateUpdateSource(symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                                     nonSymbolPackages: nonSymbolPackages,
+                                                     symbolPackages: symbolPackages,
+                                                     apiKey: apiKey,
+                                                     packageUpdateResource: packageUpdateResource);
         }
 
         this._logger.SeparateSymbolRepoUploadingAllToPrimary();
 
-        return this.UploadPackagesWithoutSymbolLookup(
-                packages: nonSymbolPackages,
-                apiKey: apiKey,
-                packageUpdateResource: packageUpdateResource
-            )
-            .Concat(
-                this.UploadPackagesWithoutSymbolLookup(
-                    packages: symbolPackages,
-                    apiKey: apiKey,
-                    packageUpdateResource: packageUpdateResource
-                )
-            );
+        return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
+                   .Concat(this.UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
     }
 
-    private IEnumerable<Task<(string package, bool success)>> PushWithSeparateUpdateSource(
-        SymbolPackageUpdateResourceV3 symbolPackageUpdateResource,
-        IReadOnlyList<string> nonSymbolPackages,
-        IReadOnlyList<string> symbolPackages,
-        string apiKey,
-        PackageUpdateResource packageUpdateResource
-    )
+    private IEnumerable<Task<(string package, bool success)>> PushWithSeparateUpdateSource(SymbolPackageUpdateResourceV3 symbolPackageUpdateResource,
+                                                                                           IReadOnlyList<string> nonSymbolPackages,
+                                                                                           IReadOnlyList<string> symbolPackages,
+                                                                                           string apiKey,
+                                                                                           PackageUpdateResource packageUpdateResource)
     {
         IReadOnlyList<string> oldSymbols = symbolPackages.GetOldSymbols();
         IReadOnlyList<string> newSymbols = symbolPackages.GetNewSymbols();
@@ -180,94 +129,56 @@ public sealed class UploadOrchestration : IUploadOrchestration
         {
             this._logger.SameSymbolRepoOldFormatSymbolsUsingSymbolApiAtSameTime();
 
-            return this.UploadPackagesWithMatchingSymbols(
-                symbolPackageUpdateResource: symbolPackageUpdateResource,
-                nonSymbolPackages: nonSymbolPackages,
-                symbolPackages: oldSymbols,
-                apiKey: apiKey,
-                packageUpdateResource: packageUpdateResource
-            );
+            return this.UploadPackagesWithMatchingSymbols(symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                                          nonSymbolPackages: nonSymbolPackages,
+                                                          symbolPackages: oldSymbols,
+                                                          apiKey: apiKey,
+                                                          packageUpdateResource: packageUpdateResource);
         }
 
         if (oldSymbols.Count == 0 && newSymbols.Count != 0)
         {
             this._logger.SameSymbolRepoNewFormatSymbolsAllToPrimary();
 
-            return this.UploadPackagesWithoutSymbolLookup(
-                    packages: nonSymbolPackages,
-                    apiKey: apiKey,
-                    packageUpdateResource: packageUpdateResource
-                )
-                .Concat(
-                    this.UploadPackagesWithoutSymbolLookup(
-                        packages: symbolPackages,
-                        apiKey: apiKey,
-                        packageUpdateResource: packageUpdateResource
-                    )
-                );
+            return this.UploadPackagesWithoutSymbolLookup(packages: nonSymbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource)
+                       .Concat(this.UploadPackagesWithoutSymbolLookup(packages: symbolPackages, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
         }
 
         this._logger.SameSymbolRepoMexedFormatSymbolsOldSymolApiNewToPrimary();
 
-        return this.UploadPackagesWithMatchingSymbols(
-                symbolPackageUpdateResource: symbolPackageUpdateResource,
-                nonSymbolPackages: nonSymbolPackages,
-                symbolPackages: oldSymbols,
-                apiKey: apiKey,
-                packageUpdateResource: packageUpdateResource
-            )
-            .Concat(
-                this.UploadPackagesWithoutSymbolLookup(
-                    packages: newSymbols,
-                    apiKey: apiKey,
-                    packageUpdateResource: packageUpdateResource
-                )
-            );
+        return this.UploadPackagesWithMatchingSymbols(symbolPackageUpdateResource: symbolPackageUpdateResource,
+                                                      nonSymbolPackages: nonSymbolPackages,
+                                                      symbolPackages: oldSymbols,
+                                                      apiKey: apiKey,
+                                                      packageUpdateResource: packageUpdateResource)
+                   .Concat(this.UploadPackagesWithoutSymbolLookup(packages: newSymbols, apiKey: apiKey, packageUpdateResource: packageUpdateResource));
     }
 
-    private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithMatchingSymbols(
-        SymbolPackageUpdateResourceV3 symbolPackageUpdateResource,
-        IReadOnlyList<string> nonSymbolPackages,
-        IReadOnlyList<string> symbolPackages,
-        string apiKey,
-        PackageUpdateResource packageUpdateResource
-    )
+    private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithMatchingSymbols(SymbolPackageUpdateResourceV3 symbolPackageUpdateResource,
+                                                                                                IReadOnlyList<string> nonSymbolPackages,
+                                                                                                IReadOnlyList<string> symbolPackages,
+                                                                                                string apiKey,
+                                                                                                PackageUpdateResource packageUpdateResource)
     {
-        return nonSymbolPackages.Select(package =>
-            this._packageUploader.PushOnePackageAsync(
-                package: package,
-                symbolPackages: symbolPackages,
-                packageUpdateResource: packageUpdateResource,
-                apiKey: apiKey,
-                symbolPackageUpdateResource: symbolPackageUpdateResource
-            )
-        );
+        return nonSymbolPackages.Select(package => this._packageUploader.PushOnePackageAsync(package: package,
+                                                                                             symbolPackages: symbolPackages,
+                                                                                             packageUpdateResource: packageUpdateResource,
+                                                                                             apiKey: apiKey,
+                                                                                             symbolPackageUpdateResource: symbolPackageUpdateResource));
     }
 
-    private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(
-        IReadOnlyList<string> packages,
-        string apiKey,
-        PackageUpdateResource packageUpdateResource
-    )
+    private IEnumerable<Task<(string package, bool success)>> UploadPackagesWithoutSymbolLookup(IReadOnlyList<string> packages, string apiKey, PackageUpdateResource packageUpdateResource)
     {
-        return packages.Select(package =>
-            this._packageUploader.PushOnePackageAsync(
-                package: package,
-                [],
-                packageUpdateResource: packageUpdateResource,
-                apiKey: apiKey,
-                symbolPackageUpdateResource: null
-            )
-        );
+        return packages.Select(package => this._packageUploader.PushOnePackageAsync(package: package,
+                                                                                    [],
+                                                                                    packageUpdateResource: packageUpdateResource,
+                                                                                    apiKey: apiKey,
+                                                                                    symbolPackageUpdateResource: null));
     }
 
-    private async Task<SymbolPackageUpdateResourceV3?> GetSymbolPackageUpdateSourceAsync(
-        SourceRepository sourceRepository,
-        CancellationToken cancellationToken
-    )
+    private async Task<SymbolPackageUpdateResourceV3?> GetSymbolPackageUpdateSourceAsync(SourceRepository sourceRepository, CancellationToken cancellationToken)
     {
-        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource =
-            await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>(cancellationToken);
+        SymbolPackageUpdateResourceV3? symbolPackageUpdateResource = await sourceRepository.GetResourceAsync<SymbolPackageUpdateResourceV3>(cancellationToken);
 
         if (symbolPackageUpdateResource?.SourceUri is null)
         {
@@ -283,10 +194,9 @@ public sealed class UploadOrchestration : IUploadOrchestration
     {
         return
         [
-            .. packages
-                .Where(PackageNaming.IsNotSymbolPackage)
-                .OrderBy(MetaPackageLast)
-                .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase),
+            .. packages.Where(PackageNaming.IsNotSymbolPackage)
+                       .OrderBy(MetaPackageLast)
+                       .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase)
         ];
     }
 
@@ -294,10 +204,9 @@ public sealed class UploadOrchestration : IUploadOrchestration
     {
         return
         [
-            .. packages
-                .Where(PackageNaming.IsSymbolPackage)
-                .OrderBy(MetaPackageLast)
-                .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase),
+            .. packages.Where(PackageNaming.IsSymbolPackage)
+                       .OrderBy(MetaPackageLast)
+                       .ThenBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase)
         ];
     }
 
@@ -307,14 +216,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
         for (int part = 0; part < parts.Length; ++part)
         {
-            if (
-                int.TryParse(
-                    parts[part],
-                    style: NumberStyles.Integer,
-                    provider: CultureInfo.InvariantCulture,
-                    out int _
-                )
-            )
+            if (int.TryParse(parts[part], style: NumberStyles.Integer, provider: CultureInfo.InvariantCulture, out int _))
             {
                 int previousPart = part - 1;
 
@@ -323,7 +225,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
                     break;
                 }
 
-                return StringComparer.InvariantCultureIgnoreCase.Equals(parts[previousPart], y: "All");
+                return StringComparer.OrdinalIgnoreCase.Equals(parts[previousPart], y: "All");
             }
         }
 
@@ -332,13 +234,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
     private static SourceRepository ConfigureSourceRepository(string source)
     {
-        PackageSource packageSource = new(
-            source: source,
-            name: "Custom",
-            isEnabled: true,
-            isOfficial: true,
-            isPersistable: true
-        );
+        PackageSource packageSource = new(source: source, name: "Custom", isEnabled: true, isOfficial: true, isPersistable: true);
 
         return new(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
     }

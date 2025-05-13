@@ -70,7 +70,7 @@
   <ItemGroup>
     <PackageReference Include="Cocona" Version="2.2.0" />
     <PackageReference Include="Credfeto.Enumeration.Source.Generation.Attributes" Version="1.2.81.1087" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.5" />
     <PackageReference Include="NuGet.Commands" Version="6.13.2" />
     <PackageReference Include="Polly" Version="8.5.2" />
   </ItemGroup>

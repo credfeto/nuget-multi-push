@@ -9,6 +9,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [1.6.100] - 2025-05-14
+### Changed
 - Dependencies - Updated Nullable.Extended.Analyzer to 1.15.6581
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.9.0.115408
 - Dependencies - Updated Meziantou.Analyzer to 2.0.201
@@ -16,12 +24,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.0.2
 - Dependencies - Updated Microsoft.Extensions to 9.0.5
 - Dependencies - Updated NuGet to 6.14.0
-### Removed
-### Deployment Changes
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.6.99] - 2025-04-28
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration to 1.2.81.1087

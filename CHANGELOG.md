@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Credfeto.Version.Information.Generator to 1.0.97.634
+- Dependencies - Updated Polly to 8.6.0
 ### Removed
 ### Deployment Changes
 

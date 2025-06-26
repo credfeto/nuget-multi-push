@@ -301,8 +301,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
         ];
     }
 
-
-    #if NET9_0_OR_GREATER
+#if NET9_0_OR_GREATER
     private static bool MetaPackageLast(string packageId)
     {
         ReadOnlySpan<char> span = packageId.AsSpan();
@@ -355,7 +354,14 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
     private static bool IsMetaPackageAllTag(in ReadOnlySpan<char> part)
     {
-        return Check(part, "all") || Check(part, "alL") || Check(part, "aLl") || Check(part, "aLL") || Check(part, "All") || Check(part, "AlL") || Check(part, "ALl") || Check(part, "ALL");
+        return Check(part, "all")
+            || Check(part, "alL")
+            || Check(part, "aLl")
+            || Check(part, "aLL")
+            || Check(part, "All")
+            || Check(part, "AlL")
+            || Check(part, "ALl")
+            || Check(part, "ALL");
 
         static bool Check(in ReadOnlySpan<char> lhs, in ReadOnlySpan<char> rhs)
         {

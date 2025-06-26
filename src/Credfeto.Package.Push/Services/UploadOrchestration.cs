@@ -340,6 +340,6 @@ public sealed class UploadOrchestration : IUploadOrchestration
             isPersistable: true
         );
 
-        return new(source: packageSource, new List<Lazy<INuGetResourceProvider>>(Repository.Provider.GetCoreV3()));
+        return new(source: packageSource, [.. Repository.Provider.GetCoreV3()]);
     }
 }

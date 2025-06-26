@@ -301,33 +301,66 @@ public sealed class UploadOrchestration : IUploadOrchestration
         ];
     }
 
+
+    #if NET9_0_OR_GREATER
     private static bool MetaPackageLast(string packageId)
     {
-        string[] parts = packageId.Split(".");
+        ReadOnlySpan<char> span = packageId.AsSpan();
 
-        for (int part = 0; part < parts.Length; ++part)
+        Range? previousPart = null;
+        foreach (Range part in span.Split("."))
         {
-            if (
-                int.TryParse(
-                    parts[part],
-                    style: NumberStyles.Integer,
-                    provider: CultureInfo.InvariantCulture,
-                    out int _
-                )
-            )
+            if (IsInteger(span[part]))
             {
-                int previousPart = part - 1;
-
-                if (previousPart < 0)
+                if (previousPart is null)
                 {
                     break;
                 }
 
-                return StringComparer.OrdinalIgnoreCase.Equals(parts[previousPart], y: "All");
+                return IsMetaPackageAllTag(span[previousPart.Value]);
             }
+
+            previousPart = part;
         }
 
         return false;
+    }
+#else
+    private static bool MetaPackageLast(string packageId)
+    {
+        string? previousPart = null;
+        foreach (string part in packageId.Split("."))
+        {
+            if (IsInteger(part))
+            {
+                if (previousPart is null)
+                {
+                    break;
+                }
+
+                return IsMetaPackageAllTag(previousPart);
+            }
+
+            previousPart = part;
+        }
+
+        return false;
+    }
+#endif
+
+    private static bool IsInteger(in ReadOnlySpan<char> part)
+    {
+        return int.TryParse(part, style: NumberStyles.Integer, provider: CultureInfo.InvariantCulture, out int _);
+    }
+
+    private static bool IsMetaPackageAllTag(in ReadOnlySpan<char> part)
+    {
+        return Check(part, "all") || Check(part, "alL") || Check(part, "aLl") || Check(part, "aLL") || Check(part, "All") || Check(part, "AlL") || Check(part, "ALl") || Check(part, "ALL");
+
+        static bool Check(in ReadOnlySpan<char> lhs, in ReadOnlySpan<char> rhs)
+        {
+            return lhs.SequenceEqual(rhs);
+        }
     }
 
     private static SourceRepository ConfigureSourceRepository(string source)

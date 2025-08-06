@@ -18,6 +18,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Roslynator.Analyzers to 4.14.0
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.15.0.120848
 - Dependencies - Updated Microsoft.Extensions to 9.0.8
+- Dependencies - Updated Polly to 8.6.2
 ### Removed
 ### Deployment Changes
 

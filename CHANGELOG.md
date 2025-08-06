@@ -9,7 +9,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Microsoft.Extensions to 9.0.7
 - SDK - Updated DotNet SDK to 9.0.303
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.13.1330
 - Dependencies - Updated Meziantou.Analyzer to 2.0.210
@@ -18,6 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.6.4
 - Dependencies - Updated Roslynator.Analyzers to 4.14.0
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.15.0.120848
+- Dependencies - Updated Microsoft.Extensions to 9.0.8
 ### Removed
 ### Deployment Changes
 

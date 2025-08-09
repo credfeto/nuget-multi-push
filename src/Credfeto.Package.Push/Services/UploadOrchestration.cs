@@ -349,7 +349,7 @@ public sealed class UploadOrchestration : IUploadOrchestration
 
     private static bool IsInteger(in ReadOnlySpan<char> part)
     {
-        return int.TryParse(part, style: NumberStyles.Integer, provider: CultureInfo.InvariantCulture, out int _);
+        return int.TryParse(part, style: NumberStyles.Integer, provider: CultureInfo.InvariantCulture, out _);
     }
 
     private static bool IsMetaPackageAllTag(in ReadOnlySpan<char> part)
